@@ -51,7 +51,7 @@ CloudStack是一个开源的具有高可用性及扩展性的云计算平台。�
 <meta property="og:image" content="http://yoursite.com/images/separate-storage-network.png">
 <meta property="og:image" content="http://yoursite.com/images/nic-bonding-and-multipath-io.png">
 <meta property="og:image" content="http://yoursite.com/images/multi-node-management-server.png">
-<meta property="og:updated_time" content="2015-09-27T14:06:11.613Z">
+<meta property="og:updated_time" content="2015-09-27T14:27:38.542Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CloudStack 部署架构">
 <meta name="twitter:description" content="CloudStack在实验室实践过程，架构部分。
@@ -189,7 +189,7 @@ CloudStack是一个开源的具有高可用性及扩展性的云计算平台。�
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-09-27T22:06:11+08:00" content="2015-09-27">
+          <time itemprop="dateCreated" datetime="2015-09-27T22:27:38+08:00" content="2015-09-27">
             2015-09-27
           </time>
         </span>
@@ -225,7 +225,7 @@ CloudStack是一个开源的具有高可用性及扩展性的云计算平台。�
       
         <span itemprop="articleBody"><p>CloudStack在实验室实践过程，架构部分。</p>
 <p>CloudStack是一个开源的具有高可用性及扩展性的云计算平台。支持管理大部分主流的hypervisors，如KVM，XenServer，VMware，Oracle VM，Xen等。同时CloudStack是一个开源云计算解决方案。可以加速高伸缩性的公共和私有云（IaaS）的部署、管理、配置。使用CloudStack作为基础，数据中心操作者可以快速方便的通过现存基础架构创建云服务。<br><a id="more"></a></p>
-<h1 id="架构示意图">架构示意图</h1><p><img src="/images/large-scale-redundant-setup.png" alt="large-scale-redundant-setup"></p>
+<h1 id="架构示意图">架构示意图</h1><p><img src="/images/large-scale-redundant-setup.png" alt=""></p>
 <p>这个图展示了CloudStack在大规模部署时的网络结构。</p>
 <ul>
 <li><p>三层交换层处于数据机房的核心位置。应该部署类似VRRP的冗余路由协议实现设备热备份。通常，高端的核心交换机上包含防火墙模块。如果三层交换机上没有集成防火墙功能，也可以使用独立防火墙设备。防火墙一般会配置成NAT模式，它能提供如下功能：</p>
@@ -244,18 +244,18 @@ CloudStack是一个开源的具有高可用性及扩展性的云计算平台。�
 </li>
 </ul>
 <h1 id="存储网络">存储网络</h1><p>大规模冗余部署时，存储的数据流量过大可能使得管理网络过载。部署时可选择将存储网络分离出来。存储协议如iSCSI，对网络延迟非常敏感。独立的存储网络能够使其不受来宾网络流量波动的影响。</p>
-<p><img src="/images/separate-storage-network.png" alt="separate-storage-network"></p>
+<p><img src="/images/separate-storage-network.png" alt=""></p>
 <p>这个图展示了使用独立存储网络的设计。每一个物理服务器有四块网卡，其中两块连接到提供点级别的交换机，而另外两块网卡连接到用于存储网络的交换机。</p>
 <p>有两种方式配置存储网络：</p>
 <ul>
 <li>为NFS配置网卡绑定和冗余交换机。在NFS部署中，冗余的交换机和网卡绑定仍然处于同一网络。(同一个CIDR 段 + 默认网关地址)</li>
 <li>iSCSI能同时利用两个独立的存储网络(两个拥有各自默认网关的不同CIDR段)。支持iSCSI多路径的客户端能在两个独立的存储网络中实现故障切换和负载均衡。</li>
 </ul>
-<p><img src="/images/nic-bonding-and-multipath-io.png" alt="nic-bonding-and-multipath-io"></p>
+<p><img src="/images/nic-bonding-and-multipath-io.png" alt=""></p>
 <p>此图展示了网卡绑定与多路径IO(MPIO)之间的区别，网卡绑定的配置仅涉及一个网段，MPIO涉及两个独立的网段。</p>
 <p><a name="多节点管理服务器"></a></p>
 <h1 id="多节点管理服务器">多节点管理服务器</h1><p>CloudStack管理服务器可以部署一个或多个前端服务器并连接单一的MySQL数据库。可视需求使用一对硬件负载均衡对Web请求进行分流。另一备份管理节点可使用远端站点的MySQL复制数据以增加灾难恢复能力。</p>
-<p><img src="/images/multi-node-management-server.png" alt="multi-node-management-server"></p>
+<p><img src="/images/multi-node-management-server.png" alt=""></p>
 <p>系统管理人员必须决定如下事项：</p>
 <ul>
 <li>是否需要使用负载均衡器。</li>

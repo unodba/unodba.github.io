@@ -46,7 +46,7 @@
 <meta property="og:site_name" content="高校的小站">
 <meta property="og:description" content="CloudStack在实验室实践过程，，安装配置部分。">
 <meta property="og:image" content="http://yoursite.com/images/Advanced-Zone.png">
-<meta property="og:updated_time" content="2015-09-27T13:43:07.726Z">
+<meta property="og:updated_time" content="2015-09-27T14:25:30.003Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CloudStack 安装和配置">
 <meta name="twitter:description" content="CloudStack在实验室实践过程，，安装配置部分。">
@@ -183,7 +183,7 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-09-27T21:43:07+08:00" content="2015-09-27">
+          <time itemprop="dateCreated" datetime="2015-09-27T22:25:30+08:00" content="2015-09-27">
             2015-09-27
           </time>
         </span>
@@ -706,7 +706,7 @@
 </tr>
 </tbody>
 </table>
-<p>连接示意图如下图所示：<br><img src="/images/Advanced-Zone.png" alt="Advanced-Zone"></p>
+<p>连接示意图如下图所示：<br><img src="/images/Advanced-Zone.png" alt=""></p>
 <h1 id="部署CloudStack">部署CloudStack</h1><h2 id="配置系统相关服务">配置系统相关服务</h2><h3 id="1-_配置IP">1. 配置IP</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line"># echo &#34;IPADDR=192.168.3.10&#10;NETMASK=255.255.255.0&#10;GATEWAY=192.168.3.254&#34; &#62;&#62; /etc/sysconfig/network-scripts/ifcfg-eth0&#10;# sed -i &#39;s/dhcp/static&#39; /etc/sysconfig/network-script/ifcfg-eth0&#10;# sed -i &#39;s/ONBOOT=no/ONBOOT=yes&#39; /etc/sysconfig/network-script/ifcfg-eth0</span><br></pre></td></tr></table></figure>
 <h3 id="2-_配置主机名">2. 配置主机名</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line"># echo &#34;cs&#34;&#62; /etc/sysconfig/network&#10;# hostname -F /etc/sysconfig/network&#10;# echo &#34;192.168.3.10   cs cs.cloud.com&#34;&#62;&#62; /etc/hosts&#10;# hostname --fqdn&#10;//&#26816;&#26597;&#37197;&#32622;&#26159;&#21542;&#26377;&#25928;</span><br></pre></td></tr></table></figure>
 <h3 id="3-_关闭_selinux">3. 关闭 selinux</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line"># getenforce&#10;//&#26597;&#30475;&#24403;&#21069; selinux &#29366;&#24577;&#10;# setenforce 0&#10;//&#20020;&#26102;&#35774;&#32622; selinux &#29366;&#24577;&#10;# sed -i &#39;s/enforcing/disabled/&#39; /etc/selinux/config&#10;//&#20462;&#25913; selinux &#37197;&#32622;&#25991;&#20214;&#65292;&#37325;&#21551;&#27704;&#20037;&#31105;&#29992;</span><br></pre></td></tr></table></figure>

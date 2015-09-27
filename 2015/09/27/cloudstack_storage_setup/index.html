@@ -46,7 +46,7 @@
 <meta property="og:site_name" content="高校的小站">
 <meta property="og:description" content="CloudStack在实验室实践过程，存储配置部分。">
 <meta property="og:image" content="http://yoursite.com/images/store.png">
-<meta property="og:updated_time" content="2015-09-27T13:42:59.725Z">
+<meta property="og:updated_time" content="2015-09-27T14:26:52.583Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CloudStack 存储配置">
 <meta name="twitter:description" content="CloudStack在实验室实践过程，存储配置部分。">
@@ -183,7 +183,7 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-09-27T21:48:09+08:00" content="2015-09-27">
+          <time itemprop="dateCreated" datetime="2015-09-27T22:26:52+08:00" content="2015-09-27">
             2015-09-27
           </time>
         </span>
@@ -279,7 +279,7 @@
 <blockquote>
 <p>注意<br>存储服务器应该有大量磁盘，理想情况下应该配备硬件RAID控制器。硬件RAID控制器支持热插拔功能并独立于操作系统之外，这样你就可以替换损坏的磁盘而不影响正在运行的操作系统。</p>
 </blockquote>
-<p><img src="/images/store.png" alt="store"></p>
+<p><img src="/images/store.png" alt=""></p>
 <h1 id="存储配置">存储配置</h1><h2 id="基于本地硬盘和DAS的NFS服务">基于本地硬盘和DAS的NFS服务</h2><p>在存储服务器上安装RHEL/CentOS 发行版。如果根卷的大小超过2TB，创建一个小点的启动卷用于安装RHEL/CentOS，根分区保留20GB就足够了。<br>系统安装好以后，创建一个名为/export的目录。可以在根分区下创建，或者挂载一个较大的磁盘卷。<br>如果你在一台主机上有超过16TB的存储空间， 则创建多个EXT3文件系统和多个NFS输出，单个EXT3文件系统不能超过16TB。</p>
 <h3 id="1-_安装NFS">1. 安装NFS</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line"># yum install nfs-utils -y</span><br></pre></td></tr></table></figure>
 <h3 id="2-_创建存储目录">2. 创建存储目录</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line"># mkdir -p /export/primary&#10;# mkdir -p /export/secondary</span><br></pre></td></tr></table></figure>
