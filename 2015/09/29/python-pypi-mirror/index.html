@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="PyPi," />
+  <meta name="keywords" content="PyPi,python," />
 
 
 
@@ -39,32 +39,26 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="团队在日常开发和生产部署中，经常会用到PyPi的仓库，但是由于GFW的原因，经常出现丢包、超时等情况。因此在实验室开源镜像服务器定期同步一个PyPi镜像仓库。
-环境描述CentOS release 6.7 (Final)
-如果你使用Ubuntu，配置非常简单，直接pip install bandersnatch即可，但公司现在主要环境是RedHat系列，有点小麻烦，具体过程如下。">
+<meta name="description" content="团队在日常开发和生产部署中，会用到PyPi的仓库，但是由于GFW的原因，经常出现丢包、超时等情况。因此在实验室开源镜像服务器定期同步一个PyPi镜像仓库。本文不只是创建一个PyPi镜像仓库，同时也包含了CentOS、Red Hat系列下如何部署python 2.7、pip等软件版本。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="创建PyPi镜像仓库">
-<meta property="og:url" content="http://yoursite.com/2015/09/27/pypi mirror/index.html">
-<meta property="og:site_name" content="高校的小站">
-<meta property="og:description" content="团队在日常开发和生产部署中，经常会用到PyPi的仓库，但是由于GFW的原因，经常出现丢包、超时等情况。因此在实验室开源镜像服务器定期同步一个PyPi镜像仓库。
-环境描述CentOS release 6.7 (Final)
-如果你使用Ubuntu，配置非常简单，直接pip install bandersnatch即可，但公司现在主要环境是RedHat系列，有点小麻烦，具体过程如下。">
-<meta property="og:updated_time" content="2015-09-27T12:45:13.989Z">
+<meta property="og:url" content="http://yoursite.com/2015/09/29/python-pypi-mirror/index.html">
+<meta property="og:site_name" content="信息系统应用技术实验室">
+<meta property="og:description" content="团队在日常开发和生产部署中，会用到PyPi的仓库，但是由于GFW的原因，经常出现丢包、超时等情况。因此在实验室开源镜像服务器定期同步一个PyPi镜像仓库。本文不只是创建一个PyPi镜像仓库，同时也包含了CentOS、Red Hat系列下如何部署python 2.7、pip等软件版本。">
+<meta property="og:updated_time" content="2015-09-29T04:54:22.926Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="创建PyPi镜像仓库">
-<meta name="twitter:description" content="团队在日常开发和生产部署中，经常会用到PyPi的仓库，但是由于GFW的原因，经常出现丢包、超时等情况。因此在实验室开源镜像服务器定期同步一个PyPi镜像仓库。
-环境描述CentOS release 6.7 (Final)
-如果你使用Ubuntu，配置非常简单，直接pip install bandersnatch即可，但公司现在主要环境是RedHat系列，有点小麻烦，具体过程如下。">
+<meta name="twitter:description" content="团队在日常开发和生产部署中，会用到PyPi的仓库，但是由于GFW的原因，经常出现丢包、超时等情况。因此在实验室开源镜像服务器定期同步一个PyPi镜像仓库。本文不只是创建一个PyPi镜像仓库，同时也包含了CentOS、Red Hat系列下如何部署python 2.7、pip等软件版本。">
 
 
 <script type="text/javascript" id="hexo.configuration">
   var CONFIG = {
     scheme: 'Mist',
-    sidebar: 'post'
+    sidebar: 'hide'
   };
 </script>
 
-  <title> 创建PyPi镜像仓库 | 高校的小站 </title>
+  <title> 创建PyPi镜像仓库 | 信息系统应用技术实验室 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -92,7 +86,7 @@
       <span class="logo">
         <i class="icon-next-logo"></i>
       </span>
-      <span class="site-title">高校的小站</span>
+      <span class="site-title">信息系统应用技术实验室</span>
   </a>
   <span class="logo-line-after"><i></i></span>
 </h1>
@@ -188,8 +182,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-09-27T20:45:13+08:00" content="2015-09-27">
-            2015-09-27
+          <time itemprop="dateCreated" datetime="2015-09-29T12:54:22+08:00" content="2015-09-29">
+            2015-09-29
           </time>
         </span>
 
@@ -222,18 +216,20 @@
       
 
       
-        <span itemprop="articleBody"><p>团队在日常开发和生产部署中，经常会用到PyPi的仓库，但是由于GFW的原因，经常出现丢包、超时等情况。因此在实验室开源镜像服务器定期同步一个PyPi镜像仓库。</p>
+        <span itemprop="articleBody"><p>团队在日常开发和生产部署中，会用到PyPi的仓库，但是由于GFW的原因，经常出现丢包、超时等情况。因此在实验室开源镜像服务器定期同步一个PyPi镜像仓库。<br>本文不只是创建一个PyPi镜像仓库，同时也包含了CentOS、Red Hat系列下如何部署python 2.7、pip等软件版本。<br><a id="more"></a></p>
 <h1 id="环境描述">环境描述</h1><p>CentOS release 6.7 (Final)</p>
-<p>如果你使用Ubuntu，配置非常简单，直接pip install bandersnatch即可，但公司现在主要环境是RedHat系列，有点小麻烦，具体过程如下。<br><a id="more"></a></p>
-<h1 id="安装相关依赖">安装相关依赖</h1><figure class="highlight vala"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor"># yum -y install gcc automake autoconf libtool make //安装python需要</span></span><br><span class="line"><span class="preprocessor"># yum -y install zlib zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel  //安装disttibute需要</span></span><br><span class="line"><span class="preprocessor"># yum -y install unzip</span></span><br></pre></td></tr></table></figure>
-<h1 id="安装python">安装python</h1><p>centos自带python-2.6，这里需要python 2.7，目前最新版本的python是2.7.10，所以下载下载完成后解压安装。</p>
-<figure class="highlight vala"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor"># python -v</span></span><br><span class="line"><span class="preprocessor"># cd /usr/src</span></span><br><span class="line"><span class="preprocessor"># wget https://www.python.org/ftp/python/2.7.10/Python-2.7.10.tgz</span></span><br><span class="line"><span class="preprocessor"># tar -zxvf Python-2.7.10.tgz</span></span><br><span class="line"><span class="preprocessor"># cd Python-2.7.10</span></span><br><span class="line"><span class="preprocessor"># ./configure --prefix=/usr/local</span></span><br><span class="line"><span class="preprocessor"># make &amp;&amp; make altinstall</span></span><br><span class="line"><span class="comment">//make altinstall is used to prevent replacing the default python binary file /usr/bin/python.</span></span><br><span class="line"><span class="preprocessor"># ls -ltr /usr/bin/python*</span></span><br><span class="line"><span class="preprocessor"># ls -ltr /usr/local/bin/python*</span></span><br><span class="line"><span class="preprocessor"># /usr/local/bin/python2.7</span></span><br></pre></td></tr></table></figure>
+<p>如果你使用Ubuntu，配置非常简单，直接pip install bandersnatch即可，但实验室主要环境是CentOS、Red Hat系列，有点小麻烦，具体过程如下。</p>
+<h1 id="安装相关依赖">安装相关依赖</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor"># yum -y install gcc automake autoconf libtool make <span class="comment">//安装python需要</span></span></span><br><span class="line"><span class="preprocessor"># yum -y install zlib zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel  <span class="comment">//安装disttibute需要</span></span></span><br><span class="line"><span class="preprocessor"># yum -y install unzip <span class="comment">//解压需要</span></span></span><br></pre></td></tr></table></figure>
+<h1 id="安装python">安装python</h1><p>CentOS 6.x自带python 2.6，这里需要python 2.7，目前官网最新版本的python是2.7.10，所以下载最新版本，进行安装。<br><figure class="highlight vala"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor"># python -v</span></span><br><span class="line"><span class="preprocessor"># cd /usr/src</span></span><br><span class="line"><span class="preprocessor"># wget https://www.python.org/ftp/python/2.7.10/Python-2.7.10.tgz</span></span><br><span class="line"><span class="preprocessor"># tar -zxvf Python-2.7.10.tgz</span></span><br><span class="line"><span class="preprocessor"># cd Python-2.7.10</span></span><br><span class="line"><span class="preprocessor"># ./configure --prefix=/usr/local</span></span><br><span class="line"><span class="preprocessor"># make &amp;&amp; make altinstall</span></span><br><span class="line"><span class="comment">//make altinstall is used to prevent replacing the default python binary file /usr/bin/python.</span></span><br><span class="line"><span class="preprocessor"># ls -ltr /usr/bin/python*</span></span><br><span class="line"><span class="preprocessor"># ls -ltr /usr/local/bin/python*</span></span><br><span class="line"><span class="preprocessor"># /usr/local/bin/python2.7</span></span><br></pre></td></tr></table></figure></p>
 <h1 id="安装distribute">安装distribute</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor"># wget https:<span class="comment">//pypi.python.org/packages/source/d/distribute/distribute-0.7.3.zip</span></span></span><br><span class="line"><span class="preprocessor"># unzip distribute-<span class="number">0.7</span><span class="number">.3</span>.zip</span></span><br><span class="line"><span class="preprocessor"># cd distribute-<span class="number">0.7</span><span class="number">.3</span></span></span><br><span class="line"><span class="preprocessor"># /usr/local/bin/python2<span class="number">.7</span> setup.py install</span></span><br><span class="line"><span class="preprocessor"># which easy_install</span></span><br><span class="line">/usr/local/bin/easy_install</span><br><span class="line"><span class="preprocessor"># which easy_install-<span class="number">2.7</span></span></span><br><span class="line">/usr/local/bin/easy_install-<span class="number">2.7</span></span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>distribute是setuptools的取代。参考:<a href="https://pypi.python.org/pypi/distribute/0.7.3。" target="_blank" rel="external">https://pypi.python.org/pypi/distribute/0.7.3。</a></p>
+<p>distribute是setuptools的取代。参考: <a href="https://pypi.python.org/pypi/distribute/0.7.3。" target="_blank" rel="external">https://pypi.python.org/pypi/distribute/0.7.3。</a></p>
 </blockquote>
-<p>setuptools:setuptools 是一组由PEAK(Python Enterprise Application Kit)开发的 Python 的 distutils 工具的增强工具，可以让程序员更方便的创建和发布 Python的egg 包，特别是那些对其它包具有依赖性的状况。 由 setuptools 创建和发布的包看起来和基于 distutils 发布的包没什么不同。最终用户不需要事先安装 setuptools 甚至根本不需要知道 setuptools 的存在，而程序员也不需要附上完整的 setuptools，只需要包含一个大小约 8K 的ez_setup.py脚本作为启动模块，就可以在最终用户没有安装适当版本的 setuptools 时让这些包自动下载和安装 setuptools。<br>easy_install: 常使用python的人员，当需要安装第三方python包时，可能会用到easy_install命令。easy_install是由PEAK(Python Enterprise Application Kit)开发的setuptools包里带的一个命令，它用来自动地从<a href="http://pypi.python.org/simple/来安装egg包，相当于perl中的cpan或PPM、RedHat中的yum命令，但是系统都没有预装easy_install命令。" target="_blank" rel="external">http://pypi.python.org/simple/来安装egg包，相当于perl中的cpan或PPM、RedHat中的yum命令，但是系统都没有预装easy_install命令。</a></p>
-<h1 id="安装pip">安装pip</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor"># wget https:<span class="comment">//pypi.python.org/packages/source/p/pip/pip-7.1.2.tar.gz#md5=3823d2343d9f3aaab21cf9c917710196</span></span></span><br><span class="line"><span class="preprocessor"># tar zxvf pip-<span class="number">7.1</span><span class="number">.2</span>.tar.gz</span></span><br><span class="line"><span class="preprocessor"># cd pip-<span class="number">7.1</span><span class="number">.2</span></span></span><br><span class="line"><span class="preprocessor"># /usr/local/bin/python2<span class="number">.7</span> setup.py install</span></span><br><span class="line"><span class="preprocessor"># which pip2<span class="number">.7</span></span></span><br><span class="line">/usr/local/bin/pip2<span class="number">.7</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>setuptools<br>setuptools 是一组由PEAK(Python Enterprise Application Kit)开发的 Python 的 distutils 工具的增强工具，可以让程序员更方便的创建和发布 Python的egg 包，特别是那些对其它包具有依赖性的状况。 由 setuptools 创建和发布的包看起来和基于 distutils 发布的包没什么不同。最终用户不需要事先安装 setuptools 甚至根本不需要知道 setuptools 的存在，而程序员也不需要附上完整的 setuptools，只需要包含一个大小约 8K 的ez_setup.py脚本作为启动模块，就可以在最终用户没有安装适当版本的 setuptools 时让这些包自动下载和安装 setuptools。</li>
+<li>easy_install<br>常使用python的人员，当需要安装第三方python包时，可能会用到easy_install命令。easy_install是由PEAK(Python Enterprise Application Kit)开发的setuptools包里带的一个命令，它用来自动地从<a href="http://pypi.python.org/simple/" target="_blank" rel="external">http://pypi.python.org/simple/</a> 来安装egg包，相当于perl中的cpan或PPM、RedHat中的yum命令，但是系统都没有预装easy_install命令。</li>
+</ul>
+<h1 id="安装pip">安装pip</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor"># wget https:<span class="comment">//pypi.python.org/packages/source/p/pip/pip-7.1.2.tar.gz</span></span></span><br><span class="line"><span class="preprocessor"># tar zxvf pip-<span class="number">7.1</span><span class="number">.2</span>.tar.gz</span></span><br><span class="line"><span class="preprocessor"># cd pip-<span class="number">7.1</span><span class="number">.2</span></span></span><br><span class="line"><span class="preprocessor"># /usr/local/bin/python2<span class="number">.7</span> setup.py install</span></span><br><span class="line"><span class="preprocessor"># which pip2<span class="number">.7</span></span></span><br><span class="line">/usr/local/bin/pip2<span class="number">.7</span></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>Pip 是安装python包的工具，是对easy_install的取代，提供了和easy_install相同的安装包、列出已经安装的包、查找包的功能。<br>参考：<a href="https://pypi.python.org/pypi/pip/" target="_blank" rel="external">https://pypi.python.org/pypi/pip/</a></p>
 </blockquote>
@@ -244,19 +240,19 @@
 <h1 id="安装bandsnatch">安装bandsnatch</h1><figure class="highlight vala"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor"># cd /opt</span></span><br><span class="line"><span class="preprocessor"># /usr/local/bin/virtualenv-2.7 bandersnatch</span></span><br><span class="line"><span class="preprocessor"># cd bandersnatch</span></span><br><span class="line"><span class="preprocessor"># bin/pip install -r https://bitbucket.org/pypa/bandersnatch/raw/stable/requirements.txt</span></span><br></pre></td></tr></table></figure>
 <p>或者<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor"># pip2<span class="number">.7</span> install bandersnatch</span></span><br></pre></td></tr></table></figure></p>
 <blockquote>
-<p>由于众所周知的GFW网络问题，可能出现timeout错误，重新执行多次直到全部下载正常。<br>参考：<a href="https://pypi.python.org/pypi/bandersnatch" target="_blank" rel="external">https://pypi.python.org/pypi/bandersnatch</a></p>
+<p>由于GFW网络问题，可能出现timeout错误，重新执行多次或者自备梯子直到全部下载正常。<br>参考：<a href="https://pypi.python.org/pypi/bandersnatch" target="_blank" rel="external">https://pypi.python.org/pypi/bandersnatch</a></p>
 </blockquote>
-<h1 id="设置bandsnatch">设置bandsnatch</h1><figure class="highlight livecodeserver"><table><tr><td class="code"><pre><span class="line"><span class="comment"># cd /opt/bandersnatch</span></span><br><span class="line"><span class="comment"># bin/bandersnatch mirror</span></span><br><span class="line"><span class="number">2015</span>-<span class="number">09</span>-<span class="number">18</span> <span class="number">22</span>:<span class="number">59</span>:<span class="number">54</span>,<span class="number">076</span> WARNING: Config <span class="built_in">file</span> <span class="string">'/etc/bandersnatch.conf'</span> missing, creating default config.</span><br><span class="line"><span class="number">2015</span>-<span class="number">09</span>-<span class="number">18</span> <span class="number">22</span>:<span class="number">59</span>:<span class="number">54</span>,<span class="number">076</span> WARNING: Please review <span class="operator">the</span> config <span class="built_in">file</span>, <span class="keyword">then</span> run <span class="string">'bandersnatch'</span> again.</span><br></pre></td></tr></table></figure>
-<p>编辑/etc/bandersnatch.conf文件，修改pypi源的存储路径。重新执行bin/bandersnatch mirror，就开始同步pip官方源到本地，此过程可能比较长，而且可能会由于网络原因超时报错，需要多次重复执行该命令<br><figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line"># mkdir -p <span class="regexp">/opt/</span>pypi</span><br><span class="line"># vi <span class="regexp">/etc/</span>bandersnatch.conf</span><br><span class="line">sed -i <span class="string">"s/192.168.200.35/192.168.200.25/g"</span> `<span class="keyword">grep</span> <span class="number">192.168</span>.<span class="number">200.35</span> -rl<span class="regexp">/home/</span>weblogic<span class="regexp">/bea/u</span>ser_projects<span class="regexp">/domains/</span>base_domain<span class="regexp">/config/</span>jdbc`</span><br><span class="line"># bin<span class="regexp">/bandersnatch mirror</span></span><br></pre></td></tr></table></figure></p>
-<h1 id="配置Apache，即将pip做成本地web源">配置Apache，即将pip做成本地web源</h1><figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line"># ln -s <span class="regexp">/opt/</span>pypi<span class="regexp">/web /u</span>sr<span class="regexp">/share/</span>nginx<span class="regexp">/html/</span>pypi</span><br></pre></td></tr></table></figure>
+<h1 id="配置bandsnatch">配置bandsnatch</h1><figure class="highlight livecodeserver"><table><tr><td class="code"><pre><span class="line"><span class="comment"># cd /opt/bandersnatch</span></span><br><span class="line"><span class="comment"># bin/bandersnatch mirror   //先生成配置文件</span></span><br><span class="line"><span class="number">2015</span>-<span class="number">09</span>-<span class="number">18</span> <span class="number">22</span>:<span class="number">59</span>:<span class="number">54</span>,<span class="number">076</span> WARNING: Config <span class="built_in">file</span> <span class="string">'/etc/bandersnatch.conf'</span> missing, creating default config.</span><br><span class="line"><span class="number">2015</span>-<span class="number">09</span>-<span class="number">18</span> <span class="number">22</span>:<span class="number">59</span>:<span class="number">54</span>,<span class="number">076</span> WARNING: Please review <span class="operator">the</span> config <span class="built_in">file</span>, <span class="keyword">then</span> run <span class="string">'bandersnatch'</span> again.</span><br></pre></td></tr></table></figure>
+<p>编辑/etc/bandersnatch.conf文件，修改pypi源的存储路径。重新执行bin/bandersnatch mirror，就开始同步pip官方源到本地，此过程可能比较长，而且可能会由于网络原因超时报错，需要多次重复执行该命令<br><figure class="highlight vala"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor"># mkdir -p /mirror/pypi</span></span><br><span class="line"><span class="preprocessor"># vi /etc/bandersnatch.conf</span></span><br><span class="line">directory = /mirror/pypi</span><br><span class="line"><span class="preprocessor"># bin/bandersnatch mirror</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="配置WEB，即将pip做成本地web源">配置WEB，即将pip做成本地web源</h1><p>实验室原来已经配置了开源镜像服务，只要跟nginx做个链接即可。<br><figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line"># ln -s <span class="regexp">/mirror/</span>pypi<span class="regexp">/web /u</span>sr<span class="regexp">/share/</span>nginx<span class="regexp">/html/</span>pypi</span><br></pre></td></tr></table></figure></p>
 <h1 id="设置pip客户端">设置pip客户端</h1><ul>
-<li>方法一</li>
+<li><p>方法一<br>配置全局参数</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor"># mkdir ~/.pip</span></span><br><span class="line"><span class="preprocessor"># vim ~/.pip/pip.conf</span></span><br><span class="line">---------------pip.conf---------------</span><br><span class="line">[global]</span><br><span class="line">index-url = http:<span class="comment">//192.178.102.249/pypi/simple/</span></span><br><span class="line">--trusted-host <span class="number">192.178</span><span class="number">.102</span><span class="number">.249</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>方法二<br>指定安装源</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"># pip <span class="operator"><span class="keyword">install</span> django -<span class="keyword">i</span> <span class="keyword">http</span>://<span class="number">192.178</span><span class="number">.102</span><span class="number">.249</span>/pypi/simple/ <span class="comment">--trusted-host 192.178.102.249</span></span><br><span class="line">//pip推荐使用https，实验室没有启用，在参数后面添加<span class="comment">--trusted-host</span></span></span><br></pre></td></tr></table></figure>
+</li>
 </ul>
-<p>在用户目录下<br><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"># mkdir ~/.pip</span><br><span class="line"># vim ~/.pip/pip.conf</span><br><span class="line"><span class="comment">---------------pip.conf---------------</span></span><br><span class="line">[global]</span><br><span class="line">index-url = http://www.linuxhot.com/pypi/simple</span><br><span class="line"></span><br><span class="line">pip <span class="operator"><span class="keyword">install</span> mitmproxy -<span class="keyword">i</span> <span class="keyword">http</span>://pypi.mirrors.ustc.edu.cn/simple <span class="comment">--trusted-host pypi.mirrors.ustc.edu.cn</span></span><br><span class="line">[<span class="keyword">global</span>]</span><br><span class="line"><span class="keyword">timeout</span> = <span class="number">6000</span></span><br><span class="line"><span class="keyword">index</span>-<span class="keyword">url</span> = <span class="keyword">http</span>://pypi.douban.com/simple/</span><br><span class="line">[<span class="keyword">install</span>]</span><br><span class="line"><span class="keyword">use</span>-mirrors = <span class="literal">true</span></span><br><span class="line">mirrors = <span class="keyword">http</span>://pypi.douban.com/simple/</span><br><span class="line">trusted-host = pypi.douban.com</span><br><span class="line">阿里源：</span><br><span class="line"><span class="keyword">http</span>://mirrors.aliyun.com/pypi/simple/</span></span><br></pre></td></tr></table></figure></p>
-<ul>
-<li>方法二</li>
-</ul>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"># pip <span class="operator"><span class="keyword">install</span> xxx –<span class="keyword">i</span> <span class="keyword">http</span>://www.linuxhot.com/pypi/simple</span></span><br></pre></td></tr></table></figure>
 <p>至此，pip本地源服务器搭建完毕。</p>
 </span>
       
@@ -268,6 +264,8 @@
           
             <a href="/tags/PyPi/" rel="tag">#PyPi</a>
           
+            <a href="/tags/python/" rel="tag">#python</a>
+          
         </div>
       
 
@@ -275,13 +273,11 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/09/27/cloudstack install/" rel="prev">CloudStack 安装和配置</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/09/27/containerized-mesos-cluster-cn/" rel="next">在Docker中运行你的Mesos集群</a>
+              <a href="/2015/09/29/hexo-guide/" rel="next">Hexo部署静态博客</a>
             
           </div>
         </div>
@@ -343,7 +339,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">13</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -357,7 +353,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-count">6</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
@@ -395,7 +391,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#环境描述"><span class="nav-number">1.</span> <span class="nav-text">环境描述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装相关依赖"><span class="nav-number">2.</span> <span class="nav-text">安装相关依赖</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装python"><span class="nav-number">3.</span> <span class="nav-text">安装python</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装distribute"><span class="nav-number">4.</span> <span class="nav-text">安装distribute</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装pip"><span class="nav-number">5.</span> <span class="nav-text">安装pip</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装virtualenv"><span class="nav-number">6.</span> <span class="nav-text">安装virtualenv</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装bandsnatch"><span class="nav-number">7.</span> <span class="nav-text">安装bandsnatch</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#设置bandsnatch"><span class="nav-number">8.</span> <span class="nav-text">设置bandsnatch</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置Apache，即将pip做成本地web源"><span class="nav-number">9.</span> <span class="nav-text">配置Apache，即将pip做成本地web源</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#设置pip客户端"><span class="nav-number">10.</span> <span class="nav-text">设置pip客户端</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#环境描述"><span class="nav-number">1.</span> <span class="nav-text">环境描述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装相关依赖"><span class="nav-number">2.</span> <span class="nav-text">安装相关依赖</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装python"><span class="nav-number">3.</span> <span class="nav-text">安装python</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装distribute"><span class="nav-number">4.</span> <span class="nav-text">安装distribute</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装pip"><span class="nav-number">5.</span> <span class="nav-text">安装pip</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装virtualenv"><span class="nav-number">6.</span> <span class="nav-text">安装virtualenv</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装bandsnatch"><span class="nav-number">7.</span> <span class="nav-text">安装bandsnatch</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置bandsnatch"><span class="nav-number">8.</span> <span class="nav-text">配置bandsnatch</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置WEB，即将pip做成本地web源"><span class="nav-number">9.</span> <span class="nav-text">配置WEB，即将pip做成本地web源</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#设置pip客户端"><span class="nav-number">10.</span> <span class="nav-text">设置pip客户端</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
