@@ -51,7 +51,7 @@ CloudStack是一个开源的具有高可用性及扩展性的云计算平台。�
 <meta property="og:image" content="http://yoursite.com/images/separate-storage-network.png">
 <meta property="og:image" content="http://yoursite.com/images/nic-bonding-and-multipath-io.png">
 <meta property="og:image" content="http://yoursite.com/images/multi-node-management-server.png">
-<meta property="og:updated_time" content="2015-10-07T14:31:23.557Z">
+<meta property="og:updated_time" content="2015-10-07T14:33:52.268Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CloudStack系列1 部署架构">
 <meta name="twitter:description" content="CloudStack系列1，部署架构。
@@ -210,7 +210,7 @@ CloudStack是一个开源的具有高可用性及扩展性的云计算平台。�
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-10-07T22:31:23+08:00" content="2015-10-07">
+          <time itemprop="dateCreated" datetime="2015-10-07T22:33:52+08:00" content="2015-10-07">
             2015-10-07
           </time>
         </span>
@@ -504,7 +504,7 @@ CloudStack是一个开源的具有高可用性及扩展性的云计算平台。�
 <h2 id="维护最佳实践">维护最佳实践</h2><ul>
 <li><p>监视主机的磁盘空间。很多主机故障的原因都是日志将主机的硬盘空间占满导致的。</p>
 </li>
-<li><p>要监控每个集群里的虚拟机总量，如果达到了hypervisor所能承受的最大虚拟机数量时，就要禁止向此集群分配虚机。并且，要确定预留一定的安全迁移容量，以防止群集中有主机故障，这将增大其他主机运行虚拟机压力，就像是重新部署一批虚拟机一样。咨询你选择 hypervisor的文档，找到每台主机所能支持的最大虚拟机数量，并将此数值作为默认限制配置在CloudStack的全局设置里。监控每个群集中虚拟机的活动，保持虚拟机数量在安全线内，以防止偶然的主机故障。例如：如果集群里有N个主机，如果要让集群中一主机在任意时间停机，那么，此集群最多允许的虚拟机数量值为：(N-1) * (每宿主机最大虚拟量数量限值)。一旦达到此数量，必须在CloudStack的UI里禁止向此群集增加新的虚拟机。</p>
+<li><p>要监控每个集群里的虚拟机总量，如果达到了hypervisor所能承受的最大虚拟机数量时，就要禁止向此集群分配虚机。并且，要确定预留一定的安全迁移容量，以防止群集中有主机故障，这将增大其他主机运行虚拟机压力，就像是重新部署一批虚拟机一样。查阅选择hypervisor的文档，找到每台主机所能支持的最大虚拟机数量，并将此数值作为默认限制配置在CloudStack的全局设置里。监控每个群集中虚拟机的活动，保持虚拟机数量在安全线内，以防止偶然的主机故障。例如：如果集群里有N个主机，如果要让集群中一主机在任意时间停机，那么，此集群最多允许的虚拟机数量值为：(N-1) * (每宿主机最大虚拟量数量限值)。一旦达到此数量，必须在CloudStack的UI里禁止向此群集增加新的虚拟机。</p>
 </li>
 </ul>
 </span>
