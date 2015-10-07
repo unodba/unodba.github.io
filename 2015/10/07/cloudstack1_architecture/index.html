@@ -39,23 +39,23 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="CloudStack在实验室实践过程，架构部分。
-CloudStack是一个开源的具有高可用性及扩展性的云计算平台。支持管理大部分主流的hypervisors，如KVM，XenServer，VMware，Oracle VM，Xen等。同时CloudStack是一个开源云计算解决方案。可以加速高伸缩性的公共和私有云（IaaS）的部署、管理、配置。使用CloudStack作为基础，数据中心操作者可以快">
+<meta name="description" content="CloudStack系列1，部署架构。
+CloudStack是一个开源的具有高可用性及扩展性的云计算平台。支持管理大部分主流的hypervisors，如KVM，XenServer，VMware，Oracle VM，Xen等。同时CloudStack是一个开源云计算解决方案。可以加速高伸缩性的公共和私有云（IaaS）的部署、管理、配置。使用CloudStack作为基础，数据中心操作者可以快速方便的通">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CloudStack系列1 部署架构">
-<meta property="og:url" content="http://yoursite.com/2015/09/28/cloudstack1_architecture/index.html">
+<meta property="og:url" content="http://yoursite.com/2015/10/07/cloudstack1_architecture/index.html">
 <meta property="og:site_name" content="信息系统应用技术实验室">
-<meta property="og:description" content="CloudStack在实验室实践过程，架构部分。
-CloudStack是一个开源的具有高可用性及扩展性的云计算平台。支持管理大部分主流的hypervisors，如KVM，XenServer，VMware，Oracle VM，Xen等。同时CloudStack是一个开源云计算解决方案。可以加速高伸缩性的公共和私有云（IaaS）的部署、管理、配置。使用CloudStack作为基础，数据中心操作者可以快">
+<meta property="og:description" content="CloudStack系列1，部署架构。
+CloudStack是一个开源的具有高可用性及扩展性的云计算平台。支持管理大部分主流的hypervisors，如KVM，XenServer，VMware，Oracle VM，Xen等。同时CloudStack是一个开源云计算解决方案。可以加速高伸缩性的公共和私有云（IaaS）的部署、管理、配置。使用CloudStack作为基础，数据中心操作者可以快速方便的通">
 <meta property="og:image" content="http://yoursite.com/images/large-scale-redundant-setup.png">
 <meta property="og:image" content="http://yoursite.com/images/separate-storage-network.png">
 <meta property="og:image" content="http://yoursite.com/images/nic-bonding-and-multipath-io.png">
 <meta property="og:image" content="http://yoursite.com/images/multi-node-management-server.png">
-<meta property="og:updated_time" content="2015-09-28T08:38:49.842Z">
+<meta property="og:updated_time" content="2015-10-07T14:29:01.121Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CloudStack系列1 部署架构">
-<meta name="twitter:description" content="CloudStack在实验室实践过程，架构部分。
-CloudStack是一个开源的具有高可用性及扩展性的云计算平台。支持管理大部分主流的hypervisors，如KVM，XenServer，VMware，Oracle VM，Xen等。同时CloudStack是一个开源云计算解决方案。可以加速高伸缩性的公共和私有云（IaaS）的部署、管理、配置。使用CloudStack作为基础，数据中心操作者可以快">
+<meta name="twitter:description" content="CloudStack系列1，部署架构。
+CloudStack是一个开源的具有高可用性及扩展性的云计算平台。支持管理大部分主流的hypervisors，如KVM，XenServer，VMware，Oracle VM，Xen等。同时CloudStack是一个开源云计算解决方案。可以加速高伸缩性的公共和私有云（IaaS）的部署、管理、配置。使用CloudStack作为基础，数据中心操作者可以快速方便的通">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -210,8 +210,8 @@ CloudStack是一个开源的具有高可用性及扩展性的云计算平台。�
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-09-28T16:42:08+08:00" content="2015-09-28">
-            2015-09-28
+          <time itemprop="dateCreated" datetime="2015-10-07T22:29:01+08:00" content="2015-10-07">
+            2015-10-07
           </time>
         </span>
 
@@ -244,12 +244,13 @@ CloudStack是一个开源的具有高可用性及扩展性的云计算平台。�
       
 
       
-        <span itemprop="articleBody"><p>CloudStack在实验室实践过程，架构部分。</p>
-<p>CloudStack是一个开源的具有高可用性及扩展性的云计算平台。支持管理大部分主流的hypervisors，如KVM，XenServer，VMware，Oracle VM，Xen等。同时CloudStack是一个开源云计算解决方案。可以加速高伸缩性的公共和私有云（IaaS）的部署、管理、配置。使用CloudStack作为基础，数据中心操作者可以快速方便的通过现存基础架构创建云服务。<br><a id="more"></a></p>
+        <span itemprop="articleBody"><p>CloudStack系列1，部署架构。</p>
+<p>CloudStack是一个开源的具有高可用性及扩展性的云计算平台。支持管理大部分主流的hypervisors，如KVM，XenServer，VMware，Oracle VM，Xen等。同时CloudStack是一个开源云计算解决方案。可以加速高伸缩性的公共和私有云（IaaS）的部署、管理、配置。使用CloudStack作为基础，数据中心操作者可以快速方便的通过现存基础架构创建云服务。<br>实验室选择CloudStack进行构建私有云，本系列文章将对实验室构建私有云的过程进行梳理，主要内容来源与官方文档，记录了实践过程趟过的坑。</p>
+<a id="more"></a>
 <h1 id="架构示意图">架构示意图</h1><p><img src="/images/large-scale-redundant-setup.png" alt=""></p>
 <p>这个图展示了CloudStack在大规模部署时的网络结构。</p>
 <ul>
-<li><p>三层交换层处于数据机房的核心位置。应该部署类似VRRP的冗余路由协议实现设备热备份。通常，高端的核心交换机上包含防火墙模块。如果三层交换机上没有集成防火墙功能，也可以使用独立防火墙设备。防火墙一般会配置成NAT模式，它能提供如下功能：</p>
+<li><p>layer-3的交换层处于数据机房的核心位置。应该部署类似VRRP的冗余路由协议实现设备热备份。通常，高端的核心交换机上包含防火墙模块。如果三层交换机上没有集成防火墙功能，也可以使用独立防火墙设备。防火墙一般会配置成NAT模式，它能提供如下功能：</p>
 <ul>
 <li>将来自Internet的HTTP访问和API调用转发到管理节点服务器。管理服务器的网络属于管理网络.</li>
 <li>当云跨越多个区域（Zone）时，防火墙之间应该启用site-to-site VPN，以便让不同区域中的服务器之间可以直接互通。</li>
@@ -259,14 +260,14 @@ CloudStack是一个开源的具有高可用性及扩展性的云计算平台。�
 </li>
 <li><p>管理服务器集群(包括前端负载均衡节点，管理节点及MYSQL数据库节点)通过两个负载均衡节点接入管理网络。</p>
 </li>
-<li><p>辅助存储服务器接入管理网络。</p>
+<li><p>二级存储服务器接入管理网络。</p>
 </li>
-<li><p>每一个机柜提供点（POD）包括存储和计算节点服务器。每一个存储和计算节点服务器都需要有冗余网卡连接到不同的 layer-2 接入交换机上。</p>
+<li><p>每一个机柜提供点（POD）包括存储和计算节点服务器。每一个存储和计算节点服务器都需要有冗余网卡连接到不同的layer-2接入交换机上。</p>
 </li>
 </ul>
-<h1 id="存储网络">存储网络</h1><p>大规模冗余部署时，存储的数据流量过大可能使得管理网络过载。部署时可选择将存储网络分离出来。存储协议如iSCSI，对网络延迟非常敏感。独立的存储网络能够使其不受来宾网络流量波动的影响。</p>
+<h1 id="存储网络">存储网络</h1><p>大规模冗余部署时，存储的数据流量过大可能使得管理网络过载。部署时可选择将存储网络分离出来。存储协议如使用iSCSI，对网络延迟非常敏感。独立的存储网络能够使其不受来宾网络流量波动的影响。</p>
 <p><img src="/images/separate-storage-network.png" alt=""></p>
-<p>这个图展示了使用独立存储网络的设计。每一个物理服务器有四块网卡，其中两块连接到提供点级别的交换机，而另外两块网卡连接到用于存储网络的交换机。</p>
+<p>这个图展示了独立存储网络的设计。每一个物理服务器有四块网卡，其中两块连接到提供点级别的交换机，而另外两块网卡连接到用于存储网络的交换机。</p>
 <p>有两种方式配置存储网络：</p>
 <ul>
 <li>为NFS配置网卡绑定和冗余交换机。在NFS部署中，冗余的交换机和网卡绑定仍然处于同一网络。(同一个CIDR 段 + 默认网关地址)</li>
@@ -275,7 +276,7 @@ CloudStack是一个开源的具有高可用性及扩展性的云计算平台。�
 <p><img src="/images/nic-bonding-and-multipath-io.png" alt=""></p>
 <p>此图展示了网卡绑定与多路径IO(MPIO)之间的区别，网卡绑定的配置仅涉及一个网段，MPIO涉及两个独立的网段。</p>
 <p><a name="多节点管理服务器"></a></p>
-<h1 id="多节点管理服务器">多节点管理服务器</h1><p>CloudStack管理服务器可以部署一个或多个前端服务器并连接单一的MySQL数据库。可视需求使用一对硬件负载均衡对Web请求进行分流。另一备份管理节点可使用远端站点的MySQL复制数据以增加灾难恢复能力。</p>
+<h1 id="多节点管理服务器">多节点管理服务器</h1><p>CloudStack管理服务器可以部署一个或多个前端服务器并连接单一的MySQL数据库。根据需求可使用一对硬件负载均衡对Web请求进行分流。另一备份管理节点可使用远端站点的MySQL复制数据以增加灾难恢复能力。</p>
 <p><img src="/images/multi-node-management-server.png" alt=""></p>
 <p>系统管理人员必须决定如下事项：</p>
 <ul>
@@ -284,7 +285,7 @@ CloudStack是一个开源的具有高可用性及扩展性的云计算平台。�
 <li>如何部署MYSQL复制以便启用灾难恢复。</li>
 </ul>
 <h1 id="选择Hypervisor">选择Hypervisor</h1><p>CloudStack支持多种流行的Hypervisor，你可以在所有的主机上使用一种，也可以使用不同的Hypervisor，但在同一个群集内的主机必须使用相同的Hypervisor。</p>
-<p>你可能已经安装并运行了特定的hypervisor节点，在这种情况下，你的Hypervisor选择已经确定了。如果还处于初步规划阶段，那么就需要决定那种Hypervisor能切合你的需求。各种Hypervisor的利弊讨论不在本文档之列。但无论如何，CloudStack可以支持每种Hypervisor的那些功能的详细信息还是能够帮到你的。下面的表格就提供了这些信息：</p>
+<p>如果在已有环境存在了特定的hypervisor节点，在这种情况下，你的Hypervisor选择已经确定了，鉴于国网的大环境是VMWARE，目前实验室的重点就是VMWARE方向。如果还处于初步规划阶段，<br>那么就需要决定哪种Hypervisor能切合实际需求。各种Hypervisor的利弊讨论不在本文之列。下面是CloudStack支持的每种Hypervisor的功能详细信息：</p>
 <table>
 <thead>
 <tr>
@@ -399,7 +400,7 @@ CloudStack是一个开源的具有高可用性及扩展性的云计算平台。�
 </tr>
 </tbody>
 </table>
-<h1 id="Hypervisor_Support_for_Primary_Storage">Hypervisor Support for Primary Storage</h1><p>The following table shows storage options and parameters for different<br>hypervisors.</p>
+<h1 id="Hypervisor_主存储支持">Hypervisor 主存储支持</h1><p>下面是每种Hypervisor对主存储支持的功能详细信息：</p>
 <table>
 <thead>
 <tr>
@@ -475,8 +476,7 @@ CloudStack是一个开源的具有高可用性及扩展性的云计算平台。�
 <p>With NFS storage, CloudStack manages the overprovisioning. In this case the global configuration parameter storage.overprovisioning.factor controls the degree of overprovisioning. This is independent of hypervisor type.</p>
 <p>Local storage is an option for primary storage for vSphere, XenServer, and KVM. When the local disk option is enabled, a local disk storage pool is automatically created on each host. To use local storage for the System Virtual Machines (such as the Virtual Router), set system.vm.use.local.storage to true in global configuration.</p>
 <p>CloudStack supports multiple primary storage pools in a Cluster. For example, you could provision 2 NFS servers in primary storage. Or you could provision 1 iSCSI LUN initially and then add a second iSCSI LUN when the first approaches capacity.</p>
-<h1 id="最佳实践">最佳实践</h1><p>部署云计算服务是一项挑战。这需要在很多不同的技术之间做出选择，CLOUDSTACK以其配置灵活性可以使用很多种方法将不同的技术进行整合和配置。这个章节包含了一些在云计算部署中的建议及需求。</p>
-<p>这些内容应该被视为建议而不是绝对性的。然而，我们鼓励想要部署云计算的朋友们，除了这些建议内容之外，最好从CLOUDSTACK的项目邮件列表中获取更多建议指南性内容。</p>
+<h1 id="最佳实践">最佳实践</h1><p>部署云计算服务是一项挑战，需要在很多不同的技术之间做出选择，CloudStack以其配置灵活性可以使用多种方法将不同的技术进行整合和配置。下面是一些云计算部署中的建议及需求，这些内容应该被视为建议而不是绝对的。</p>
 <h2 id="实施最佳实践">实施最佳实践</h2><ul>
 <li><p>强烈建议在系统部署至生产环境之前，有一个完全模拟生产环境的集成系统。对于已经在CloudStack中做了自定义修改的系统来说，更为重要了。</p>
 </li>
@@ -484,13 +484,13 @@ CloudStack是一个开源的具有高可用性及扩展性的云计算平台。�
 </li>
 </ul>
 <h2 id="配置最佳实践">配置最佳实践</h2><ul>
-<li><p>每一个主机都应该配置为只接受已知设备的连接，如CLOUDSTACK管理节点或相关的网络监控软件。</p>
+<li><p>每一个主机都应该配置为只接受已知设备的连接，如CloudStack管理节点或相关的网络监控软件。</p>
 </li>
 <li><p>如果需要达到一定的高密度，可以在每个机柜提供点里部署多个集群。</p>
 </li>
 <li><p>主存储的挂载点或是LUN不应超过6TB大小。每个集群中使用多个小一些的主存储比只用一个超大主存储的效果要好。</p>
 </li>
-<li><p>在主存储上输出共享数据时，可用限制访问IP地址的方法避免数据丢失。更多详情，可参考”Linux NFS on Local Disks and DAS” “Linux NFS on iSCSI”这些章节。</p>
+<li><p>在主存储上输出共享数据时，可用限制访问IP地址的方法避免数据丢失。</p>
 </li>
 <li><p>网卡绑定技术可以明显的增加系统的可靠性。</p>
 </li>
@@ -504,7 +504,7 @@ CloudStack是一个开源的具有高可用性及扩展性的云计算平台。�
 <h2 id="维护最佳实践">维护最佳实践</h2><ul>
 <li><p>监视主机的磁盘空间。很多主机故障的原因都是日志将主机的硬盘空间占满导致的。</p>
 </li>
-<li><p>要监控每个集群里的虚拟机总量，如果达到了hypervisor所能承受的最大虚拟机数量时，就要禁止向此集群分配虚机。并且，要确定预留一定的安全迁移容量，以防止群集中有主机故障，这将增大其他主机运行虚拟机压力，就像是重新部署一批虚拟机一样。咨询你选择 hypervisor的文档，找到每台主机所能支持的最大虚拟机数量，并将此数值作为默认限制配置在CLOUDSTACK的全局设置里。监控每个群集中虚拟机的活动，保持虚拟机数量在安全线内，以防止偶然的主机故障。例如：如果集群里有N个主机，如果要让集群中一主机在任意时间停机，那么，此集群最多允许的虚拟机数量值为：(N-1) * (每宿主机最大虚拟量数量限值)。一旦达到此数量，必须在CLOUDSTACK的UI里禁止向此群集增加新的虚拟机。</p>
+<li><p>要监控每个集群里的虚拟机总量，如果达到了hypervisor所能承受的最大虚拟机数量时，就要禁止向此集群分配虚机。并且，要确定预留一定的安全迁移容量，以防止群集中有主机故障，这将增大其他主机运行虚拟机压力，就像是重新部署一批虚拟机一样。咨询你选择 hypervisor的文档，找到每台主机所能支持的最大虚拟机数量，并将此数值作为默认限制配置在CloudStack的全局设置里。监控每个群集中虚拟机的活动，保持虚拟机数量在安全线内，以防止偶然的主机故障。例如：如果集群里有N个主机，如果要让集群中一主机在任意时间停机，那么，此集群最多允许的虚拟机数量值为：(N-1) * (每宿主机最大虚拟量数量限值)。一旦达到此数量，必须在CloudStack的UI里禁止向此群集增加新的虚拟机。</p>
 </li>
 </ul>
 </span>
@@ -524,13 +524,11 @@ CloudStack是一个开源的具有高可用性及扩展性的云计算平台。�
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/09/28/cloudstack2_network_setup/" rel="prev">CloudStack系列2 网络配置</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/09/27/containerized-mesos-cluster-cn/" rel="next">在Docker中运行你的Mesos集群</a>
+              <a href="/2015/10/07/cloudstack2_network_setup/" rel="next">CloudStack系列2 网络配置</a>
             
           </div>
         </div>
@@ -644,7 +642,7 @@ CloudStack是一个开源的具有高可用性及扩展性的云计算平台。�
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#架构示意图"><span class="nav-number">1.</span> <span class="nav-text">架构示意图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#存储网络"><span class="nav-number">2.</span> <span class="nav-text">存储网络</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多节点管理服务器"><span class="nav-number">3.</span> <span class="nav-text">多节点管理服务器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#选择Hypervisor"><span class="nav-number">4.</span> <span class="nav-text">选择Hypervisor</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Hypervisor_Support_for_Primary_Storage"><span class="nav-number">5.</span> <span class="nav-text">Hypervisor Support for Primary Storage</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#最佳实践"><span class="nav-number">6.</span> <span class="nav-text">最佳实践</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#实施最佳实践"><span class="nav-number">6.1.</span> <span class="nav-text">实施最佳实践</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置最佳实践"><span class="nav-number">6.2.</span> <span class="nav-text">配置最佳实践</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#维护最佳实践"><span class="nav-number">6.3.</span> <span class="nav-text">维护最佳实践</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#架构示意图"><span class="nav-number">1.</span> <span class="nav-text">架构示意图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#存储网络"><span class="nav-number">2.</span> <span class="nav-text">存储网络</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多节点管理服务器"><span class="nav-number">3.</span> <span class="nav-text">多节点管理服务器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#选择Hypervisor"><span class="nav-number">4.</span> <span class="nav-text">选择Hypervisor</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Hypervisor_主存储支持"><span class="nav-number">5.</span> <span class="nav-text">Hypervisor 主存储支持</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#最佳实践"><span class="nav-number">6.</span> <span class="nav-text">最佳实践</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#实施最佳实践"><span class="nav-number">6.1.</span> <span class="nav-text">实施最佳实践</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置最佳实践"><span class="nav-number">6.2.</span> <span class="nav-text">配置最佳实践</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#维护最佳实践"><span class="nav-number">6.3.</span> <span class="nav-text">维护最佳实践</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

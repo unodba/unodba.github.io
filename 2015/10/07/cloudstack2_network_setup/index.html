@@ -39,17 +39,17 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="CloudStack在实验室实践过程，网络配置部分。">
+<meta name="description" content="CloudStack系列1，网络配置部分。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CloudStack系列2 网络配置">
-<meta property="og:url" content="http://yoursite.com/2015/09/28/cloudstack2_network_setup/index.html">
+<meta property="og:url" content="http://yoursite.com/2015/10/07/cloudstack2_network_setup/index.html">
 <meta property="og:site_name" content="信息系统应用技术实验室">
-<meta property="og:description" content="CloudStack在实验室实践过程，网络配置部分。">
+<meta property="og:description" content="CloudStack系列1，网络配置部分。">
 <meta property="og:image" content="http://yoursite.com/images/parallel-mode.png">
-<meta property="og:updated_time" content="2015-09-28T08:39:12.132Z">
+<meta property="og:updated_time" content="2015-10-07T14:28:18.896Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CloudStack系列2 网络配置">
-<meta name="twitter:description" content="CloudStack在实验室实践过程，网络配置部分。">
+<meta name="twitter:description" content="CloudStack系列1，网络配置部分。">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -204,8 +204,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-09-28T16:42:18+08:00" content="2015-09-28">
-            2015-09-28
+          <time itemprop="dateCreated" datetime="2015-10-07T22:28:18+08:00" content="2015-10-07">
+            2015-10-07
           </time>
         </span>
 
@@ -238,7 +238,7 @@
       
 
       
-        <span itemprop="articleBody"><p>CloudStack在实验室实践过程，网络配置部分。<br><a id="more"></a></p>
+        <span itemprop="articleBody"><p>CloudStack系列1，网络配置部分。<br><a id="more"></a></p>
 <h1 id="网络配置">网络配置</h1><p>正确的网络设置对于CloudStack能否成功安装至关重要。</p>
 <h2 id="基本和高级网络">基本和高级网络</h2><p>CloudStack提供二种网络类型:</p>
 <p><strong>Basic</strong><br>适用于AWS类型的网络。提供单一的来宾网络类型，通过三层安全组进行隔离（源IP地址过滤）。</p>
@@ -311,8 +311,8 @@
 </tr>
 </tbody>
 </table>
-<p>在一个云中可能会存在二种网络类型。但无论如何，一个给定的区域要么是基本网络要么是高级网络。</p>
-<p>单一的物理网络可以被分割不同类型的网络流量。账户也可以分割来宾流量。你可以通过划分VLAN来隔离流量。如果你在物理网络中划分了VLAN，确保VLAN标签的数值在不同范围。</p>
+<p>在一个云中可能会存在二种网络类型。但是，一个给定的区域要么是基本网络要么是高级网络。</p>
+<p>单一的物理网络可以被分割不同类型的网络流量。账户也可以分割来宾流量。可以通过划分VLAN来隔离流量。如果在物理网络中划分了VLAN，要确保VLAN标签的数值在不同范围。</p>
 <h2 id="VLAN分配示例">VLAN分配示例</h2><p>公共和来宾流量要求使用VLAN，下面是一个VLAN分配的示例：</p>
 <table>
 <thead>
@@ -355,20 +355,20 @@
 </tr>
 </tbody>
 </table>
-<h2 id="硬件配置示例">硬件配置示例</h2><p>本节包含了一个特定交换机型号的示例配置，作为区域级别的三层交换。假设VLAN管理协议，如VTP、GVRP等已经被禁用。如果你选择使用VTP或GVRP，那么你必须修改示例脚本。</p>
-<h3 id="三层交换（Cisco_3750）">三层交换（Cisco 3750）</h3><p>以下步骤显示如何配置Cisco 3750作为区域级别的三层交换机。这些步骤假设VLAN 201用于Pod1中未标记的私有IP线路。并且Pod1中的二层交换机已经连接到GigabitEthernet0/1端口。</p>
+<h2 id="硬件配置示例">硬件配置示例</h2><p>本节包含了一个特定交换机型号的示例配置，作为区域级别的三层交换。假设VLAN管理协议，如VTP、GVRP等已经被禁用。如果你选择使用VTP或GVRP，需要修改示例步骤脚本。</p>
+<h3 id="三层交换（Cisco_3750）">三层交换（Cisco 3750）</h3><p>以下步骤显示如何配置Cisco 3750作为区域级别的三层交换机。这些步骤假设VLAN 201用于Pod1中未标记的私有IP线路，并且Pod1中的二层交换机已经连接到GigabitEthernet0/1端口。</p>
 <ul>
 <li>设置VTP为透明模式，以便可以使用超过1000的VLAN。因为我们只用到999，VTP透明模式不做严格要求。</li>
 </ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">en&#10;show running-config&#10;show vlan&#10;show interfaces switchport&#10;show interfaces trunk&#10;show vtp status&#10;//&#20808;&#30830;&#35748;&#21407;&#26469;&#37197;&#32622;&#10;configure terminal&#10;vtp mode transparent&#10;vlan 200-999&#10;exit</span><br></pre></td></tr></table></figure>
+<figure class="highlight nsis"><table><tr><td class="code"><pre><span class="line">Switch&gt; en</span><br><span class="line">Switch<span class="comment">#</span></span><br><span class="line">en</span><br><span class="line"><span class="literal">show</span> running-config</span><br><span class="line"><span class="literal">show</span> vlan</span><br><span class="line"><span class="literal">show</span> interfaces switchport</span><br><span class="line"><span class="literal">show</span> interfaces trunk</span><br><span class="line"><span class="literal">show</span> vtp status</span><br><span class="line">//先确认原来配置</span><br><span class="line">configure terminal</span><br><span class="line">vtp mode transparent</span><br><span class="line">vlan <span class="number">200</span>-<span class="number">999</span></span><br><span class="line">exit</span><br></pre></td></tr></table></figure>
 <ul>
 <li>配置GigabitEthernet0/1。</li>
 </ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">interface GigabitEthernet0/1&#10;switchport trunk encapsulation dot1q&#10;switchport mode trunk&#10;switchport trunk allowed vlan all&#10;switchport trunk native vlan 201&#10;exit</span><br></pre></td></tr></table></figure>
+<figure class="highlight armasm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">Switch&gt; </span>en</span><br><span class="line"><span class="keyword">Switch#</span><br><span class="line"></span><span class="label">interface</span> GigabitEthernet0/<span class="number">1</span></span><br><span class="line"><span class="keyword">switchport </span>trunk encapsulation dot1q</span><br><span class="line"><span class="keyword">switchport </span>mode trunk</span><br><span class="line"><span class="keyword">switchport </span>trunk allowed vlan all</span><br><span class="line"><span class="keyword">switchport </span>trunk native vlan <span class="number">201</span></span><br><span class="line"><span class="label">exit</span></span><br></pre></td></tr></table></figure>
 <p>端口GigabitEthernet1/g1的配置说明：</p>
 <ul>
 <li>端口GigabitEthernet1/0/1的本征VLAN为201（属于VLAN201）。</li>
-<li>Cisco默认允许所有VLAN，因此，VLAN（300-999）都被允许并可访问所有的Pod级别的二层交换机。</li>
+<li>Cisco默认允许所有VLAN，因此，VLAN（200-999）都被允许并可访问所有的Pod级别的二层交换机。</li>
 </ul>
 <h3 id="二层交换（Cisco_3750）">二层交换（Cisco 3750）</h3><p>在Pod中的二层交换机提供接入层功能。</p>
 <ul>
@@ -379,17 +379,18 @@
 <ul>
 <li>设置VTP为透明模式，以便我们使用超过1000的VLAN。因为我们只用到999，VTP透明模式并不做严格要求。</li>
 </ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">Switch&#62; en&#10;Switch#&#10;show running-config&#10;show vlan&#10;show interfaces switchport&#10;show interfaces trunk&#10;show vtp status&#10;//&#20808;&#30830;&#35748;&#21407;&#26469;&#37197;&#32622;&#10;configure terminal&#10;vtp mode transparent&#10;vlan 300-999&#10;exit</span><br></pre></td></tr></table></figure>
+<figure class="highlight nsis"><table><tr><td class="code"><pre><span class="line">Switch&gt; en</span><br><span class="line">Switch<span class="comment">#</span></span><br><span class="line"><span class="literal">show</span> running-config</span><br><span class="line"><span class="literal">show</span> vlan</span><br><span class="line"><span class="literal">show</span> interfaces switchport</span><br><span class="line"><span class="literal">show</span> interfaces trunk</span><br><span class="line"><span class="literal">show</span> vtp status</span><br><span class="line">//先确认原来配置</span><br><span class="line">configure terminal</span><br><span class="line">vtp mode transparent</span><br><span class="line">vlan <span class="number">300</span>-<span class="number">999</span></span><br><span class="line">exit</span><br></pre></td></tr></table></figure>
 <ul>
-<li>配置所有的端口使用dot1q协议，并设置201为本征VLAN。</li>
+<li>配置所有的端口使用dot1q协议、trunk模式，并设置201为本征VLAN。</li>
 </ul>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">Switch#&#10;interface range GigabitEthernet 0/1-24&#10;switchport trunk encapsulation dot1q&#10;switchport mod  e trunk&#10;switchport trunk allowed vlan all&#10;//switchport trunk native vlan 201&#10;copy running-config startup-config&#10;exit</span><br></pre></td></tr></table></figure>
+<figure class="highlight armasm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">Switch&gt; </span>en</span><br><span class="line"><span class="keyword">Switch#</span><br><span class="line"></span><span class="label">interface</span> range GigabitEthernet <span class="number">0</span>/<span class="number">1</span>-<span class="number">24</span></span><br><span class="line"><span class="keyword">switchport </span>trunk encapsulation dot1q</span><br><span class="line"><span class="keyword">switchport </span>mod  e trunk</span><br><span class="line"><span class="keyword">switchport </span>trunk allowed vlan all</span><br><span class="line">//<span class="keyword">switchport </span>trunk native vlan <span class="number">201</span></span><br><span class="line"><span class="label">copy</span> running-config startup-config</span><br><span class="line"><span class="label">exit</span></span><br></pre></td></tr></table></figure>
 <p>默​认​情​况下​，Cisco允​许​所有​VLAN通过。​如果本征VLAN ID不相同的2个​​端​口​连​接​在​一​起时​​，​Cisco交​换​机​提出控诉。​这​就​是​为​什​么​必​须​指​定​VLAN201为​二层交​换​机​的​本​征​VLAN。</p>
-<h3 id="二层交换（H3C_S5800X）">二层交换（H3C S5800X）</h3><figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">&lt;DeviceA&gt; <span class="built_in">system</span>-<span class="keyword">view</span></span><br><span class="line"></span><br><span class="line">[H3C] reset saved-configuretion</span><br><span class="line">[H3C] <span class="keyword">display</span> <span class="keyword">version</span></span><br><span class="line">[H3C] <span class="keyword">display</span> current-configuretion</span><br><span class="line">[H3C] <span class="keyword">display</span> saved-configuretion</span><br><span class="line">[H3C] <span class="keyword">display</span> vlan</span><br><span class="line"></span><br><span class="line">[H3C] vlan <span class="number">300</span> <span class="keyword">to</span> <span class="number">999</span></span><br><span class="line">[H3C]interface <span class="built_in">range</span> Ten-GigabitEthernet1/<span class="number">0</span>/<span class="number">1</span> <span class="keyword">to</span> Ten-GigabitEthernet1/<span class="number">0</span>/<span class="number">24</span></span><br><span class="line">[H3C-<span class="keyword">if</span>-<span class="built_in">range</span>]port link-<span class="built_in">type</span> trunk</span><br><span class="line">[H3C-<span class="keyword">if</span>-<span class="built_in">range</span>]port trunk permit vlan <span class="keyword">all</span></span><br><span class="line">[DeviceA-GigabitEthernet1/<span class="number">0</span>/<span class="number">3</span>] <span class="keyword">quit</span></span><br><span class="line">[H3C]save</span><br><span class="line">[H3C]<span class="keyword">quit</span></span><br></pre></td></tr></table></figure>
-<h2 id="硬件防火墙">硬件防火墙</h2><p>所有部署都应该有一个防火墙保护管理服务器。根据情况不同，一些部署也可能用到Juniper SRX防火墙作为来宾网络的默认网关；参阅 “集成外部来宾防火墙Juniper SRX （可选）”。</p>
+<h3 id="二层交换（H3C_S5800X）">二层交换（H3C S5800X）</h3><p>二层接入使用H3C交换机，可以与思科的交换机混搭。</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">&lt;DeviceA&gt; <span class="built_in">system</span>-<span class="keyword">view</span></span><br><span class="line"></span><br><span class="line">[H3C] reset saved-configuretion</span><br><span class="line">[H3C] <span class="keyword">display</span> <span class="keyword">version</span></span><br><span class="line">[H3C] <span class="keyword">display</span> current-configuretion</span><br><span class="line">[H3C] <span class="keyword">display</span> saved-configuretion</span><br><span class="line">[H3C] <span class="keyword">display</span> vlan</span><br><span class="line"></span><br><span class="line">[H3C] vlan <span class="number">300</span> <span class="keyword">to</span> <span class="number">999</span></span><br><span class="line">[H3C]interface <span class="built_in">range</span> Ten-GigabitEthernet1/<span class="number">0</span>/<span class="number">1</span> <span class="keyword">to</span> Ten-GigabitEthernet1/<span class="number">0</span>/<span class="number">24</span></span><br><span class="line">[H3C-<span class="keyword">if</span>-<span class="built_in">range</span>]port link-<span class="built_in">type</span> trunk</span><br><span class="line">[H3C-<span class="keyword">if</span>-<span class="built_in">range</span>]port trunk permit vlan <span class="keyword">all</span></span><br><span class="line">[DeviceA-GigabitEthernet1/<span class="number">0</span>/<span class="number">3</span>] <span class="keyword">quit</span></span><br><span class="line">[H3C]save</span><br><span class="line">[H3C]<span class="keyword">quit</span></span><br></pre></td></tr></table></figure>
+<h2 id="硬件防火墙">硬件防火墙</h2><p>所有部署都应该有一个防火墙保护管理服务器。根据情况不同，一些部署也可能用到Juniper SRX防火墙作为来宾网络的默认网关。</p>
 <h3 id="防火墙的一般规定">防火墙的一般规定</h3><p>硬件防火墙必需服务于两个目的：</p>
 <ul>
-<li><p>Protect the Management Servers. NAT and port forwarding should be<br>configured to direct traffic from the public Internet to the<br>Management Servers.<br>保护管理服务器。从互联网到管理服务器应该配置NAT和端口转发。</p>
+<li><p>保护管理服务器。从互联网到管理服务器应该配置NAT和端口转发。</p>
 </li>
 <li><p>路由多个区域之间的管理网络流量。站点到站点VPN应该在多个区域之间配置。</p>
 </li>
@@ -401,7 +402,7 @@
 <p>CloudStack中提供了对Juniper SRX系列防火墙的直接管理。这使得CloudStack能建立公共IP到客户虚拟机的静态NAT映射，并利用Juniper设备替代虚拟路由器提供防火墙服务。每个区域中可以有一个或多个Juniper SRX设备。这个特性是可选的。如果不提供Juniper设备集成，CloudStack会使用虚拟路由器提供这些服务。</p>
 <p>Juniper SRX可以和任意的外部负载均衡器一起使用。外部网络元素可以部署为并排或内联结构。</p>
 <p><img src="/images/parallel-mode.png" alt=""></p>
-<h3 id="集成_Cisco_VNMC_(可选)外部来宾防火墙">集成 Cisco VNMC (可选)外部来宾防火墙</h3><p>Cisco虚拟网络管理中心（VNMC）为Cisco网络虚拟服务提供集中式多设备和策略管理。您可以通过集成Cisco VNMC到CloudStack，使用ASA 1000v云防火墙提供防火墙和NAT服务。在开启了Cisco Nexus 1000v分布式虚拟交换机功能的CloudStack群集中。这样部署，你可以：</p>
+<h3 id="集成_Cisco_VNMC_(可选)外部来宾防火墙">集成 Cisco VNMC (可选)外部来宾防火墙</h3><p>Cisco虚拟网络管理中心（VNMC）为Cisco网络虚拟服务提供集中式多设备和策略管理。可以通过集成Cisco VNMC到CloudStack，使用ASA 1000v云防火墙提供防火墙和NAT服务。在开启了Cisco Nexus 1000v分布式虚拟交换机功能的CloudStack群集中。这样部署，你可以：</p>
 <ul>
 <li><p>配置Cisco ASA 1000v防火墙，你可以为每个来宾创建一个网络。</p>
 </li>
@@ -586,13 +587,13 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/09/28/cloudstack3_storage_setup/" rel="prev">CloudStack系列3 存储配置</a>
+              <a href="/2015/10/07/cloudstack1_architecture/" rel="prev">CloudStack系列1 部署架构</a>
             
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/09/28/cloudstack1_architecture/" rel="next">CloudStack系列1 部署架构</a>
+              <a href="/2015/10/01/test-swingbench/" rel="next">使用Swingbench对数据库进行压力测试</a>
             
           </div>
         </div>
