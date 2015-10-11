@@ -42,10 +42,12 @@
 <meta name="description" content="Swingbench is a free load generator (and benchmarks) designed to stress test an Oracle database (10g,11g,12c).">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用Swingbench对数据库进行压力测试">
-<meta property="og:url" content="http://yoursite.com/2015/10/01/test-swingbench/index.html">
+<meta property="og:url" content="http://yoursite.com/2015/10/08/test-swingbench/index.html">
 <meta property="og:site_name" content="信息系统应用技术实验室">
 <meta property="og:description" content="Swingbench is a free load generator (and benchmarks) designed to stress test an Oracle database (10g,11g,12c).">
-<meta property="og:updated_time" content="2015-10-01T03:22:07.169Z">
+<meta property="og:image" content="http://yoursite.com/images/swingbench_simple.JPG">
+<meta property="og:image" content="http://yoursite.com/images/swingbench_advance.JPG">
+<meta property="og:updated_time" content="2015-10-08T06:22:20.443Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用Swingbench对数据库进行压力测试">
 <meta name="twitter:description" content="Swingbench is a free load generator (and benchmarks) designed to stress test an Oracle database (10g,11g,12c).">
@@ -203,8 +205,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-10-01T11:22:07+08:00" content="2015-10-01">
-            2015-10-01
+          <time itemprop="dateCreated" datetime="2015-10-08T14:22:20+08:00" content="2015-10-08">
+            2015-10-08
           </time>
         </span>
 
@@ -265,19 +267,24 @@
 <td>Calling Circle</td>
 <td>电话公司自助系统</td>
 <td>70/30</td>
-<td>基于电话自助服务系统的基准测试，</td>
+<td>基于电话自助服务系统的基准测试，大小相对固定，每次运行都需要重新生成schema</td>
+</tr>
+<tr>
+<td>Stess Test</td>
+<td>简单的INSERT/DELETE/UPDATE/SELECT</td>
+<td>50/50</td>
+<td>Stress Test是最简单的测试，执行insert/update/delete/select的操作，</td>
 </tr>
 </tbody>
 </table>
-<p>大小相对固定，每次运行都需要重新生成schema|<br>|Stess Test    |  简单的INSERT/DELETE/UPDATE/SELECT |50/50| Stress Test是最简单的测试，执行insert/update/delete/select的操作，<br>数据是在运行时产生，可以用于测试TimesTen|<br>|Sales History |  DSS基准测试       | 100/0|数据仓库基准测试，使用datagenerator产生数据<br>由disk和时间来决定最大的大小，基于Oracle自带的两个Sample Schema：OE和SH |</p>
+<p>数据是在运行时产生，可以用于测试TimesTen|<br>|Sales History |  DSS基准测试       | 100/0|数据仓库基准测试，使用datagenerator产生数据<br>由disk和时间来决定最大的大小，基于Oracle自带的两个Sample Schema：OE和SH |</p>
 <h1 id="环境">环境</h1><ul>
 <li>Linux 2.</li>
 <li>Oracle Database 11.</li>
 </ul>
-<h1 id="架构示意图">架构示意图</h1><p>单实例</p>
-<p>RAC</p>
-<p>#安装和设置</p>
-<ul>
+<h1 id="架构示意图">架构示意图</h1><p>单实例<br><img src="/images/swingbench_simple.JPG" alt=""></p>
+<p>RAC<br><img src="/images/swingbench_advance.JPG" alt=""></p>
+<h1 id="安装和设置">安装和设置</h1><ul>
 <li>下载<br>目前作者已经发布了最新的2.5版本，本次使用2.5。从dominicgiles.com下载，地址：<a href="http://dominicgiles.com/downloads.html。" target="_blank" rel="external">http://dominicgiles.com/downloads.html。</a><br>2.4和2.5版本需要使用Java 6/7 JVM。</li>
 <li>验证Java版本<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line">java -<span class="property">version</span></span><br><span class="line">java <span class="property">version</span> <span class="string">"1.7.0_65"</span></span><br></pre></td></tr></table></figure>
 </li>
@@ -290,8 +297,9 @@
 <li><p>用户设置<br>Unix/Linux平台配置文件为swingbench.env，执行文件路径为bin；Windows下则为swingbenchenv.bat和winbin。在windows平台上注意一定要配置ORACLE_HOME，好像不认注册表。<br>Linux平台下，swingbench是在Oracle用户下执行，请确保它被设置在环境变量以下。</p>
 <figure class="highlight xquery"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line">export ORACLE_BASE=/u01/app/oracle</span><br><span class="line">export ORACLE_HOME=<span class="variable">$ORACLE</span>_BASE/product/<span class="number">11.2</span>.<span class="number">0</span>/dbhome_1</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>配置</p>
-<figure class="highlight armasm"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line"><span class="label">cd</span> <span class="keyword">bin</span><br><span class="line"></span>./oewizard</span><br></pre></td></tr></table></figure>
+</ul>
+<h1 id="使用">使用</h1><ul>
+<li>配置OE仓库<figure class="highlight armasm"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line"><span class="label">cd</span> <span class="keyword">bin</span><br><span class="line"></span>./oewizard</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <p>1.按在欢迎屏幕[下一页]</p>
@@ -303,12 +311,20 @@
 <p>7.大小细节<br>建议进入用户自定义，可以使用1GB按[下一步]。</p>
 <p>8.最后，指定并行度，然后按[完成]</p>
 <p>9.日志在一个单独的窗口中打开。</p>
-<p>10.打开完成后的模式创建完成画面。并退出按[确定]。</p>
-<h1 id="使用">使用</h1><figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line">cd <span class="regexp">/home/</span>oracle<span class="regexp">/swingbench/</span>bin</span><br><span class="line">.<span class="regexp">/swingbench -cs /</span><span class="regexp">/oracledb01/</span>orcl112 -dt thin  -rt <span class="number">0</span>:<span class="number">05</span></span><br></pre></td></tr></table></figure>
-<p>测试中遇到的问题和解决方法：<br>1.生成AWR<br>在测试开始时可以生成awr快照，但是结束时没有自动生成awr快照。可以运行下列<br>语句手工生成：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">SQL&gt;</span><br><span class="line"><span class="built_in">exec</span> DBMS_WORKLOAD_REPOSITORY.CREATE_SNAPSHOT ;</span><br></pre></td></tr></table></figure></p>
-<p>2.遇到等待事件<br>resmgr:cpu quantum<br>根据metalink的note禁止资源管理<br><figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">SQL&gt;</span><br><span class="line">alter <span class="built_in">system</span> <span class="keyword">set</span> resource_manager_plan=<span class="string">''</span> scope=both;</span><br></pre></td></tr></table></figure></p>
-<ol>
-<li>运行swingbench, 没有显示cpu和disk的实时图形<br>./swingbench -cpuloc localhost 带选项-cpuloc，如果是2.4版本，可以指定hostname和用户密码</li>
+<p>10.打开完成后的模式创建完成界面。并按[确定]退出。</p>
+<ul>
+<li>测试</li>
+</ul>
+<figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line">cd <span class="regexp">/home/</span>oracle<span class="regexp">/swingbench/</span>bin</span><br><span class="line">.<span class="regexp">/swingbench -cs /</span><span class="regexp">/oracledb01/</span>orcl112 -dt thin  -rt <span class="number">0</span>:<span class="number">05</span></span><br></pre></td></tr></table></figure>
+<h1 id="测试中遇到的问题和解决方法">测试中遇到的问题和解决方法</h1><ol>
+<li><p>生成AWR<br>在测试开始时可以生成awr快照，但是结束时没有自动生成awr快照。可以运行下列<br>语句手工生成：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">SQL&gt;</span><br><span class="line"><span class="built_in">exec</span> DBMS_WORKLOAD_REPOSITORY.CREATE_SNAPSHOT ;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>遇到等待事件<br>resmgr:cpu quantum<br>根据metalink的note禁止资源管理</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">SQL&gt;</span><br><span class="line">alter <span class="built_in">system</span> <span class="keyword">set</span> resource_manager_plan=<span class="string">''</span> scope=both;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行swingbench, 没有显示cpu和disk的实时图形<br>./swingbench -cpuloc localhost 带选项-cpuloc，如果是2.4版本，可以指定hostname和用户密码</p>
+</li>
 <li>遇到ora-03111错误<br>查了metalink的note可以通过调节sdu来解决，不过有时还是会出现。<br>(SDU = 16384)<br>(TDU = 16384)</li>
 </ol>
 </span>
@@ -330,13 +346,13 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/10/07/cloudstack2_network_setup/" rel="prev">CloudStack系列2 网络配置</a>
+              <a href="/2015/10/11/sys-mirror/" rel="prev">创建开源镜像仓库</a>
             
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/09/30/cloudstack-templates/" rel="next">CloudStack 创建模版</a>
+              <a href="/2015/10/08/cloudstack1-architecture/" rel="next">CloudStack系列1 部署架构</a>
             
           </div>
         </div>
@@ -398,7 +414,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-count">15</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -412,7 +428,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">8</span>
+              <span class="site-state-item-count">10</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
@@ -450,7 +466,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#环境"><span class="nav-number">2.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#架构示意图"><span class="nav-number">3.</span> <span class="nav-text">架构示意图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用"><span class="nav-number">4.</span> <span class="nav-text">使用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#环境"><span class="nav-number">2.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#架构示意图"><span class="nav-number">3.</span> <span class="nav-text">架构示意图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装和设置"><span class="nav-number">4.</span> <span class="nav-text">安装和设置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用"><span class="nav-number">5.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#测试中遇到的问题和解决方法"><span class="nav-number">6.</span> <span class="nav-text">测试中遇到的问题和解决方法</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
