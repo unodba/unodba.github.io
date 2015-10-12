@@ -42,10 +42,10 @@
 <meta name="description" content="实验室工作中需要时常安装、更新linux下的相关包，由于内部网络限制，使用官方yum安装变得很困难。另外网速这个是硬伤。所以将实验室用到的一些相关源镜像到本地，方便大家工作。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="创建开源镜像仓库">
-<meta property="og:url" content="http://yoursite.com/2015/10/11/sys-mirror/index.html">
+<meta property="og:url" content="http://yoursite.com/2015/10/12/sys-mirror/index.html">
 <meta property="og:site_name" content="信息系统应用技术实验室">
 <meta property="og:description" content="实验室工作中需要时常安装、更新linux下的相关包，由于内部网络限制，使用官方yum安装变得很困难。另外网速这个是硬伤。所以将实验室用到的一些相关源镜像到本地，方便大家工作。">
-<meta property="og:updated_time" content="2015-10-11T12:24:46.677Z">
+<meta property="og:updated_time" content="2015-10-12T07:26:01.666Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="创建开源镜像仓库">
 <meta name="twitter:description" content="实验室工作中需要时常安装、更新linux下的相关包，由于内部网络限制，使用官方yum安装变得很困难。另外网速这个是硬伤。所以将实验室用到的一些相关源镜像到本地，方便大家工作。">
@@ -203,8 +203,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-10-11T20:24:46+08:00" content="2015-10-11">
-            2015-10-11
+          <time itemprop="dateCreated" datetime="2015-10-12T15:26:01+08:00" content="2015-10-12">
+            2015-10-12
           </time>
         </span>
 
@@ -241,22 +241,31 @@
 <a id="more"></a>
 <h1 id="nginx服务搭建">nginx服务搭建</h1><p>选择nginx作为web服务，小巧轻便。操作系统：CentOS 6.x</p>
 <h2 id="nginx安装">nginx安装</h2><ol>
-<li>添加nginx源<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">vi /etc/yum.repos.d/nginx.repo</span><br><span class="line">[nginx]</span><br><span class="line"><span class="constant">name</span>=nginx repo</span><br><span class="line"><span class="constant">baseurl</span>=http://nginx.org/packages/centos/6/$basearch/</span><br><span class="line"><span class="constant">gpgcheck</span>=0</span><br><span class="line"><span class="constant">enabled</span>=1</span><br></pre></td></tr></table></figure>
+<li><p>添加nginx源</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">vi /etc/yum.repos.d/nginx.repo</span><br><span class="line">[nginx]</span><br><span class="line"><span class="constant">name</span>=nginx repo</span><br><span class="line"><span class="constant">baseurl</span>=http://nginx.org/packages/centos/6/$basearch/</span><br><span class="line"><span class="constant">gpgcheck</span>=0</span><br><span class="line"><span class="constant">enabled</span>=1</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装nignx</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="title">yum</span> <span class="built_in">info</span> nginx</span><br><span class="line">yum install -y nginx</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 <blockquote>
 <p>参考：<a href="http://nginx.org/en/linux_packages.html" target="_blank" rel="external">http://nginx.org/en/linux_packages.html</a></p>
 </blockquote>
-<ol>
-<li>安装nignx<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="title">yum</span> <span class="built_in">info</span> nginx</span><br><span class="line">yum install -y nginx</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
 <h2 id="nginx配置">nginx配置</h2><p>Nginx目录浏览功能，在http {下面添加以下内容：<br><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment"># vi /etc/nginx/nginx.conf</span></span><br><span class="line"><span class="title">autoindex</span> <span class="built_in">on</span>;</span><br><span class="line"><span class="title">autoindex_exact_size</span> <span class="built_in">off</span>;</span><br><span class="line"><span class="title">autoindex_localtime</span> <span class="built_in">on</span>;</span><br></pre></td></tr></table></figure></p>
 <h2 id="启动Nginx服务">启动Nginx服务</h2><figure class="highlight 1c"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">service nginx start</span><br><span class="line">service nginx reload</span><br><span class="line">netstat -lntp <span class="string">| grep nginx    </span></span><br><span class="line">ps -ef <span class="string">| grep nginx</span></span><br></pre></td></tr></table></figure>
 <p>缺省是一个master，一个slave，可以在配置nginx.conf文件里调整。</p>
 <h2 id="设置开机自动启动">设置开机自动启动</h2><figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">chkconfig nginx <span class="function_start"><span class="keyword">on</span></span></span><br></pre></td></tr></table></figure>
 <h2 id="开放端口">开放端口</h2><figure class="highlight stata"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">/sbin/iptables -I <span class="keyword">INPUT</span> -p tcp --dport 80 -j ACCEPT</span><br><span class="line">/etc/rc.<span class="keyword">d</span>/init.<span class="keyword">d</span>/iptables <span class="keyword">save</span></span><br></pre></td></tr></table></figure>
-<h1 id="镜像同步">镜像同步</h1><h2 id="源地址">源地址</h2><p>1、CentOS官方标准源：rsync://mirrors.kernel.org/centos，rsync://mirrors.ustc.edu.cn/centos/<br>2、rpmforge源：rsync://ftp-stud.fht-esslingen.de/dag，rsync://mirrors.ispros.com.bd/repoforge/<br>3、epel源：rsync://mirrors.kernel.org/fedora-epel，rsync://mirrors.ustc.edu.cn/epel/<br>4、cpan源：rsync://mirrors.ustc.edu.cn/CPAN/<br>5、ceph源：rsync -avrt rsync://ceph.mirror.iweb.ca/ceph</p>
+<h1 id="镜像同步">镜像同步</h1><h2 id="源地址">源地址</h2><ol>
+<li>CentOS官方标准源：rsync://mirrors.kernel.org/centos，rsync://mirrors.ustc.edu.cn/centos/</li>
+<li>rpmforge源：rsync://ftp-stud.fht-esslingen.de/dag，rsync://mirrors.ispros.com.bd/repoforge/</li>
+<li>epel源：rsync://mirrors.kernel.org/fedora-epel，rsync://mirrors.ustc.edu.cn/epel/</li>
+<li>cpan源：rsync://mirrors.ustc.edu.cn/CPAN/</li>
+<li>ceph源：rsync -avrt rsync://ceph.mirror.iweb.ca/ceph</li>
+<li>openstack源：</li>
+<li>mariadb源： rsync -a –partial –delete-after –delay-updates rsync.osuosl.org::mariadb，rsync -avP archive.mariadb.org::mariadb<br>rsync://mirror.aarnet.edu.au/pub/MariaDB</li>
+<li>percona源 rsync -avrt rsync://rsync.percona.com/rsync /mirror/percona/</li>
+</ol>
 <h2 id="rsync安装">rsync安装</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">yum <span class="operator"><span class="keyword">install</span> -y rsync xinetd</span><br><span class="line">vi /etc/xinetd.<span class="keyword">d</span>/rsync</span><br><span class="line"><span class="keyword">disable</span> = <span class="keyword">no</span> #修改为</span><br><span class="line">/etc/init.<span class="keyword">d</span>/xinetd <span class="keyword">start</span> #启动（CentOS中是以xinetd 来管理Rsync服务的）</span></span><br></pre></td></tr></table></figure>
 <h2 id="添加脚本定时执行任务">添加脚本定时执行任务</h2><figure class="highlight gherkin"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">vi /etc/crontab</span><br><span class="line">0 1 <span class="keyword">*</span> <span class="keyword">*</span> <span class="keyword">*</span> root /mirror/mirror_rsync.sh</span><br><span class="line">service crond restart</span><br></pre></td></tr></table></figure>
 <h1 id="Ubuntu源同步">Ubuntu源同步</h1><h2 id="安装apt-mirror">安装apt-mirror</h2><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">yum <span class="keyword">install</span> -y apt-mirror</span><br></pre></td></tr></table></figure>
@@ -311,11 +320,13 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2015/10/12/sys-cobbler/" rel="prev">使用Cobbler部署操作系统</a>
+            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/10/08/test-swingbench/" rel="next">使用Swingbench对数据库进行压力测试</a>
+              <a href="/2015/10/11/cloudstack2_network_setup/" rel="next">CloudStack系列2 网络配置</a>
             
           </div>
         </div>
@@ -377,7 +388,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -391,7 +402,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-count">11</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

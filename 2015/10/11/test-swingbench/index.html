@@ -42,12 +42,12 @@
 <meta name="description" content="Swingbench is a free load generator (and benchmarks) designed to stress test an Oracle database (10g,11g,12c).">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用Swingbench对数据库进行压力测试">
-<meta property="og:url" content="http://yoursite.com/2015/10/08/test-swingbench/index.html">
+<meta property="og:url" content="http://yoursite.com/2015/10/11/test-swingbench/index.html">
 <meta property="og:site_name" content="信息系统应用技术实验室">
 <meta property="og:description" content="Swingbench is a free load generator (and benchmarks) designed to stress test an Oracle database (10g,11g,12c).">
 <meta property="og:image" content="http://yoursite.com/images/swingbench_simple.JPG">
 <meta property="og:image" content="http://yoursite.com/images/swingbench_advance.JPG">
-<meta property="og:updated_time" content="2015-10-08T06:22:20.443Z">
+<meta property="og:updated_time" content="2015-10-11T12:27:39.691Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用Swingbench对数据库进行压力测试">
 <meta name="twitter:description" content="Swingbench is a free load generator (and benchmarks) designed to stress test an Oracle database (10g,11g,12c).">
@@ -205,8 +205,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-10-08T14:22:20+08:00" content="2015-10-08">
-            2015-10-08
+          <time itemprop="dateCreated" datetime="2015-10-11T20:27:39+08:00" content="2015-10-11">
+            2015-10-11
           </time>
         </span>
 
@@ -286,11 +286,9 @@
 <p>RAC<br><img src="/images/swingbench_advance.JPG" alt=""></p>
 <h1 id="安装和设置">安装和设置</h1><ul>
 <li>下载<br>目前作者已经发布了最新的2.5版本，本次使用2.5。从dominicgiles.com下载，地址：<a href="http://dominicgiles.com/downloads.html。" target="_blank" rel="external">http://dominicgiles.com/downloads.html。</a><br>2.4和2.5版本需要使用Java 6/7 JVM。</li>
-<li>验证Java版本<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line">java -<span class="property">version</span></span><br><span class="line">java <span class="property">version</span> <span class="string">"1.7.0_65"</span></span><br></pre></td></tr></table></figure>
+<li><p>验证Java版本</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">yum <span class="operator"><span class="keyword">install</span> -y <span class="keyword">java</span>-<span class="number">1.7</span><span class="number">.0</span>-openjdk.x86_64</span><br><span class="line">$</span><br><span class="line"><span class="keyword">java</span> -<span class="keyword">version</span></span><br><span class="line"><span class="keyword">java</span> <span class="keyword">version</span> <span class="string">"1.7.0_65"</span></span></span><br></pre></td></tr></table></figure>
 </li>
-</ul>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">yum install java-<span class="number">1.7</span><span class="number">.0</span>-openjdk.x86_64</span><br></pre></td></tr></table></figure>
-<ul>
 <li><p>安装</p>
 <figure class="highlight stata"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line"><span class="keyword">pwd</span> /home/oracle</span><br><span class="line">unzip swingbench25932.<span class="keyword">zip</span></span><br><span class="line">&lt;略&gt;</span><br><span class="line"><span class="keyword">cd</span> swingbench</span><br><span class="line"><span class="keyword">pwd</span></span><br><span class="line">/home/oracle/swingbench</span><br></pre></td></tr></table></figure>
 </li>
@@ -346,7 +344,7 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/10/11/sys-mirror/" rel="prev">创建开源镜像仓库</a>
+              <a href="/2015/10/11/cloudstack2_network_setup/" rel="prev">CloudStack系列2 网络配置</a>
             
           </div>
 
@@ -414,7 +412,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -428,7 +426,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-count">11</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
