@@ -39,19 +39,16 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="Update System-VM templatesDatabase PreparationBackup current database
-Stop your management server or servers. Run this on all management server hosts:If you are running a usage server or usage servers">
+<meta name="description" content="CloudStack在实验室实践过程，升级部分。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CloudStack系列 升级">
 <meta property="og:url" content="http://yoursite.com/2015/10/11/cloudstack-update/index.html">
 <meta property="og:site_name" content="信息系统应用技术实验室">
-<meta property="og:description" content="Update System-VM templatesDatabase PreparationBackup current database
-Stop your management server or servers. Run this on all management server hosts:If you are running a usage server or usage servers">
-<meta property="og:updated_time" content="2015-10-23T14:09:15.904Z">
+<meta property="og:description" content="CloudStack在实验室实践过程，升级部分。">
+<meta property="og:updated_time" content="2015-10-23T14:12:27.214Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CloudStack系列 升级">
-<meta name="twitter:description" content="Update System-VM templatesDatabase PreparationBackup current database
-Stop your management server or servers. Run this on all management server hosts:If you are running a usage server or usage servers">
+<meta name="twitter:description" content="CloudStack在实验室实践过程，升级部分。">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -240,7 +237,9 @@ Stop your management server or servers. Run this on all management server hosts:
       
 
       
-        <span itemprop="articleBody"><h1 id="Update_System-VM_templates">Update System-VM templates</h1><h1 id="Database_Preparation">Database Preparation</h1><p>Backup current database</p>
+        <span itemprop="articleBody"><p>CloudStack在实验室实践过程，升级部分。</p>
+<a id="more"></a>
+<h1 id="Update_System-VM_templates">Update System-VM templates</h1><h1 id="Database_Preparation">Database Preparation</h1><p>Backup current database</p>
 <p>Stop your management server or servers. Run this on all management server hosts:<br>If you are running a usage server or usage servers, stop those as well:</p>
 <figure class="highlight vala"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor"># service cloudstack-management stop</span></span><br><span class="line"><span class="preprocessor"># service cloudstack-usage stop</span></span><br></pre></td></tr></table></figure>
 <p>Make a backup of your MySQL database. If you run into any issues or need to roll back the upgrade, this will assist in debugging or restoring your existing environment. You’ll be prompted for your password.</p>
