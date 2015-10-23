@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="Oracle,Swingbench," />
+  <meta name="keywords" content="Hexo,next" />
 
 
 
@@ -39,18 +39,19 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="Swingbench is a free load generator (and benchmarks) designed to stress test an Oracle database (10g,11g,12c).">
+<meta name="description" content="Update System-VM templatesDatabase PreparationBackup current database
+Stop your management server or servers. Run this on all management server hosts:If you are running a usage server or usage servers">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用Swingbench对数据库进行压力测试">
-<meta property="og:url" content="http://yoursite.com/2015/10/11/test-swingbench/index.html">
+<meta property="og:title" content="信息系统应用技术实验室">
+<meta property="og:url" content="http://yoursite.com/2015/10/23/cloudstack-update/index.html">
 <meta property="og:site_name" content="信息系统应用技术实验室">
-<meta property="og:description" content="Swingbench is a free load generator (and benchmarks) designed to stress test an Oracle database (10g,11g,12c).">
-<meta property="og:image" content="http://yoursite.com/images/swingbench_simple.JPG">
-<meta property="og:image" content="http://yoursite.com/images/swingbench_advance.JPG">
-<meta property="og:updated_time" content="2015-10-11T12:27:39.691Z">
+<meta property="og:description" content="Update System-VM templatesDatabase PreparationBackup current database
+Stop your management server or servers. Run this on all management server hosts:If you are running a usage server or usage servers">
+<meta property="og:updated_time" content="2015-10-23T08:14:01.572Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="使用Swingbench对数据库进行压力测试">
-<meta name="twitter:description" content="Swingbench is a free load generator (and benchmarks) designed to stress test an Oracle database (10g,11g,12c).">
+<meta name="twitter:title" content="信息系统应用技术实验室">
+<meta name="twitter:description" content="Update System-VM templatesDatabase PreparationBackup current database
+Stop your management server or servers. Run this on all management server hosts:If you are running a usage server or usage servers">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -60,7 +61,7 @@
   };
 </script>
 
-  <title> 使用Swingbench对数据库进行压力测试 | 信息系统应用技术实验室 </title>
+  <title>  | 信息系统应用技术实验室 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -196,7 +197,7 @@
           
           
             
-              使用Swingbench对数据库进行压力测试
+              
             
           
         </h1>
@@ -205,26 +206,11 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-10-11T20:27:39+08:00" content="2015-10-11">
-            2015-10-11
+          <time itemprop="dateCreated" datetime="2015-10-23T16:14:01+08:00" content="2015-10-23">
+            2015-10-23
           </time>
         </span>
 
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/测试/" itemprop="url" rel="index">
-                  <span itemprop="name">测试</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
         
 
         
@@ -239,118 +225,38 @@
       
 
       
-        <span itemprop="articleBody"><p>Swingbench is a free load generator (and benchmarks) designed to stress test an Oracle database (10g,11g,12c).</p>
-<a id="more"></a>
-<h1 id="介绍">介绍</h1><ul>
-<li><p>Swingbench有三个前端工具：<br>Swingbench是一个图形界面，用户可以编辑配置参数。可以显示实时的图形。<br>Minibench是一个图形界面，可以显示简单的实时图形。<br>Charbench是一个命令行的工具，有很多的命令行选项。</p>
-</li>
-<li><p>四种基准测试</p>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>Benchmark</th>
-<th>描述</th>
-<th>读写比例</th>
-<th>备注</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Order Entry</td>
-<td>经典的Order Entry基准测试。像TPC。</td>
-<td>60/40</td>
-<td>TPC-C类似的，基于Oracle自带的两个Sample Schema：OE和SH</td>
-</tr>
-<tr>
-<td>Calling Circle</td>
-<td>电话公司自助系统</td>
-<td>70/30</td>
-<td>基于电话自助服务系统的基准测试，大小相对固定，每次运行都需要重新生成schema</td>
-</tr>
-<tr>
-<td>Stess Test</td>
-<td>简单的INSERT/DELETE/UPDATE/SELECT</td>
-<td>50/50</td>
-<td>Stress Test是最简单的测试，执行insert/update/delete/select的操作，</td>
-</tr>
-</tbody>
-</table>
-<p>数据是在运行时产生，可以用于测试TimesTen|<br>|Sales History |  DSS基准测试       | 100/0|数据仓库基准测试，使用datagenerator产生数据<br>由disk和时间来决定最大的大小，基于Oracle自带的两个Sample Schema：OE和SH |</p>
-<h1 id="环境">环境</h1><ul>
-<li>Linux 2.</li>
-<li>Oracle Database 11.</li>
-</ul>
-<h1 id="架构示意图">架构示意图</h1><p>单实例<br><img src="/images/swingbench_simple.JPG" alt=""></p>
-<p>RAC<br><img src="/images/swingbench_advance.JPG" alt=""></p>
-<h1 id="安装和设置">安装和设置</h1><ul>
-<li>下载<br>目前作者已经发布了最新的2.5版本，本次使用2.5。从dominicgiles.com下载，地址：<a href="http://dominicgiles.com/downloads.html。" target="_blank" rel="external">http://dominicgiles.com/downloads.html。</a><br>2.4和2.5版本需要使用Java 6/7 JVM。</li>
-<li><p>验证Java版本</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">yum <span class="operator"><span class="keyword">install</span> -y <span class="keyword">java</span>-<span class="number">1.7</span><span class="number">.0</span>-openjdk.x86_64</span><br><span class="line">$</span><br><span class="line"><span class="keyword">java</span> -<span class="keyword">version</span></span><br><span class="line"><span class="keyword">java</span> <span class="keyword">version</span> <span class="string">"1.7.0_65"</span></span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>安装</p>
-<figure class="highlight stata"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line"><span class="keyword">pwd</span> /home/oracle</span><br><span class="line">unzip swingbench25932.<span class="keyword">zip</span></span><br><span class="line">&lt;略&gt;</span><br><span class="line"><span class="keyword">cd</span> swingbench</span><br><span class="line"><span class="keyword">pwd</span></span><br><span class="line">/home/oracle/swingbench</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>用户设置<br>Unix/Linux平台配置文件为swingbench.env，执行文件路径为bin；Windows下则为swingbenchenv.bat和winbin。在windows平台上注意一定要配置ORACLE_HOME，好像不认注册表。<br>Linux平台下，swingbench是在Oracle用户下执行，请确保它被设置在环境变量以下。</p>
-<figure class="highlight xquery"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line">export ORACLE_BASE=/u01/app/oracle</span><br><span class="line">export ORACLE_HOME=<span class="variable">$ORACLE</span>_BASE/product/<span class="number">11.2</span>.<span class="number">0</span>/dbhome_1</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h1 id="使用">使用</h1><ul>
-<li>配置OE仓库<figure class="highlight armasm"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line"><span class="label">cd</span> <span class="keyword">bin</span><br><span class="line"></span>./oewizard</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>1.按在欢迎屏幕[下一页]</p>
-<p>2.选择Benchmark版本，此处选择版本2.0，然后按[下一页]</p>
-<p>3.选择任务，选择“Create the Order Entry Schema（User,Tables,indexes,Data etc）”，然后按[下一页]</p>
-<p>4.在数据库的详细信息界面，输入必要的信息，然后按[下一页]</p>
-<p>5.在Schema Details界面输入所需信息，然后按[下一页]</p>
-<p>6.在Database Options输入所需的信息，然后按[下一页]<br>可默认</p>
-<p>7.大小细节<br>建议进入用户自定义，可以使用1GB按[下一步]。</p>
-<p>8.最后，指定并行度，然后按[完成]</p>
-<p>9.日志在一个单独的窗口中打开。</p>
-<p>10.打开完成后的模式创建完成界面。并按[确定]退出。</p>
-<ul>
-<li>测试</li>
-</ul>
-<figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line">cd <span class="regexp">/home/</span>oracle<span class="regexp">/swingbench/</span>bin</span><br><span class="line">.<span class="regexp">/swingbench -cs /</span><span class="regexp">/oracledb01/</span>orcl112 -dt thin  -rt <span class="number">0</span>:<span class="number">05</span></span><br></pre></td></tr></table></figure>
-<h1 id="测试中遇到的问题和解决方法">测试中遇到的问题和解决方法</h1><ol>
-<li><p>生成AWR<br>在测试开始时可以生成awr快照，但是结束时没有自动生成awr快照。可以运行下列<br>语句手工生成：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">SQL&gt;</span><br><span class="line"><span class="built_in">exec</span> DBMS_WORKLOAD_REPOSITORY.CREATE_SNAPSHOT ;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>遇到等待事件<br>resmgr:cpu quantum<br>根据metalink的note禁止资源管理</p>
-<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">SQL&gt;</span><br><span class="line">alter <span class="built_in">system</span> <span class="keyword">set</span> resource_manager_plan=<span class="string">''</span> scope=both;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>运行swingbench, 没有显示cpu和disk的实时图形<br>./swingbench -cpuloc localhost 带选项-cpuloc，如果是2.4版本，可以指定hostname和用户密码</p>
-</li>
-<li>遇到ora-03111错误<br>查了metalink的note可以通过调节sdu来解决，不过有时还是会出现。<br>(SDU = 16384)<br>(TDU = 16384)</li>
-</ol>
+        <span itemprop="articleBody"><h1 id="Update_System-VM_templates">Update System-VM templates</h1><h1 id="Database_Preparation">Database Preparation</h1><p>Backup current database</p>
+<p>Stop your management server or servers. Run this on all management server hosts:<br>If you are running a usage server or usage servers, stop those as well:</p>
+<figure class="highlight vala"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor"># service cloudstack-management stop</span></span><br><span class="line"><span class="preprocessor"># service cloudstack-usage stop</span></span><br></pre></td></tr></table></figure>
+<p>Make a backup of your MySQL database. If you run into any issues or need to roll back the upgrade, this will assist in debugging or restoring your existing environment. You’ll be prompted for your password.</p>
+<figure class="highlight stata"><table><tr><td class="code"><pre><span class="line"># mysqldump -<span class="keyword">u</span> root -p cloud &gt; cloud-backup_`date '+%Y-%<span class="keyword">m</span>-%<span class="keyword">d</span>'`.sql</span><br><span class="line"># mysqldump -<span class="keyword">u</span> root -p cloud_usage &gt; cloud_usage-backup_`date '+%Y-%<span class="keyword">m</span>-%<span class="keyword">d</span>'`.sql</span><br></pre></td></tr></table></figure>
+<h1 id="Management_Server_on_CentOS/RHEL">Management Server on CentOS/RHEL</h1><p>If you are using CentOS or RHEL, follow this procedure to upgrade your packages. If not, skip to hypervisors section, then System-VMs and Virtual-Routers.</p>
+<p>Note<br>Community Packages: This section assumes you’re using the community supplied packages for CloudStack. If you’ve created your own packages and yum repository, substitute your own URL for the ones used in these examples.</p>
+<h2 id="CloudStack_RPM_repository">CloudStack RPM repository</h2><p>The first order of business will be to change the yum repository for each system with CloudStack packages. This means all management servers, and any hosts that have the KVM agent.</p>
+<p>(No changes should be necessary for hosts that are running VMware or Xen.)</p>
+<p>Start by opening /etc/yum.repos.d/cloudstack.repo on any systems that have CloudStack packages installed.</p>
+<p>This file should have content similar to the following:</p>
+<p>[apache-cloudstack]<br>name=Apache CloudStack<br>baseurl=<a href="http://cloudstack.apt-get.eu/rhel/4.4/" target="_blank" rel="external">http://cloudstack.apt-get.eu/rhel/4.4/</a><br>enabled=1<br>gpgcheck=0<br>If you are using the community provided package repository, change the base url to <a href="http://packages.shapeblue.com/cloudstack/upstream/centos/4.5/" target="_blank" rel="external">http://packages.shapeblue.com/cloudstack/upstream/centos/4.5/</a> If you want to use the CentOS7 repository use the url <a href="http://packages.shapeblue.com/cloudstack/upstream/centos7/4.5/" target="_blank" rel="external">http://packages.shapeblue.com/cloudstack/upstream/centos7/4.5/</a></p>
+<p>Setup the GPG public key if you wish to enable gpgcheck=1:</p>
+<p>wget <a href="http://packages.shapeblue.com/release.asc" target="_blank" rel="external">http://packages.shapeblue.com/release.asc</a><br>rpm –import release.asc<br>If you’re using your own package repository, change this line to read as appropriate for your 4.5 repository.</p>
+<p>Now that you have the repository configured, it’s time to upgrade the cloudstack-management.</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="title">yum</span> upgrade cloudstack-management</span><br><span class="line">yum upgrade cloudstack-usage</span><br></pre></td></tr></table></figure>
 </span>
       
     </div>
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/Oracle/" rel="tag">#Oracle</a>
-          
-            <a href="/tags/Swingbench/" rel="tag">#Swingbench</a>
-          
-        </div>
-      
 
       
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/10/11/cloudstack2_network_setup/" rel="prev">CloudStack系列2 网络配置</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/10/08/cloudstack1-architecture/" rel="next">CloudStack系列1 部署架构</a>
+              <a href="/2015/10/23/vsphere-esxi/" rel="next"></a>
             
           </div>
         </div>
@@ -412,7 +318,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">16</span>
+              <span class="site-state-item-count">18</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -464,7 +370,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#环境"><span class="nav-number">2.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#架构示意图"><span class="nav-number">3.</span> <span class="nav-text">架构示意图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装和设置"><span class="nav-number">4.</span> <span class="nav-text">安装和设置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用"><span class="nav-number">5.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#测试中遇到的问题和解决方法"><span class="nav-number">6.</span> <span class="nav-text">测试中遇到的问题和解决方法</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Update_System-VM_templates"><span class="nav-number">1.</span> <span class="nav-text">Update System-VM templates</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Database_Preparation"><span class="nav-number">2.</span> <span class="nav-text">Database Preparation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Management_Server_on_CentOS/RHEL"><span class="nav-number">3.</span> <span class="nav-text">Management Server on CentOS/RHEL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CloudStack_RPM_repository"><span class="nav-number">3.1.</span> <span class="nav-text">CloudStack RPM repository</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

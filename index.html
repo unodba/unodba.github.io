@@ -195,7 +195,557 @@
           
           
             
-              <a class="post-title-link" href="/2015/10/12/sys-cobbler/" itemprop="url">
+              <a class="post-title-link" href="/2015/10/23/cloudstack-update/" itemprop="url">
+                未命名
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-10-23T16:14:01+08:00" content="2015-10-23">
+            2015-10-23
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h1 id="Update_System-VM_templates">Update System-VM templates</h1><h1 id="Database_Preparation">Database Preparation</h1><p>Backup current database</p>
+<p>Stop your management server or servers. Run this on all management server hosts:<br>If you are running a usage server or usage servers, stop those as well:</p>
+<figure class="highlight vala"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor"># service cloudstack-management stop</span></span><br><span class="line"><span class="preprocessor"># service cloudstack-usage stop</span></span><br></pre></td></tr></table></figure>
+<p>Make a backup of your MySQL database. If you run into any issues or need to roll back the upgrade, this will assist in debugging or restoring your existing environment. You’ll be prompted for your password.</p>
+<figure class="highlight stata"><table><tr><td class="code"><pre><span class="line"># mysqldump -<span class="keyword">u</span> root -p cloud &gt; cloud-backup_`date '+%Y-%<span class="keyword">m</span>-%<span class="keyword">d</span>'`.sql</span><br><span class="line"># mysqldump -<span class="keyword">u</span> root -p cloud_usage &gt; cloud_usage-backup_`date '+%Y-%<span class="keyword">m</span>-%<span class="keyword">d</span>'`.sql</span><br></pre></td></tr></table></figure>
+<h1 id="Management_Server_on_CentOS/RHEL">Management Server on CentOS/RHEL</h1><p>If you are using CentOS or RHEL, follow this procedure to upgrade your packages. If not, skip to hypervisors section, then System-VMs and Virtual-Routers.</p>
+<p>Note<br>Community Packages: This section assumes you’re using the community supplied packages for CloudStack. If you’ve created your own packages and yum repository, substitute your own URL for the ones used in these examples.</p>
+<h2 id="CloudStack_RPM_repository">CloudStack RPM repository</h2><p>The first order of business will be to change the yum repository for each system with CloudStack packages. This means all management servers, and any hosts that have the KVM agent.</p>
+<p>(No changes should be necessary for hosts that are running VMware or Xen.)</p>
+<p>Start by opening /etc/yum.repos.d/cloudstack.repo on any systems that have CloudStack packages installed.</p>
+<p>This file should have content similar to the following:</p>
+<p>[apache-cloudstack]<br>name=Apache CloudStack<br>baseurl=<a href="http://cloudstack.apt-get.eu/rhel/4.4/" target="_blank" rel="external">http://cloudstack.apt-get.eu/rhel/4.4/</a><br>enabled=1<br>gpgcheck=0<br>If you are using the community provided package repository, change the base url to <a href="http://packages.shapeblue.com/cloudstack/upstream/centos/4.5/" target="_blank" rel="external">http://packages.shapeblue.com/cloudstack/upstream/centos/4.5/</a> If you want to use the CentOS7 repository use the url <a href="http://packages.shapeblue.com/cloudstack/upstream/centos7/4.5/" target="_blank" rel="external">http://packages.shapeblue.com/cloudstack/upstream/centos7/4.5/</a></p>
+<p>Setup the GPG public key if you wish to enable gpgcheck=1:</p>
+<p>wget <a href="http://packages.shapeblue.com/release.asc" target="_blank" rel="external">http://packages.shapeblue.com/release.asc</a><br>rpm –import release.asc<br>If you’re using your own package repository, change this line to read as appropriate for your 4.5 repository.</p>
+<p>Now that you have the repository configured, it’s time to upgrade the cloudstack-management.</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="title">yum</span> upgrade cloudstack-management</span><br><span class="line">yum upgrade cloudstack-usage</span><br></pre></td></tr></table></figure>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/10/23/vsphere-esxi/" itemprop="url">
+                未命名
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-10-23T14:15:40+08:00" content="2015-10-23">
+            2015-10-23
+          </time>
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><p>虚拟化嵌套：顾名思义就是在虚拟化环境中在嵌套一层虚拟化。</p>
+<p>（1）虚拟机-编辑设置-选项-常规选项。版本选择其他。</p>
+<p>（2）虚拟机-虚拟硬件-CPU-选项-CPU/MMU虚拟化-选择“硬件CPU和MMU”。</p>
+<p>（3）虚拟机-编辑设置-虚拟硬件-CPU-硬件虚拟化-勾选“向客户机操作系统公开硬件辅助的虚拟化”。</p>
+<p>（4）确认虚拟机版本为最新，esxi 5.5u2版本是vm10，如果不是vm9.升级虚拟机兼容性。</p>
+<p>（5）点击宿主ESXI主机-右边配置-网络-属性，找到你ESXI虚拟机连接的端口组，点击编辑，在安全选项中，把混杂模式、伪传输勾选，选择接受！</p>
+<p>否则会出现在嵌套环境下的虚拟机操作系统安装完成后，IP能获取，但是上不了外网。</p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/10/23/cloudstack5-option/" itemprop="url">
+                CloudStack系列5 可选安装和配置
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-10-23T12:05:52+08:00" content="2015-10-23">
+            2015-10-23
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/云计算/" itemprop="url" rel="index">
+                  <span itemprop="name">云计算</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>CloudStack在实验室实践过程，可选安装配置部分。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/23/cloudstack5-option/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/10/23/cloudstack4-install/" itemprop="url">
+                CloudStack系列4 管理节点安装
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-10-23T12:05:27+08:00" content="2015-10-23">
+            2015-10-23
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/云计算/" itemprop="url" rel="index">
+                  <span itemprop="name">云计算</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>CloudStack在实验室实践过程，安装配置部分。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/23/cloudstack4-install/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/10/23/cloudstack7-vsphere/" itemprop="url">
+                CloudStack系列7 vsphere安装和配置
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-10-23T11:59:19+08:00" content="2015-10-23">
+            2015-10-23
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/云计算/" itemprop="url" rel="index">
+                  <span itemprop="name">云计算</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>CloudStack在实验室实践过程，安装配置部分。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/23/cloudstack7-vsphere/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/10/23/cloudstack6-kvm/" itemprop="url">
+                CloudStack系列6 KVM安装和配置
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-10-23T11:26:44+08:00" content="2015-10-23">
+            2015-10-23
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/云计算/" itemprop="url" rel="index">
+                  <span itemprop="name">云计算</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>CloudStack在实验室实践过程，安装配置部分。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/23/cloudstack6-kvm/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/10/23/cloudstack3_storage_setup/" itemprop="url">
+                CloudStack系列3 存储配置
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-10-23T10:56:36+08:00" content="2015-10-23">
+            2015-10-23
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/云计算/" itemprop="url" rel="index">
+                  <span itemprop="name">云计算</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>CloudStack在实验室实践过程，存储配置部分。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/23/cloudstack3_storage_setup/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2015/10/22/sys-cobbler/" itemprop="url">
                 使用Cobbler部署操作系统
               </a>
             
@@ -206,8 +756,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-10-12T20:59:58+08:00" content="2015-10-12">
-            2015-10-12
+          <time itemprop="dateCreated" datetime="2015-10-22T16:56:04+08:00" content="2015-10-22">
+            2015-10-22
           </time>
         </span>
 
@@ -241,9 +791,9 @@
 
       
         
-          <p>Cobbler是一个系统启动服务，可以通过网络启动的方式来快速部署虚拟机和服务器。Cobbler工具使用python开发，使用简单的命令即可完成PXE网络环境的配置，能够支持windows和linux的各种发型版本。当我们需要对集群进行操作系统的部署时，cobbler工具的优势便显现出来，cobbler能够同时部署多台机器，大大缩短了系统部署的时间。同时，cobbler还提供web管理界面，更加方便运维管理。<br>
+          <p>Cobbler是一个系统启动服务，可以通过网络启动的方式来快速部署虚拟机和服务器。Cobbler工具使用python开发，使用简单的命令即可完成PXE网络环境的配置，能够支持windows和linux的各种发行版本。当我们需要对集群进行操作系统部署时，cobbler工具的优势便显现出来，cobbler能够同时部署多台机器，大大缩短系统部署时间。同时，cobbler还提供web管理界面，更加方便运维管理。<br>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/12/sys-cobbler/#more" rel="contents">
+            <a class="btn" href="/2015/10/22/sys-cobbler/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -276,7 +826,7 @@
           
           
             
-              <a class="post-title-link" href="/2015/10/12/sys-mirror/" itemprop="url">
+              <a class="post-title-link" href="/2015/10/22/sys-mirror/" itemprop="url">
                 创建开源镜像仓库
               </a>
             
@@ -287,8 +837,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-10-12T15:26:01+08:00" content="2015-10-12">
-            2015-10-12
+          <time itemprop="dateCreated" datetime="2015-10-22T10:16:20+08:00" content="2015-10-22">
+            2015-10-22
           </time>
         </span>
 
@@ -324,7 +874,7 @@
         
           <p>实验室工作中需要时常安装、更新linux下的相关包，由于内部网络限制，使用官方yum安装变得很困难。另外网速这个是硬伤。所以将实验室用到的一些相关源镜像到<br>本地，方便大家工作。</p>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/12/sys-mirror/#more" rel="contents">
+            <a class="btn" href="/2015/10/22/sys-mirror/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -357,88 +907,7 @@
           
           
             
-              <a class="post-title-link" href="/2015/10/11/cloudstack2_network_setup/" itemprop="url">
-                CloudStack系列2 网络配置
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-10-11T20:33:34+08:00" content="2015-10-11">
-            2015-10-11
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/云计算/" itemprop="url" rel="index">
-                  <span itemprop="name">云计算</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>CloudStack系列2，网络配置部分。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/11/cloudstack2_network_setup/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/10/11/test-swingbench/" itemprop="url">
+              <a class="post-title-link" href="/2015/10/22/test-swingbench/" itemprop="url">
                 使用Swingbench对数据库进行压力测试
               </a>
             
@@ -449,8 +918,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-10-11T20:27:39+08:00" content="2015-10-11">
-            2015-10-11
+          <time itemprop="dateCreated" datetime="2015-10-22T10:13:39+08:00" content="2015-10-22">
+            2015-10-22
           </time>
         </span>
 
@@ -486,494 +955,7 @@
         
           <p>Swingbench is a free load generator (and benchmarks) designed to stress test an Oracle database (10g,11g,12c).</p>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/11/test-swingbench/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/10/08/cloudstack1-architecture/" itemprop="url">
-                CloudStack系列1 部署架构
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-10-08T14:22:10+08:00" content="2015-10-08">
-            2015-10-08
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/云计算/" itemprop="url" rel="index">
-                  <span itemprop="name">云计算</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>CloudStack系列1，部署架构。</p>
-<p>CloudStack是一个开源的具有高可用性及扩展性的云计算平台。支持管理大部分主流的hypervisors，如KVM，XenServer，VMware，Oracle VM，Xen等。同时CloudStack是一个开源云计算解决方案。可以加速高伸缩性的公共和私有云（IaaS）的部署、管理、配置。使用CloudStack作为基础，数据中心操作者可以快速方便的通过现存基础架构创建云服务。<br>实验室选择CloudStack进行构建私有云，本系列文章将对实验室构建私有云的过程进行梳理，主要内容来源与官方文档，记录了实践过程趟过的坑。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/08/cloudstack1-architecture/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/10/08/cloudstack-templates/" itemprop="url">
-                CloudStack 创建模版
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-10-08T09:53:44+08:00" content="2015-10-08">
-            2015-10-08
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/云计算/" itemprop="url" rel="index">
-                  <span itemprop="name">云计算</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>CloudStack在实验室实践过程，创建模版部分。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/08/cloudstack-templates/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/09/29/python-pypi-mirror/" itemprop="url">
-                创建PyPi镜像仓库
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-09-29T12:54:22+08:00" content="2015-09-29">
-            2015-09-29
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/黑科技/" itemprop="url" rel="index">
-                  <span itemprop="name">黑科技</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>团队在日常开发和生产部署中，会用到PyPi的仓库，但是由于GFW的原因，经常出现丢包、超时等情况。因此在实验室开源镜像服务器定期同步一个PyPi镜像仓库。<br>本文不只是创建一个PyPi镜像仓库，同时也包含了CentOS、Red Hat系列下如何部署python 2.7、pip等软件版本。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/29/python-pypi-mirror/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/09/29/hexo-guide/" itemprop="url">
-                Hexo部署静态博客
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-09-29T12:54:18+08:00" content="2015-09-29">
-            2015-09-29
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/黑科技/" itemprop="url" rel="index">
-                  <span itemprop="name">黑科技</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h1 id="什么是_Hexo">什么是 Hexo</h1><p>Hexo 是一个快速、简洁且高效的博客框架。Hexo 使用 Markdown（或其他渲染引擎）解析文章，在几秒内，即可利用靓丽的主题生成静态网页。本文主要内容来源官网：<a href="https://hexo.io/zh-cn/docs/。">https://hexo.io/zh-cn/docs/。</a></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/29/hexo-guide/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/09/29/cloudstack-advance_network/" itemprop="url">
-                CloudStack 高级网络
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-09-29T12:45:25+08:00" content="2015-09-29">
-            2015-09-29
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/云计算/" itemprop="url" rel="index">
-                  <span itemprop="name">云计算</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>CloudStack在实验室实践过程，高级网络部分。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/29/cloudstack-advance_network/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/09/29/cloudstack-performance/" itemprop="url">
-                CloudStack系列 调优
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-09-29T12:44:53+08:00" content="2015-09-29">
-            2015-09-29
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/云计算/" itemprop="url" rel="index">
-                  <span itemprop="name">云计算</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>CloudStack在实验室实践过程，本节提示如何提高云性能。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/29/cloudstack-performance/#more" rel="contents">
+            <a class="btn" href="/2015/10/22/test-swingbench/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1033,7 +1015,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">16</span>
+              <span class="site-state-item-count">18</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

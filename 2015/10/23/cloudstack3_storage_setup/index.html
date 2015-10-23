@@ -42,11 +42,11 @@
 <meta name="description" content="CloudStack在实验室实践过程，存储配置部分。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CloudStack系列3 存储配置">
-<meta property="og:url" content="http://yoursite.com/2015/09/28/cloudstack3_storage_setup/index.html">
+<meta property="og:url" content="http://yoursite.com/2015/10/23/cloudstack3_storage_setup/index.html">
 <meta property="og:site_name" content="信息系统应用技术实验室">
 <meta property="og:description" content="CloudStack在实验室实践过程，存储配置部分。">
 <meta property="og:image" content="http://yoursite.com/images/store.png">
-<meta property="og:updated_time" content="2015-09-28T08:39:17.325Z">
+<meta property="og:updated_time" content="2015-10-23T02:56:36.680Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CloudStack系列3 存储配置">
 <meta name="twitter:description" content="CloudStack在实验室实践过程，存储配置部分。">
@@ -204,8 +204,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-09-28T16:42:26+08:00" content="2015-09-28">
-            2015-09-28
+          <time itemprop="dateCreated" datetime="2015-10-23T10:56:36+08:00" content="2015-10-23">
+            2015-10-23
           </time>
         </span>
 
@@ -263,10 +263,12 @@
 <td>NFS支持</td>
 <td>支持</td>
 <td>支持</td>
+<td>支持</td>
 </tr>
 <tr>
 <td>iSCSI</td>
-<td>支持 通过VMFS支持</td>
+<td>支持</td>
+<td>通过VMFS支持</td>
 <td>通过集群文件系统支持</td>
 </tr>
 <tr>
@@ -302,26 +304,26 @@
 </blockquote>
 <p><img src="/images/store.png" alt=""></p>
 <h1 id="存储配置">存储配置</h1><h2 id="基于本地硬盘和DAS的NFS服务">基于本地硬盘和DAS的NFS服务</h2><p>在存储服务器上安装RHEL/CentOS 发行版。如果根卷的大小超过2TB，创建一个小点的启动卷用于安装RHEL/CentOS，根分区保留20GB就足够了。<br>系统安装好以后，创建一个名为/export的目录。可以在根分区下创建，或者挂载一个较大的磁盘卷。<br>如果你在一台主机上有超过16TB的存储空间， 则创建多个EXT3文件系统和多个NFS输出，单个EXT3文件系统不能超过16TB。</p>
-<h3 id="1-_安装NFS">1. 安装NFS</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line"># yum install nfs-utils -y</span><br></pre></td></tr></table></figure>
-<h3 id="2-_创建存储目录">2. 创建存储目录</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line"># mkdir -p /export/primary&#10;# mkdir -p /export/secondary</span><br></pre></td></tr></table></figure>
-<h3 id="3-_配置NFS">3. 配置NFS</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line"># echo &#34;/export *(rw,async,no_root_squash,no_subtree_check)&#34; &#62;/etc/exports&#10;# exportfs -a</span><br></pre></td></tr></table></figure>
+<h3 id="1-_安装NFS">1. 安装NFS</h3><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">yum <span class="keyword">install</span> nfs-utils -y</span><br></pre></td></tr></table></figure>
+<h3 id="2-_创建存储目录">2. 创建存储目录</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">mkdir -p /<span class="built_in">export</span>/primary</span><br><span class="line">mkdir -p /<span class="built_in">export</span>/secondary</span><br></pre></td></tr></table></figure>
+<h3 id="3-_配置NFS">3. 配置NFS</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"/export *(rw,async,no_root_squash,no_subtree_check)"</span> &gt;/etc/exports</span><br><span class="line">exportfs <span class="operator">-a</span></span><br></pre></td></tr></table></figure>
 <p>强烈建议通过指定子网掩码来限制NFS访问权限，（例如“192.168.20.0/24”）。只允许规定的集群才能访问，避免非集群成员访问。<br>且管理网络和存储网络必须能够访问；如果2个网络相同，那么一个CIDR就足够了。如果你是单独的存储网络则必须提供独立的CIDR或者一个足够大的CIDR可以包含它们2个。</p>
 <p>移除async异步标记. 标志允许NFS服务器在提交并写入磁盘操作前就先返回相应，来提高性能。请在关键生产部署中移除异步标志。</p>
-<p>编辑/etc/exports文件，设置存储的路径,Export /export 目录。<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">#&#10;echo &#34;LOCKD_TCPPORT=32803&#10;LOCKD_UDPPORT=32769&#10;MOUNTD_PORT=892&#10;RQUOTAD_PORT=875&#10;STATD_PORT=662&#10;STATD_OUTGOING_PORT=2020&#10;RPCNFSDARGS=&#34;-N&#9;4&#34;&#10;#&#9;&#23545;&#20110;KVM&#38598;&#32676;&#26159;&#24517;&#39035;&#30340;,&#9; &#21542;&#21017;&#23384;&#20648;&#24322;&#24120;&#23548;&#33268;&#31995;&#32479;&#34394;&#26426;&#26080;&#27861;&#21551;&#21160;&#10;&#34; &#62;&#62;/etc/sysconfig/nfs</span><br></pre></td></tr></table></figure></p>
+<p>编辑/etc/exports文件，设置存储的路径,Export /export 目录。<br><figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">echo "LOCKD_TCPPORT=32803</span><br><span class="line"><span class="constant">LOCKD_UDPPORT</span>=32769</span><br><span class="line"><span class="constant">MOUNTD_PORT</span>=892</span><br><span class="line"><span class="constant">RQUOTAD_PORT</span>=875</span><br><span class="line"><span class="constant">STATD_PORT</span>=662</span><br><span class="line"><span class="constant">STATD_OUTGOING_PORT</span>=2020</span><br><span class="line"><span class="constant">RPCNFSDARGS</span>="-N	4"</span><br><span class="line"><span class="comment">#对于KVM集群是必须的,否则存储异常导致系统虚机无法启动</span></span><br><span class="line">" &gt;&gt;/etc/sysconfig/nfs</span><br></pre></td></tr></table></figure></p>
 <p>修改 /etc/sysconfig/nfs，将其中的端口号全部打开。</p>
-<h3 id="4-_配置防火墙">4. 配置防火墙</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">#&#10;iptables -A INPUT -s 0.0.0.0/0 -m state --state NEW -p udp --dport 111 -j ACCEPT&#10;iptables -A INPUT -s 0.0.0.0/0 -m state --state NEW -p tcp --dport 111 -j ACCEPT&#10;iptables -A INPUT -s 0.0.0.0/0 -m state --state NEW -p tcp --dport 2049 -j ACCEPT&#10;iptables -A INPUT -s 0.0.0.0/0 -m state --state NEW -p tcp --dport 32803 -j ACCEPT&#10;iptables -A INPUT -s 0.0.0.0/0 -m state --state NEW -p udp --dport 32769 -j ACCEPT&#10;iptables -A INPUT -s 0.0.0.0/0 -m state --state NEW -p tcp --dport 892 -j ACCEPT&#10;iptables -A INPUT -s 0.0.0.0/0 -m state --state NEW -p udp --dport 892 -j ACCEPT&#10;iptables -A INPUT -s 0.0.0.0/0 -m state --state NEW -p tcp --dport 875 -j ACCEPT&#10;iptables -A INPUT -s 0.0.0.0/0 -m state --state NEW -p udp --dport 875 -j ACCEPT&#10;iptables -A INPUT -s 0.0.0.0/0 -m state --state NEW -p tcp --dport 662 -j ACCEPT&#10;iptables -A INPUT -s 0.0.0.0/0 -m state --state NEW -p udp --dport 662 -j ACCEPT&#10;# iptables-save &#62; /etc/sysconfig/iptables&#10;# service iptables status</span><br></pre></td></tr></table></figure>
-<h3 id="5-_启动NFS服务">5. 启动NFS服务</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line"># service nfs start&#10;# service rpcbind start</span><br></pre></td></tr></table></figure>
-<h3 id="6-_设置服务为自动启动">6. 设置服务为自动启动</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line"># chkconfig nfs on&#10;# chkconfig rpcbind on</span><br></pre></td></tr></table></figure>
+<h3 id="4-_配置防火墙">4. 配置防火墙</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">iptables -A INPUT -s <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">0</span> -m state --state NEW -p udp --dport <span class="number">111</span> -j ACCEPT</span><br><span class="line">iptables -A INPUT -s <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">0</span> -m state --state NEW -p tcp --dport <span class="number">111</span> -j ACCEPT</span><br><span class="line">iptables -A INPUT -s <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">0</span> -m state --state NEW -p tcp --dport <span class="number">875</span> -j ACCEPT</span><br><span class="line">iptables -A INPUT -s <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">0</span> -m state --state NEW -p udp --dport <span class="number">875</span> -j ACCEPT</span><br><span class="line">iptables -A INPUT -s <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">0</span> -m state --state NEW -p tcp --dport <span class="number">892</span> -j ACCEPT</span><br><span class="line">iptables -A INPUT -s <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">0</span> -m state --state NEW -p udp --dport <span class="number">892</span> -j ACCEPT</span><br><span class="line"><span class="preprocessor">#iptables -A INPUT -s <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">0</span> -m state --state NEW -p tcp --dport <span class="number">662</span> -j ACCEPT</span></span><br><span class="line"><span class="preprocessor">#iptables -A INPUT -s <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">0</span> -m state --state NEW -p udp --dport <span class="number">662</span> -j ACCEPT</span></span><br><span class="line">iptables -A INPUT -s <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">0</span> -m state --state NEW -p tcp --dport <span class="number">2049</span> -j ACCEPT</span><br><span class="line">iptables -A INPUT -s <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">0</span> -m state --state NEW -p udp --dport <span class="number">2049</span> -j ACCEPT</span><br><span class="line">iptables -A INPUT -s <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">0</span> -m state --state NEW -p tcp --dport <span class="number">32803</span> -j ACCEPT</span><br><span class="line">iptables -A INPUT -s <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">0</span> -m state --state NEW -p udp --dport <span class="number">32769</span> -j ACCEPT</span><br><span class="line"><span class="preprocessor">#</span></span><br><span class="line">iptables-save &gt; /etc/sysconfig/iptables</span><br><span class="line">service iptables status</span><br></pre></td></tr></table></figure>
+<h3 id="5-_启动NFS服务">5. 启动NFS服务</h3><figure class="highlight livecodeserver"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">service nfs <span class="built_in">start</span></span><br><span class="line">service rpcbind <span class="built_in">start</span></span><br></pre></td></tr></table></figure>
+<h3 id="6-_设置服务为自动启动">6. 设置服务为自动启动</h3><figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">chkconfig nfs <span class="function_start"><span class="keyword">on</span></span></span><br><span class="line">chkconfig rpcbind <span class="function_start"><span class="keyword">on</span></span></span><br></pre></td></tr></table></figure>
 <h2 id="基于iSCSI的NFS服务">基于iSCSI的NFS服务</h2><p>使用以下步骤创建基于iSCSI卷的NFS服务。这些步骤适用于RHEL/CentOS 5发行版。</p>
-<h3 id="1-_安装iscsiadm">1. 安装iscsiadm</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># yum install iscsi-initiator-utils</span></span><br><span class="line"><span class="comment"># service iscsi start</span></span><br><span class="line"><span class="comment"># chkconfig --add iscsi</span></span><br><span class="line"><span class="comment"># chkconfig iscsi on</span></span><br></pre></td></tr></table></figure>
-<h3 id="2-_发现ISCSI_target">2. 发现ISCSI target</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># iscsiadm -m discovery -t st -p &lt;iSCSI Server IP address&gt;:3260</span></span><br><span class="line">// 例如</span><br><span class="line"><span class="comment"># iscsiadm -m discovery -t st -p 172.23.10.240:3260 172.23.10.240:3260,1 iqn.2001-05.com.equallogic:0-8a0906-83bcb3401-16e0002fd0a46f3d-rhel5-test</span></span><br></pre></td></tr></table></figure>
-<h3 id="3-_登录">3. 登录</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># iscsiadm -m node -T &lt;Complete Target Name&gt; -l -p &lt;Group IP&gt;:3260</span></span><br><span class="line">//例如</span><br><span class="line"><span class="comment"># iscsiadm -m node -l -T iqn.2001-05.com.equallogic:83bcb3401-16e0002fd0a46f3d-rhel5-test -p 172.23.10.240:3260</span></span><br></pre></td></tr></table></figure>
-<h3 id="4-_发现SCSI磁盘">4. 发现SCSI磁盘</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># iscsiadm -m session -P3 | grep Attached</span></span><br><span class="line">Attached scsi disk sdb State: running</span><br></pre></td></tr></table></figure>
-<h3 id="5-_格式化磁盘为ext3类型并挂载卷">5. 格式化磁盘为ext3类型并挂载卷</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># mkfs.ext4 /dev/sdb</span></span><br><span class="line"><span class="comment"># mkdir -p /export</span></span><br><span class="line"><span class="comment"># mount /dev/sdb /export</span></span><br></pre></td></tr></table></figure>
+<h3 id="1-_安装iscsiadm">1. 安装iscsiadm</h3><figure class="highlight livecodeserver"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">yum install iscsi-initiator-utils</span><br><span class="line">service iscsi <span class="built_in">start</span></span><br><span class="line">chkconfig <span class="comment">--add iscsi</span></span><br><span class="line">chkconfig iscsi <span class="command"><span class="keyword">on</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="2-_发现ISCSI_target">2. 发现ISCSI target</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">iscsiadm -m discovery -t st -p &lt;iSCSI Server IP address&gt;:<span class="number">3260</span></span><br><span class="line"><span class="preprocessor">#例如</span></span><br><span class="line">iscsiadm -m discovery -t st -p <span class="number">172.23</span><span class="number">.10</span><span class="number">.240</span>:<span class="number">3260</span> <span class="number">172.23</span><span class="number">.10</span><span class="number">.240</span>:<span class="number">3260</span>,<span class="number">1</span> iqn<span class="number">.2001</span>-<span class="number">05.</span>com.equallogic:<span class="number">0</span>-<span class="number">8</span>a0906-<span class="number">83</span>bcb3401-<span class="number">16e0002</span>fd0a46f3d-rhel5-test</span><br></pre></td></tr></table></figure>
+<h3 id="3-_登录">3. 登录</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">iscsiadm -m node -T &lt;Complete Target Name&gt; -l -p &lt;Group IP&gt;:<span class="number">3260</span></span><br><span class="line"><span class="preprocessor">#例如</span></span><br><span class="line">iscsiadm -m node -l -T iqn<span class="number">.2001</span>-<span class="number">05.</span>com.equallogic:<span class="number">83</span>bcb3401-<span class="number">16e0002</span>fd0a46f3d-rhel5-test -p <span class="number">172.23</span><span class="number">.10</span><span class="number">.240</span>:<span class="number">3260</span></span><br></pre></td></tr></table></figure>
+<h3 id="4-_发现SCSI磁盘">4. 发现SCSI磁盘</h3><figure class="highlight 1c"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">iscsiadm -m session -P3 <span class="string">| grep Attached</span></span><br><span class="line">Attached scsi disk sdb State: running</span><br></pre></td></tr></table></figure>
+<h3 id="5-_格式化磁盘为ext3类型并挂载卷">5. 格式化磁盘为ext3类型并挂载卷</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">mkfs.ext4 /dev/sdb</span><br><span class="line">mkdir -p /<span class="built_in">export</span></span><br><span class="line">mount /dev/sdb /<span class="built_in">export</span></span><br></pre></td></tr></table></figure>
 <h3 id="6-_添加到/etc/fstab">6. 添加到/etc/fstab</h3><p>在启动时能被挂载。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/dev/sdb /<span class="built_in">export</span> ext3       _netdev <span class="number">0</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">/dev/sdb /<span class="keyword">export</span> ext3       _netdev <span class="number">0</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
 <p>现在可以建立/export共享目录，其他步骤参考上一节。</p>
-<h2 id="文件服务器">文件服务器</h2><h3 id="1-_安装httpd服务">1. 安装httpd服务</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line"># yum install httpd -y&#10;# service httpd start</span><br></pre></td></tr></table></figure>
+<h2 id="文件服务器">文件服务器</h2><h3 id="1-_安装httpd服务">1. 安装httpd服务</h3><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">yum <span class="keyword">install</span> httpd -y</span><br><span class="line">service httpd start</span><br></pre></td></tr></table></figure>
 <h3 id="2-_上传系统镜像">2. 上传系统镜像</h3><p>将系统模版、操作系统iso镜像上传至/var/www/html目录。</p>
 </span>
       
@@ -340,13 +342,13 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/09/28/cloudstack4-install/" rel="prev">CloudStack系列4 管理节点安装</a>
+              <a href="/2015/10/23/cloudstack6-kvm/" rel="prev">CloudStack系列6 KVM安装和配置</a>
             
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/09/27/containerized-mesos-cluster-cn/" rel="next">在Docker中运行你的Mesos集群</a>
+              <a href="/2015/10/22/sys-cobbler/" rel="next">使用Cobbler部署操作系统</a>
             
           </div>
         </div>
@@ -408,7 +410,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">16</span>
+              <span class="site-state-item-count">18</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

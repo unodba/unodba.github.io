@@ -42,22 +42,22 @@
 <meta name="description" content="CloudStack在实验室实践过程，安装配置部分。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CloudStack系列7 vsphere安装和配置">
-<meta property="og:url" content="http://yoursite.com/2015/09/29/cloudstack7-vsphere/index.html">
+<meta property="og:url" content="http://yoursite.com/2015/10/23/cloudstack7-vsphere/index.html">
 <meta property="og:site_name" content="信息系统应用技术实验室">
 <meta property="og:description" content="CloudStack在实验室实践过程，安装配置部分。">
-<meta property="og:image" content="http://yoursite.com/../images/vmware-physical-network.png">
-<meta property="og:image" content="http://yoursite.com/../images/vmware-increase-ports.png">
-<meta property="og:image" content="http://yoursite.com/../images/vmware-vswitch-properties.png">
-<meta property="og:image" content="http://yoursite.com/../images/vmware-mgt-network-properties.png">
-<meta property="og:image" content="http://yoursite.com/../images/vds-name.png">
-<meta property="og:image" content="http://yoursite.com/../images/traffic-type.png">
-<meta property="og:image" content="http://yoursite.com/../images/dvswitchconfig.png">
-<meta property="og:image" content="http://yoursite.com/../images/vmware-iscsi-initiator.png">
-<meta property="og:image" content="http://yoursite.com/../images/vmware-iscsi-initiator-properties.png">
-<meta property="og:image" content="http://yoursite.com/../images/vmware-iscsi-general.png">
-<meta property="og:image" content="http://yoursite.com/../images/vmware-iscsi-target-add.png">
-<meta property="og:image" content="http://yoursite.com/../images/vmware-iscsi-datastore.png">
-<meta property="og:updated_time" content="2015-09-29T04:44:12.790Z">
+<meta property="og:image" content="http://yoursite.com/images/vmware-physical-network.png">
+<meta property="og:image" content="http://yoursite.com/images/vmware-increase-ports.png">
+<meta property="og:image" content="http://yoursite.com/images/vmware-vswitch-properties.png">
+<meta property="og:image" content="http://yoursite.com/images/vmware-mgt-network-properties.png">
+<meta property="og:image" content="http://yoursite.com/images/vds-name.png">
+<meta property="og:image" content="http://yoursite.com/images/traffic-type.png">
+<meta property="og:image" content="http://yoursite.com/images/dvswitchconfig.png">
+<meta property="og:image" content="http://yoursite.com/images/vmware-iscsi-initiator.png">
+<meta property="og:image" content="http://yoursite.com/images/vmware-iscsi-initiator-properties.png">
+<meta property="og:image" content="http://yoursite.com/images/vmware-iscsi-general.png">
+<meta property="og:image" content="http://yoursite.com/images/vmware-iscsi-target-add.png">
+<meta property="og:image" content="http://yoursite.com/images/vmware-iscsi-datastore.png">
+<meta property="og:updated_time" content="2015-10-23T03:59:19.249Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CloudStack系列7 vsphere安装和配置">
 <meta name="twitter:description" content="CloudStack在实验室实践过程，安装配置部分。">
@@ -215,8 +215,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-09-29T12:44:12+08:00" content="2015-09-29">
-            2015-09-29
+          <time itemprop="dateCreated" datetime="2015-10-23T11:59:19+08:00" content="2015-10-23">
+            2015-10-23
           </time>
         </span>
 
@@ -251,16 +251,14 @@
       
         <span itemprop="articleBody"><p>CloudStack在实验室实践过程，安装配置部分。</p>
 <a id="more"></a>
-<p>如果计划使用VMware vSphere平台运行虚拟机，请在云中安装vSphere主机。<br><a name="VMware vSphere要求"></a></p>
-<h1 id="VMware_vSphere要求">VMware vSphere要求</h1><p><a name="vSphere ESXi软件要求"></a></p>
-<h2 id="vSphere_ESXi软件要求">vSphere ESXi软件要求</h2><ul>
+<h1 id="VMware_vSphere要求">VMware vSphere要求</h1><h2 id="vSphere_ESXi软件要求">vSphere ESXi软件要求</h2><ul>
 <li><p>vSphere ESXi 和vSphere vCenter版本,支持4.1、5.0、 5.1 和 5.5，不支持4.0版本，支持vSphere ESX。</p>
-<p>建议使用vSphere标准版，需要考虑vSphere授权对CPU的限制。价格请参考 <a href="http://www.vmware.com/files/pdf/vsphere_pricing.pdf" target="_blank" rel="external">vsphere_pricing</a> 。</p>
 </li>
-<li><p>保持版本最新</p>
-<p>确保安装已发布的所有补丁程序。</p>
+<li><p>建议使用vSphere标准版，需要考虑vSphere授权对CPU的限制。价格请参考 <a href="http://www.vmware.com/files/pdf/vsphere_pricing.pdf" target="_blank" rel="external">vsphere_pricing</a> 。</p>
+</li>
+<li><p>保持版本最新，确保安装已发布的所有补丁程序。</p>
 <blockquote>
-<p>警告：<br>安装一切必要的补丁程序，缺乏最新补丁程序可能会导致数据和虚拟机丢失。</p>
+<p>警告：安装一切必要的补丁程序，缺乏最新补丁程序可能会导致数据和虚拟机丢失。</p>
 </blockquote>
 </li>
 </ul>
@@ -276,15 +274,14 @@
 <li>至少一块网卡</li>
 <li><p>静态分配的IP<br><a name="vSphere vCenter要求"></a></p>
 <h2 id="vSphere_vCenter要求">vSphere vCenter要求</h2></li>
-<li><p>处理器 - 2颗2.0GHz的Intel或AMD x86 CPUs， 或更高的处理器。如果数据库跟VC在同一台服务器中，可能会需要更高的处理器。</p>
+<li><p>处理器 - 2颗2.0GHz的Intel或AMD x86 CPUs或更高。如果数据库跟VC在同一台服务器中，可能会需要更高的处理器。</p>
 </li>
 <li>内存 - 3GB。如果数据库跟VC在同一台服务器中，可能会需要更多内存。</li>
-<li>磁盘空间 - 2GB。如果数据库跟VC在同一台服务器中，可能会需要更多的磁盘空间。</li>
+<li>磁盘空间 - 20GB。如果数据库跟VC在同一台服务器中，可能会需要更多的磁盘空间。</li>
 <li>Microsoft SQL Server 2005 Express磁盘要求。最多需要2GB 的可用磁盘空间解压安装文件。</li>
 <li>网络 - 1Gbit或者10Gbit。</li>
 </ul>
 <p>更多信息，请参考vCenter Server 和 vSphere Client <a href="http://pubs.vmware.com/vsp40/wwhelp/wwhimpl/js/html/wwhelp.htm#href=install/c_vc_hw.html" target="_blank" rel="external">硬件要求</a>。</p>
-<p><a name="其他要求"></a></p>
 <h2 id="其他要求">其他要求</h2><ul>
 <li><p>必须配置vCenter使用443端口与CloudStack管理服务器通讯。</p>
 </li>
@@ -301,8 +298,7 @@
 <li><p>所有必需的vlan必须通过所有网络交换机端口的trunk模式连接到ESXi hypervisor主机。其中包含管理，存储，vMotion和来宾等VLANs。CloudStack管理一段连续的来宾VLANs范围(高级网络；请参阅 网络设置) 。</p>
 </li>
 </ul>
-<p><a name="VMware的准备工作清单"></a></p>
-<h1 id="VMware的准备工作清单">VMware的准备工作清单</h1><p>为了能顺利地安装，在安装之前请收集以下信息：<br><a name="vCenter检查清单"></a></p>
+<h1 id="VMware的准备工作清单">VMware的准备工作清单</h1><p>为了能顺利地安装，在安装之前请收集以下信息：</p>
 <h2 id="vCenter检查清单">vCenter检查清单</h2><p>你需要关于vCenter的下列信息。</p>
 <table>
 <thead>
@@ -330,7 +326,6 @@
 </tr>
 </tbody>
 </table>
-<p><a name="VMware网络清单"></a></p>
 <h2 id="VMware网络清单">VMware网络清单</h2><table>
 <thead>
 <tr>
@@ -373,11 +368,10 @@
 </tr>
 </tbody>
 </table>
-<p><a name="vSphere ESXi安装"></a></p>
 <h1 id="vSphere_ESXi安装">vSphere ESXi安装</h1><ul>
 <li><p>准备好安装介质。</p>
 </li>
-<li><p>安装过程中，执行下面几个章节描述的以下配置：</p>
+<li><p>安装过程中：</p>
 </li>
 </ul>
 <table>
@@ -397,26 +391,25 @@
 <td>存储多路径</td>
 </tr>
 <tr>
-<td>准备iSCSI存储</td>
-<td></td>
+<td>准备存储</td>
+<td>iscsi，fc，nfs均可</td>
 </tr>
 <tr>
 <td>在vCenter中配置集群并添加主机，或不使用集群，直接在vCenter中添加主机。</td>
 </tr>
 </tbody>
 </table>
-<p><a name="vSphere ESXi主机配置"></a></p>
-<h2 id="vSphere_ESXi主机配置">vSphere ESXi主机配置</h2><p>所有ESXi主机都应该在BIOS中启用CPU硬件虚拟化支持。请注意，大多数服务器默认不启用该功能。</p>
+<h2 id="vSphere_ESXi主机配置">vSphere ESXi主机配置</h2><p>所有ESXi主机都应该在BIOS中启用CPU硬件虚拟化支持。</p>
 <ul>
 <li>物理主机网络</li>
 </ul>
 <p>您应该准备一个vSphere主机连接的规划。将主机添加至CloudStack之前，需要合理地配置网络。要配置ESXi主机，可以先用vClient将它作为独立主机添加到vCenter。当您在vCenter的导航树中看到该主机时，点击它，选择配置页。</p>
-<p><img src="../images/vmware-physical-network.png" alt="vSphere client"></p>
+<p><img src="/images/vmware-physical-network.png" alt="vSphere client"></p>
 <p>在主机的配置标签页中，点击”硬件/网络”链接转到上图中的网络配置页。</p>
 <ul>
 <li>配置虚拟交换机</li>
 </ul>
-<p>默认情况下，系统会创建虚拟交换机vSwitch0。你可以视你的架构额外创建虚拟机交换机。CloudStack要求云中所有ESXi主机中的虚拟交换机都使用相同的名字。如果你改变了默认虚拟交换机名称，那么你需要改变一个或多个CloudStack配置。</p>
+<p>默认情况下，系统会创建虚拟交换机vSwitch0。你可以视额外创建虚拟机交换机。CloudStack要求云中所有ESXi主机中的虚拟交换机都使用相同的名字。如果改变了默认虚拟交换机名称，那么需要改变一个或多个CloudStack配置。</p>
 <ul>
 <li>流量隔离</li>
 </ul>
@@ -426,33 +419,29 @@
 <li>增加端口</li>
 </ul>
 <p>ESXi主机的虚拟交换机默认有56个端口。我们建议设为最大允许数4088，有些可能无法设置，改为允许的最大值即可。要设置该值，请点击虚拟交换机的“属性…”链接(注意，不是网络的属性)。</p>
-<p><img src="../images/vmware-increase-ports.png" alt="vSphere client"></p>
+<p><img src="/images/vmware-increase-ports.png" alt="vmware-increase-ports"></p>
 <p>在vSwitch属性对话框中，选择vSwitch，点击“编辑”，您将看到以下对话框：</p>
-<p><img src="../images/vmware-vswitch-properties.png" alt="vSphereclient"></p>
-<p>在该对话框中，您可以修改端口数量。修改完后，需要重启ESXi主机使配置生效，。</p>
-<p><a name="vSphere vCenter管理网络配置"></a></p>
+<p><img src="/images/vmware-vswitch-properties.png" alt="vmware-vswitch-properties"></p>
+<p>在该对话框中，您可以修改端口数量。修改完后，需要重启ESXi主机使配置生效。</p>
 <h2 id="vSphere_vCenter管理网络配置">vSphere vCenter管理网络配置</h2><p>在vSwith属性对话框中，可以看到一个vCenter管理网络。CloudStack的管理网络也使用该网络。CloudStack要求正确配置vCenter的管理网络。在对话框中点击管理网络，然后点击编辑。</p>
-<p><img src="../images/vmware-mgt-network-properties.png" alt="vSphereclient"></p>
+<p><img src="/images/vmware-mgt-network-properties.png" alt="vmware-mgt-network-properties"></p>
 <p>请确保配置以下设置：</p>
 <ul>
 <li>VLAN ID设置为期望的ID</li>
-<li>启用vMotion。</li>
-<li>启用管理流量。</li>
+<li>启用vMotion</li>
+<li>启用管理流量</li>
 </ul>
-<p>如果ESXi主机具有多个VMKernel端口，且ESXi没有使用默认的“Management Network”作为管理网络名称，必须按照以下指南配置管理网络端口组，以便CloudStack可以发现管理网络。</p>
+<p>如果ESXi主机具有多个VMKernel端口，且ESXi没有使用默认的“Management Network”作为管理网络名称，必须按照以下指南配置管理网络端口组以便CloudStack可以发现管理网络。</p>
 <ul>
 <li>在所有ESXi主机上使用同一个管理网络端口组名称。</li>
 <li>在CloudStack管理界面中，点击配置-全局设置，修改vmware.management.portgroup为ESXi主机管理网络的标签。</li>
 </ul>
-<p><a name="为CloudStack控制台代理扩展端口范围"></a></p>
 <h2 id="为CloudStack控制台代理扩展端口范围">为CloudStack控制台代理扩展端口范围</h2><blockquote>
 <p>仅适用于VMware vSphere 4.x</p>
 </blockquote>
 <p>为使控制台代理可以和主机一起工作，需要扩展主机的防火墙端口范围。这是为了使控制台代理可以访问VMware的VM。为扩展端口范围，请登录到每台主机的VMware ESX服务控制台，然后执行以下命令：</p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line">esxcfg-firewall -o 59000-60000,tcp,in,vncextras&#10;esxcfg-firewall -o 59000-60000,tcp,out,vncextras</span><br></pre></td></tr></table></figure>
-<p><a name="配置vSphere的网卡绑定"></a></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">esxcfg-firewall -o <span class="number">59000</span>-<span class="number">60000</span>,tcp,in,vncextras</span><br><span class="line">esxcfg-firewall -o <span class="number">59000</span>-<span class="number">60000</span>,tcp,out,vncextras</span><br></pre></td></tr></table></figure>
 <h2 id="配置vSphere的网卡绑定">配置vSphere的网卡绑定</h2><p>vSphere主机的网卡绑定可以按照vSphere安装指南完成。</p>
-<p><a name=" 配置VMware数据中心使用VMware分布式虚拟交换机"></a></p>
 <h2 id="配置VMware数据中心使用VMware分布式虚拟交换机">配置VMware数据中心使用VMware分布式虚拟交换机</h2><p>CloudStack支持在VMware vSphere环境中为虚拟网络配置VMware vNetwork分布式交换机（VDS）。本章节能帮助你在CloudStack中配置VMware VDS。每个vCenter服务器实例最多支持128 VDS实例，每个VDS实例最多可以管理500台VMware服务器。</p>
 <p>关于VMware分布式虚拟交换机</p>
 <p>在VMware vCenter服务器中的VMware VDS聚合主机层面虚拟交换机 。各个主机层面的虚拟交换机被抽象处理成一个在数据中心层面上横跨多个主机的大型 VDS，通过一个集中的接口，使用集中配置、管理、监控你的整个数据中心。实际上，VDS可以看作是数据中心层面中一个整体的虚拟交换机，通过VMware vCenter服务器管理数据中心中大量的主机网络。在虚拟机跨多个主机移动时保持其网络运行时状态，支持嵌入式监控和集中式防火墙服务。VDS能与标准虚拟交换机和 Nexus 1000V虚拟交换机一起部署或者独立部署。</p>
@@ -466,13 +455,13 @@
 </ul>
 <p>准备工作清单</p>
 <p>为了顺利的配置VMware VDS，在开始之前，请牢记添加到数据中心中的VDS名称：</p>
-<p><img src="../images/vds-name.png" alt="dvSwitch"></p>
+<p><img src="/images/vds-name.png" alt="dvSwitch"></p>
 <p>如下需要使用VDS名称：</p>
 <ul>
 <li>在创建zone的过程中配置公共网络和来宾网络时，在编辑流量标签对话框中配置交换机名称。</li>
 </ul>
 <p>在创建zone的过程中配置来宾网络和公共网络流量类型时，请确保你选择了VMware vNetwork Distributed Virtual Switch。</p>
-<p>   <img src="../images/traffic-type.png" alt="traffic-type"></p>
+<p>   <img src="/images/traffic-type.png" alt="traffic-type"></p>
 <ul>
 <li>当添加一个启用了VDS的VMware群集时，则显示公共网络流量vSwitch类型区域。</li>
 <li>当在zone中更新交换机类型时，流量标签所使用的交换机名称。</li>
@@ -517,13 +506,12 @@
 <p><strong>vmware.use.nexus.vswitch</strong>: 如果vmware.use.dvswitch设置为false，则忽略该参数。设置为true则是部署CloudStack时启用Cisco Nexus 1000v分布式交换机。</p>
 </li>
 </ul>
-<p><a name="在CloudStack中启用分布式虚拟交换机"></a></p>
 <h3 id="在CloudStack中启用分布式虚拟交换机">在CloudStack中启用分布式虚拟交换机</h3><p>在部署CloudStack时启用VDS，请在CloudStack管理界面中的全局设置页面中设置vmware.use.dvswitch parameter为true并重启管理服务器。只有启用了vmware.use.dvswitch参数，你才能在管理界面中指定VDS，并且CloudStack会忽略你指定的VDS-specific参数。另外，如果vmware.use.dvswitch参数的值为true且vmware.use.nexus.dvswitch参数的值为false，那么CloudStack中虚拟网络架构使用VDS。另外一个定义VDS配置的全局参数是vmware.ports.per.dvportgroup。它表示在VMware环境里每个VMware dvPortGroup中默认端口数量。默认是256。这个数值直接关系到你创建的来宾网络的数量。</p>
-<p>CloudStack支持混合部署分布式虚拟交换机、标准虚拟交换机和Nexus 1000v虚拟交换机的虚拟网络。<br><a name="在CloudStack中配置分布式虚拟交换机"></a></p>
+<p>CloudStack支持混合部署分布式虚拟交换机、标准虚拟交换机和Nexus 1000v虚拟交换机的虚拟网络。</p>
 <h3 id="在CloudStack中配置分布式虚拟交换机">在CloudStack中配置分布式虚拟交换机</h3><p>在创建区域时需要添加必要的资源才能配置VDS。</p>
 <p>另外在群集层面，使用添加群集选项，可以在已经存在并启用VDS的区域中创建附加群集。更多信息请参阅 “添加群集: vSphere”.</p>
 <p>在所有情况下，配置VDS时必须指定下列参数：</p>
-<p><img src="../images/dvswitchconfig.png" alt="Configuring dvSwitch"></p>
+<p><img src="/images/dvswitchconfig.png" alt="Configuring dvSwitch"></p>
 <table>
 <thead>
 <tr>
@@ -578,36 +566,32 @@
 </tr>
 </tbody>
 </table>
-<p><a name="vSphere的存储准备(仅限iSCSI)"></a></p>
 <h2 id="vSphere的存储准备(仅限iSCSI)">vSphere的存储准备(仅限iSCSI)</h2><p>使用iSCSI需要在vCenter中做一些准备工作。您必须添加iSCSI目标并创建iSCSI数据存储。</p>
-<p>如果使用NFS，请跳过本章节。<br><a name="ESXi主机中启用iSCSI启动器"></a></p>
+<p>如果使用NFS，请跳过本章节。</p>
 <h3 id="ESXi主机中启用iSCSI启动器">ESXi主机中启用iSCSI启动器</h3><ul>
 <li><p>在vCenter中，点击主机/集群的配置，点击存储适配器。您将看到：</p>
-<p><img src="../images/vmware-iscsi-initiator.png" alt="iscsi initiator"></p>
+<p><img src="/images/vmware-iscsi-initiator.png" alt="iscsi initiator"></p>
 </li>
 <li><p>选择iSCSI软件适配器并点击属性。</p>
-<p><img src="../images/vmware-iscsi-initiator-properties.png" alt="iscsi initiator properties"></p>
+<p><img src="/images/vmware-iscsi-initiator-properties.png" alt="iscsi initiator properties"></p>
 </li>
 <li><p>点击配置…按钮。</p>
-<p> <img src="../images/vmware-iscsi-general.png" alt="iscsi general"></p>
+<p> <img src="/images/vmware-iscsi-general.png" alt="iscsi general"></p>
 </li>
 <li><p>勾选启用以便启用启动器。</p>
 </li>
-<li><p>点击 确定 保存。<br><a name="添加iSCSI目标"></a></p>
-<h3 id="添加iSCSI目标">添加iSCSI目标</h3></li>
+<li><p>点击 确定 保存。</p>
+</li>
 </ul>
-<p>在属性对话框中，添加iSCSI目标信息：</p>
-<p><img src="../images/vmware-iscsi-target-add.png" alt="iscsi target add"></p>
+<h3 id="添加iSCSI目标">添加iSCSI目标</h3><p>在属性对话框中，添加iSCSI目标信息：</p>
+<p><img src="/images/vmware-iscsi-target-add.png" alt="iscsi target add"></p>
 <p>在集群中所有ESXi主机上重复以上步骤。</p>
 <p>创建iSCSI数据存储</p>
 <p>现在您应该创建一个VMFS数据存储。请按照以下步骤：</p>
 <p>选择主页/清单/数据存储。<br>右键点击数据中心节点。<br>选择添加数据存储…命令。<br>按照向导创建iSCSI数据存储。<br>该过程只需要在集群中的一台主机上执行，不需要在所有主机上执行。</p>
-<p><img src="../images/vmware-iscsi-datastore.png" alt="iscsi datastore"></p>
-<p><a name="vSphere多路径(可选)"></a></p>
+<p><img src="/images/vmware-iscsi-datastore.png" alt="iscsi datastore"></p>
 <h3 id="vSphere多路径(可选)">vSphere多路径(可选)</h3><p>vSphere的存储多路径可以根据vSphere的安装文档配置。</p>
-<p><a name="添加主机或配置集群(vSphere)"></a></p>
 <h2 id="添加主机或配置集群(vSphere)">添加主机或配置集群(vSphere)</h2><p>使用vCenter创建集群，向其中添加期望的主机。随后您可以将整个集群加入到Cloudstack中。(参考 “添加群集: vSphere”)。</p>
-<p><a name="VMware vSphere主机安装补丁程序"></a></p>
 <h1 id="VMware_vSphere主机安装补丁程序">VMware vSphere主机安装补丁程序</h1><ul>
 <li><p>在CloudStack中断开与VMware vSphere 群集的连接。应断开足够长的时间以便在主机上安装补丁程序。</p>
 <ul>
@@ -660,13 +644,13 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/09/29/cloudstack6-kvm/" rel="prev">CloudStack系列6 vsphere安装和配置</a>
+              <a href="/2015/10/23/cloudstack4-install/" rel="prev">CloudStack系列4 管理节点安装</a>
             
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/09/29/cloudstack5_option/" rel="next">CloudStack系列5 可选安装和配置</a>
+              <a href="/2015/10/23/cloudstack6-kvm/" rel="next">CloudStack系列6 KVM安装和配置</a>
             
           </div>
         </div>
@@ -728,7 +712,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">16</span>
+              <span class="site-state-item-count">18</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

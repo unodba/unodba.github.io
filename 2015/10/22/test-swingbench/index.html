@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="CloudStack," />
+  <meta name="keywords" content="Oracle,Swingbench," />
 
 
 
@@ -39,16 +39,18 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="CloudStack在实验室实践过程，可选安装配置部分。">
+<meta name="description" content="Swingbench is a free load generator (and benchmarks) designed to stress test an Oracle database (10g,11g,12c).">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CloudStack系列5 可选安装和配置">
-<meta property="og:url" content="http://yoursite.com/2015/09/29/cloudstack5_option/index.html">
+<meta property="og:title" content="使用Swingbench对数据库进行压力测试">
+<meta property="og:url" content="http://yoursite.com/2015/10/22/test-swingbench/index.html">
 <meta property="og:site_name" content="信息系统应用技术实验室">
-<meta property="og:description" content="CloudStack在实验室实践过程，可选安装配置部分。">
-<meta property="og:updated_time" content="2015-09-29T04:44:05.476Z">
+<meta property="og:description" content="Swingbench is a free load generator (and benchmarks) designed to stress test an Oracle database (10g,11g,12c).">
+<meta property="og:image" content="http://yoursite.com/images/swingbench_simple.JPG">
+<meta property="og:image" content="http://yoursite.com/images/swingbench_advance.JPG">
+<meta property="og:updated_time" content="2015-10-22T02:13:39.061Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="CloudStack系列5 可选安装和配置">
-<meta name="twitter:description" content="CloudStack在实验室实践过程，可选安装配置部分。">
+<meta name="twitter:title" content="使用Swingbench对数据库进行压力测试">
+<meta name="twitter:description" content="Swingbench is a free load generator (and benchmarks) designed to stress test an Oracle database (10g,11g,12c).">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -58,7 +60,7 @@
   };
 </script>
 
-  <title> CloudStack系列5 可选安装和配置 | 信息系统应用技术实验室 </title>
+  <title> 使用Swingbench对数据库进行压力测试 | 信息系统应用技术实验室 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -194,7 +196,7 @@
           
           
             
-              CloudStack系列5 可选安装和配置
+              使用Swingbench对数据库进行压力测试
             
           
         </h1>
@@ -203,8 +205,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-09-29T12:44:05+08:00" content="2015-09-29">
-            2015-09-29
+          <time itemprop="dateCreated" datetime="2015-10-22T10:13:39+08:00" content="2015-10-22">
+            2015-10-22
           </time>
         </span>
 
@@ -213,8 +215,8 @@
             &nbsp; | &nbsp; 分类于
             
               <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/云计算/" itemprop="url" rel="index">
-                  <span itemprop="name">云计算</span>
+                <a href="/categories/测试/" itemprop="url" rel="index">
+                  <span itemprop="name">测试</span>
                 </a>
               </span>
 
@@ -237,33 +239,98 @@
       
 
       
-        <span itemprop="articleBody"><p>CloudStack在实验室实践过程，可选安装配置部分。<br><a id="more"></a></p>
-<h1 id="安装Usage服务（可选）">安装Usage服务（可选）</h1><p>管理服务器配置完毕后，你可以选择安装Usage服务器。Usage服务器从系统事件中提取数据，便于对账户进行使用计费。</p>
-<p>当存在多台管理服务器时，可以选择在它们上面安装任意数量的Usage服务器。Usage服务器会协调处理。考虑到高可用性，所以最少在两台管理服务器中安装Usage服务器。</p>
-<h2 id="安装Usage服务器的要求">安装Usage服务器的要求</h2><ul>
-<li>Usage服务器安装时，管理服务器必须在运行状态。</li>
-<li><p>Usage服务器必须与管理服务器安装在同一台服务器中。</p>
-<h2 id="安装Usage服务器的步骤">安装Usage服务器的步骤</h2></li>
-<li><p>RHEL/CentOS系统:</p>
+        <span itemprop="articleBody"><p>Swingbench is a free load generator (and benchmarks) designed to stress test an Oracle database (10g,11g,12c).</p>
+<a id="more"></a>
+<h1 id="介绍">介绍</h1><ul>
+<li><p>Swingbench组件：<br>Swingbench是一个图形界面，用户可以编辑配置参数。可以显示实时的图形。<br>Minibench是一个图形界面，可以显示简单的实时图形。<br>Charbench是一个命令行的工具，有很多的命令行选项。</p>
+</li>
+<li><p>四种基准测试</p>
 </li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># yum install cloudstack-usage</span></span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>Benchmark</th>
+<th>描述</th>
+<th>读写比例</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Order Entry</td>
+<td>经典的Order Entry基准测试。像TPC。</td>
+<td>60/40</td>
+<td>TPC-C类似的，基于Oracle自带的两个Sample Schema：OE和SH</td>
+</tr>
+<tr>
+<td>Calling Circle</td>
+<td>电话公司自助系统</td>
+<td>70/30</td>
+<td>基于电话自助服务系统的基准测试，大小相对固定，每次运行都需要重新生成schema</td>
+</tr>
+<tr>
+<td>Stess Test</td>
+<td>简单的INSERT/DELETE/UPDATE/SELECT</td>
+<td>50/50</td>
+<td>Stress Test是最简单的测试，执行insert/update/delete/select的操作，数据是在运行时产生，可以用于测试TimesTen</td>
+</tr>
+<tr>
+<td>Sales History</td>
+<td>DSS基准测试</td>
+<td>100/0</td>
+<td>数据仓库基准测试，使用datagenerator产生数据，由disk和时间来决定最大的大小，基于Oracle自带的两个Sample Schema：OE和SH</td>
+</tr>
+</tbody>
+</table>
+<h1 id="环境">环境</h1><ul>
+<li>Linux</li>
+<li>Oracle Database 11</li>
+</ul>
+<h1 id="架构示意图">架构示意图</h1><p>单实例<br><img src="/images/swingbench_simple.JPG" alt=""></p>
+<p>RAC<br><img src="/images/swingbench_advance.JPG" alt=""></p>
+<h1 id="安装和设置">安装和设置</h1><ul>
+<li><p>下载<br>目前作者已经发布了最新的2.5版本，本次使用2.5。从dominicgiles.com下载，地址：<a href="http://dominicgiles.com/downloads.html。" target="_blank" rel="external">http://dominicgiles.com/downloads.html。</a></p>
+</li>
+<li><p>验证Java版本<br>2.4和2.5版本需要使用Java 6/7 JVM。</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">yum <span class="operator"><span class="keyword">install</span> -y <span class="keyword">java</span>-<span class="number">1.7</span><span class="number">.0</span>-openjdk.x86_64</span><br><span class="line">$</span><br><span class="line"><span class="keyword">java</span> -<span class="keyword">version</span></span><br><span class="line"><span class="keyword">java</span> <span class="keyword">version</span> <span class="string">"1.7.0_65"</span></span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装</p>
+<figure class="highlight stata"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line"><span class="keyword">pwd</span> /home/oracle</span><br><span class="line">unzip swingbench25932.<span class="keyword">zip</span></span><br><span class="line">&lt;略&gt;</span><br><span class="line"><span class="keyword">cd</span> swingbench</span><br><span class="line"><span class="keyword">pwd</span></span><br><span class="line">/home/oracle/swingbench</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>用户设置<br>Unix/Linux平台配置文件为swingbench.env，执行文件路径为bin；Windows下则为swingbenchenv.bat和winbin。在windows平台上注意一定要配置ORACLE_HOME，好像不认注册表。<br>Linux平台下，swingbench是在Oracle用户下执行，请确保它被设置在环境变量以下。</p>
+<figure class="highlight xquery"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line">export ORACLE_BASE=/u01/app/oracle</span><br><span class="line">export ORACLE_HOME=<span class="variable">$ORACLE</span>_BASE/product/<span class="number">11.2</span>.<span class="number">0</span>/dbhome_1</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="使用">使用</h1><ul>
+<li>配置OE仓库<figure class="highlight armasm"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line"><span class="label">cd</span> <span class="keyword">bin</span><br><span class="line"></span>./oewizard</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>1.按在欢迎屏幕[下一页]</p>
+<p>2.选择Benchmark版本，此处选择版本2.0，然后按[下一页]</p>
+<p>3.选择任务，选择“Create the Order Entry Schema（User,Tables,indexes,Data etc）”，然后按[下一页]</p>
+<p>4.在数据库的详细信息界面，输入必要的信息，然后按[下一页]</p>
+<p>5.在Schema Details界面输入所需信息，然后按[下一页]</p>
+<p>6.在Database Options输入所需的信息，然后按[下一页]<br>可默认</p>
+<p>7.大小细节，建议进入用户自定义，可以使用1GB按[下一步]。</p>
+<p>8.最后，指定并行度，然后按[完成]</p>
+<p>9.日志在一个单独的窗口中打开。</p>
+<p>10.打开完成后的模式创建完成界面。并按[确定]退出。</p>
 <ul>
-<li>Debian/Ubuntu系统：</li>
+<li>测试</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># apt-get install cloudstack-usage</span></span><br></pre></td></tr></table></figure>
-<p>安装成功后，使用如下命令启动Usage服务器。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># service cloudstack-usage start</span></span><br></pre></td></tr></table></figure>
-<h2 id="开机自启动">开机自启动</h2><ul>
-<li>RHEL/CentOS系统:</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># chkconfig cloudstack-usage on</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>Debian/Ubuntu系统：</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># update-rc.d cloudstack-usage defaults</span></span><br></pre></td></tr></table></figure>
-<h1 id="SSL_(可选)">SSL (可选)</h1><p>CloudStack默认提供HTTP的访问方式。有许多的技术和网站选择使用SSL。因此，我们先抛下CloudStack所使用的HTTP，假设站点使用SSL是一个典型实践。</p>
-<p>CloudStack使用Tomcat作为服务容器。由于CloudStack网站中断SSL会话，可能会开启Tomcatde的SSL访问。Tomcat的SSL配置描述请查阅： <a href="http://tomcat.apache.org/tomcat-6.0-doc/ssl-howto.html" target="_blank" rel="external">http://tomcat.apache.org/tomcat-6.0-doc/ssl-howto.html</a>.</p>
+<figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line">cd <span class="regexp">/home/</span>oracle<span class="regexp">/swingbench/</span>bin</span><br><span class="line">.<span class="regexp">/swingbench -cs /</span><span class="regexp">/oracledb01/</span>orcl112 -dt thin  -rt <span class="number">0</span>:<span class="number">05</span></span><br></pre></td></tr></table></figure>
+<h1 id="测试中遇到的问题和解决方法">测试中遇到的问题和解决方法</h1><ol>
+<li><p>生成AWR<br>在测试开始时可以生成awr快照，但是结束时没有自动生成awr快照。可以运行下列<br>语句手工生成：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">SQL&gt;</span><br><span class="line"><span class="built_in">exec</span> DBMS_WORKLOAD_REPOSITORY.CREATE_SNAPSHOT ;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>遇到等待事件<br>resmgr:cpu quantum<br>根据metalink的note禁止资源管理</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">SQL&gt;</span><br><span class="line">alter <span class="built_in">system</span> <span class="keyword">set</span> resource_manager_plan=<span class="string">''</span> scope=both;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行swingbench, 没有显示cpu和disk的实时图形<br>./swingbench -cpuloc localhost 带选项-cpuloc，如果是2.4版本，可以指定hostname和用户密码</p>
+</li>
+<li>遇到ora-03111错误<br>查了metalink的note可以通过调节sdu来解决，不过有时还是会出现。<br>(SDU = 16384)<br>(TDU = 16384)</li>
+</ol>
 </span>
       
     </div>
@@ -272,7 +339,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/CloudStack/" rel="tag">#CloudStack</a>
+            <a href="/tags/Oracle/" rel="tag">#Oracle</a>
+          
+            <a href="/tags/Swingbench/" rel="tag">#Swingbench</a>
           
         </div>
       
@@ -281,13 +350,13 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/09/29/cloudstack7-vsphere/" rel="prev">CloudStack系列7 vsphere安装和配置</a>
+              <a href="/2015/10/22/sys-mirror/" rel="prev">创建开源镜像仓库</a>
             
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/09/28/cloudstack4-install/" rel="next">CloudStack系列4 管理节点安装</a>
+              <a href="/2015/10/11/cloudstack2_network_setup/" rel="next">CloudStack系列2 网络配置</a>
             
           </div>
         </div>
@@ -349,7 +418,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">16</span>
+              <span class="site-state-item-count">18</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -401,7 +470,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装Usage服务（可选）"><span class="nav-number">1.</span> <span class="nav-text">安装Usage服务（可选）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Usage服务器的要求"><span class="nav-number">1.1.</span> <span class="nav-text">安装Usage服务器的要求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Usage服务器的步骤"><span class="nav-number">1.2.</span> <span class="nav-text">安装Usage服务器的步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开机自启动"><span class="nav-number">1.3.</span> <span class="nav-text">开机自启动</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SSL_(可选)"><span class="nav-number">2.</span> <span class="nav-text">SSL (可选)</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#环境"><span class="nav-number">2.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#架构示意图"><span class="nav-number">3.</span> <span class="nav-text">架构示意图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装和设置"><span class="nav-number">4.</span> <span class="nav-text">安装和设置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用"><span class="nav-number">5.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#测试中遇到的问题和解决方法"><span class="nav-number">6.</span> <span class="nav-text">测试中遇到的问题和解决方法</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
