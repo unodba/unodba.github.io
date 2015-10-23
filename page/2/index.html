@@ -195,87 +195,6 @@
           
           
             
-              <a class="post-title-link" href="/2015/10/11/cloudstack2_network_setup/" itemprop="url">
-                CloudStack系列2 网络配置
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-10-11T20:33:34+08:00" content="2015-10-11">
-            2015-10-11
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/云计算/" itemprop="url" rel="index">
-                  <span itemprop="name">云计算</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>CloudStack系列2，网络配置部分。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/11/cloudstack2_network_setup/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
               <a class="post-title-link" href="/2015/10/08/cloudstack1-architecture/" itemprop="url">
                 CloudStack系列1 部署架构
               </a>
@@ -835,6 +754,89 @@
 
 
     
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              <a class="post-title-link" href="/2013/07/13/vsphere-esxi/" itemprop="url">
+                vsphere系列 嵌套虚拟化
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2013-07-13T20:46:25+08:00" content="2013-07-13">
+            2013-07-13
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/vsphere/" itemprop="url" rel="index">
+                  <span itemprop="name">vsphere</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><p>虚拟化嵌套：顾名思义就是在虚拟化环境中在嵌套一层虚拟化。</p>
+<p>（1）虚拟机-编辑设置-选项-常规选项。版本选择其他。</p>
+<p>（2）虚拟机-虚拟硬件-CPU-选项-CPU/MMU虚拟化-选择“硬件CPU和MMU”。</p>
+<p>（3）虚拟机-编辑设置-虚拟硬件-CPU-硬件虚拟化-勾选“向客户机操作系统公开硬件辅助的虚拟化”。</p>
+<p>（4）确认虚拟机版本为最新，esxi 5.5u2版本是vm10，如果不是vm9.升级虚拟机兼容性。</p>
+<p>（5）点击宿主ESXI主机-右边配置-网络-属性，找到你ESXI虚拟机连接的端口组，点击编辑，在安全选项中，把混杂模式、伪传输勾选，选择接受！</p>
+<p>否则会出现在嵌套环境下的虚拟机操作系统安装完成后，IP能获取，但是上不了外网。</p>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
   </section>
 
   
@@ -880,14 +882,14 @@
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-count">6</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-count">14</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
