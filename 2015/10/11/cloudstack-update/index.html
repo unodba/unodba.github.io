@@ -42,14 +42,14 @@
 <meta name="description" content="Update System-VM templatesDatabase PreparationBackup current database
 Stop your management server or servers. Run this on all management server hosts:If you are running a usage server or usage servers">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CloudStack系列 部署架构">
+<meta property="og:title" content="CloudStack系列 升级">
 <meta property="og:url" content="http://yoursite.com/2015/10/11/cloudstack-update/index.html">
 <meta property="og:site_name" content="信息系统应用技术实验室">
 <meta property="og:description" content="Update System-VM templatesDatabase PreparationBackup current database
 Stop your management server or servers. Run this on all management server hosts:If you are running a usage server or usage servers">
-<meta property="og:updated_time" content="2015-10-23T13:53:37.355Z">
+<meta property="og:updated_time" content="2015-10-23T14:05:24.315Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="CloudStack系列 部署架构">
+<meta name="twitter:title" content="CloudStack系列 升级">
 <meta name="twitter:description" content="Update System-VM templatesDatabase PreparationBackup current database
 Stop your management server or servers. Run this on all management server hosts:If you are running a usage server or usage servers">
 
@@ -61,7 +61,7 @@ Stop your management server or servers. Run this on all management server hosts:
   };
 </script>
 
-  <title> CloudStack系列 部署架构 | 信息系统应用技术实验室 </title>
+  <title> CloudStack系列 升级 | 信息系统应用技术实验室 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -197,7 +197,7 @@ Stop your management server or servers. Run this on all management server hosts:
           
           
             
-              CloudStack系列 部署架构
+              CloudStack系列 升级
             
           
         </h1>
@@ -255,7 +255,7 @@ Stop your management server or servers. Run this on all management server hosts:
 <p>Setup the GPG public key if you wish to enable gpgcheck=1:</p>
 <p>wget <a href="http://packages.shapeblue.com/release.asc" target="_blank" rel="external">http://packages.shapeblue.com/release.asc</a><br>rpm –import release.asc<br>If you’re using your own package repository, change this line to read as appropriate for your 4.5 repository.</p>
 <p>Now that you have the repository configured, it’s time to upgrade the cloudstack-management.</p>
-<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="title">yum</span> upgrade cloudstack-management</span><br><span class="line">yum upgrade cloudstack-usage</span><br></pre></td></tr></table></figure>
+<h2 id="CloudStack_update">CloudStack update</h2><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="title">yum</span> upgrade cloudstack-management</span><br><span class="line">yum upgrade cloudstack-usage</span><br></pre></td></tr></table></figure>
 </span>
       
     </div>
@@ -391,7 +391,7 @@ Stop your management server or servers. Run this on all management server hosts:
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Update_System-VM_templates"><span class="nav-number">1.</span> <span class="nav-text">Update System-VM templates</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Database_Preparation"><span class="nav-number">2.</span> <span class="nav-text">Database Preparation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Management_Server_on_CentOS/RHEL"><span class="nav-number">3.</span> <span class="nav-text">Management Server on CentOS/RHEL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CloudStack_RPM_repository"><span class="nav-number">3.1.</span> <span class="nav-text">CloudStack RPM repository</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Update_System-VM_templates"><span class="nav-number">1.</span> <span class="nav-text">Update System-VM templates</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Database_Preparation"><span class="nav-number">2.</span> <span class="nav-text">Database Preparation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Management_Server_on_CentOS/RHEL"><span class="nav-number">3.</span> <span class="nav-text">Management Server on CentOS/RHEL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CloudStack_RPM_repository"><span class="nav-number">3.1.</span> <span class="nav-text">CloudStack RPM repository</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CloudStack_update"><span class="nav-number">3.2.</span> <span class="nav-text">CloudStack update</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
