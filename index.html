@@ -195,6 +195,110 @@
           
           
             
+              <a class="post-title-link" href="/2015/10/24/sys-linux-ntp/" itemprop="url">
+                Linux ntp服务配置
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-10-24T20:46:25+08:00" content="2015-10-24">
+            2015-10-24
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/黑科技/" itemprop="url" rel="index">
+                  <span itemprop="name">黑科技</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody"><h1 id="LINUX_NTP服务器端配置">LINUX NTP服务器端配置</h1><ul>
+<li><p>安装ntp服务</p>
+<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">yum install -y ntp</span><br><span class="line">chkconfig ntpd <span class="function_start"><span class="keyword">on</span></span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置/etc/ntpd.conf文件。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">vi /etc/ntpd.conf</span><br><span class="line"><span class="comment">//放行NTP服务中心IP进入本服务器</span></span><br><span class="line"><span class="keyword">restrict</span> <span class="number">202.112</span><span class="number">.7</span><span class="number">.13</span></span><br><span class="line"><span class="keyword">restrict</span> <span class="number">202.112</span><span class="number">.11</span><span class="number">.70</span></span><br><span class="line"><span class="keyword">restrict</span> <span class="number">202.112</span><span class="number">.0</span><span class="number">.38</span></span><br><span class="line"><span class="keyword">restrict</span> <span class="number">202.112</span><span class="number">.10</span><span class="number">.36</span></span><br><span class="line"><span class="comment">//放行局域网来源 ：restrict  [你的IP]  mask  [mask_ip] [parameter]</span></span><br><span class="line"><span class="keyword">restrict</span> <span class="number">10.6</span><span class="number">.32</span><span class="number">.0</span> mask <span class="number">255.255</span><span class="number">.255</span><span class="number">.0</span> nomodify</span><br><span class="line"><span class="keyword">restrict</span> <span class="number">10.6</span><span class="number">.27</span><span class="number">.0</span> mask <span class="number">255.255</span><span class="number">.255</span><span class="number">.0</span> nomodify</span><br><span class="line"><span class="comment">//设置NTP server上层服务器</span></span><br><span class="line">server <span class="number">202.112</span><span class="number">.7</span><span class="number">.13</span> prefer</span><br><span class="line">server <span class="number">202.112</span><span class="number">.11</span><span class="number">.70</span></span><br><span class="line">server <span class="number">202.112</span><span class="number">.0</span><span class="number">.38</span></span><br><span class="line">server <span class="number">202.112</span><span class="number">.10</span><span class="number">.36</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置防火墙</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">vi /etc/sysconfig/iptables</span><br><span class="line">-A INPUT  -p udp -s <span class="number">10.6</span><span class="number">.32</span><span class="number">.0</span>/<span class="number">24</span> --dport <span class="number">123</span> -j ACCEPT</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重启ntp服务</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="title">service</span> ntpd restart</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="NTP客户端配置">NTP客户端配置</h1><ul>
+<li><p>安装ntp服务</p>
+<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">yum installntp</span><br><span class="line">chkconfigntpd <span class="function_start"><span class="keyword">on</span></span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置/etc/ntpd.conf文件</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">vi/etc/ntp.conf</span><br><span class="line"><span class="preprocessor">#server <span class="number">0.</span>centos.pool.ntp.org iburst</span></span><br><span class="line"><span class="preprocessor">#server <span class="number">1.</span>centos.pool.ntp.org iburst</span></span><br><span class="line"><span class="preprocessor">#server <span class="number">2.</span>centos.pool.ntp.org iburst</span></span><br><span class="line"><span class="preprocessor">#server <span class="number">3.</span>centos.pool.ntp.org iburst</span></span><br><span class="line"><span class="keyword">restrict</span> <span class="number">10.6</span><span class="number">.27</span><span class="number">.3</span></span><br><span class="line">server <span class="number">10.6</span><span class="number">.27</span><span class="number">.3</span> prefer</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重启ntp服务</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="title">service</span> ntpd restart</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>检查对时状态</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="title">ntpstat</span></span><br><span class="line">ntpq -c peers</span><br><span class="line">ntpq -c assoc</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
               <a class="post-title-link" href="/2015/10/11/cloudstack-update/" itemprop="url">
                 CloudStack系列 升级
               </a>
@@ -913,87 +1017,6 @@
 
 
     
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/10/02/cloudstack2-network-setup/" itemprop="url">
-                CloudStack系列2 网络配置
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-10-02T20:46:25+08:00" content="2015-10-02">
-            2015-10-02
-          </time>
-        </span>
-
-        
-          <span class="post-category" >
-            &nbsp; | &nbsp; 分类于
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/云计算/" itemprop="url" rel="index">
-                  <span itemprop="name">云计算</span>
-                </a>
-              </span>
-
-              
-              
-
-            
-          </span>
-        
-
-        
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>CloudStack系列2，网络配置部分。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/02/cloudstack2-network-setup/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1032,7 +1055,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">19</span>
+              <span class="site-state-item-count">20</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1046,7 +1069,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

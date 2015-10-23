@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="esxi,vsphere," />
+  <meta name="keywords" content="linux,ntp," />
 
 
 
@@ -39,46 +39,31 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="虚拟化嵌套：顾名思义就是在虚拟化环境中在嵌套一层虚拟化。
+<meta name="description" content="LINUX NTP服务器端配置
+安装ntp服务
+#yum install -y ntpchkconfig ntpd on
 
-虚拟机-编辑设置-选项-常规选项。版本选择其他。
-
-虚拟机-虚拟硬件-CPU-选项-CPU/MMU虚拟化-选择“硬件CPU和MMU”。
-
-虚拟机-编辑设置-虚拟硬件-CPU-硬件虚拟化-勾选“向客户机操作系统公开硬件辅助的虚拟化”。
-
-确认虚拟机版本为最新，esxi 5.5u2版本是vm10，如果不是vm9.升级虚拟机兼容性。
-
-点击宿主">
+配置/etc/ntpd.conf文件。
+#vi /etc/ntpd.conf//放行NTP服务中心IP进入本服务器restrict 202.112.7.13restrict 202.112.11.70restrict 202.112.0.38restrict 202.112.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="vsphere系列 嵌套虚拟化">
-<meta property="og:url" content="http://yoursite.com/2015/09/23/vsphere-esxi/index.html">
+<meta property="og:title" content="Linux ntp服务配置">
+<meta property="og:url" content="http://yoursite.com/2015/10/24/sys-linux-ntp/index.html">
 <meta property="og:site_name" content="信息系统应用技术实验室">
-<meta property="og:description" content="虚拟化嵌套：顾名思义就是在虚拟化环境中在嵌套一层虚拟化。
+<meta property="og:description" content="LINUX NTP服务器端配置
+安装ntp服务
+#yum install -y ntpchkconfig ntpd on
 
-虚拟机-编辑设置-选项-常规选项。版本选择其他。
-
-虚拟机-虚拟硬件-CPU-选项-CPU/MMU虚拟化-选择“硬件CPU和MMU”。
-
-虚拟机-编辑设置-虚拟硬件-CPU-硬件虚拟化-勾选“向客户机操作系统公开硬件辅助的虚拟化”。
-
-确认虚拟机版本为最新，esxi 5.5u2版本是vm10，如果不是vm9.升级虚拟机兼容性。
-
-点击宿主">
-<meta property="og:updated_time" content="2015-10-23T14:03:10.580Z">
+配置/etc/ntpd.conf文件。
+#vi /etc/ntpd.conf//放行NTP服务中心IP进入本服务器restrict 202.112.7.13restrict 202.112.11.70restrict 202.112.0.38restrict 202.112.">
+<meta property="og:updated_time" content="2015-10-23T16:30:55.442Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="vsphere系列 嵌套虚拟化">
-<meta name="twitter:description" content="虚拟化嵌套：顾名思义就是在虚拟化环境中在嵌套一层虚拟化。
+<meta name="twitter:title" content="Linux ntp服务配置">
+<meta name="twitter:description" content="LINUX NTP服务器端配置
+安装ntp服务
+#yum install -y ntpchkconfig ntpd on
 
-虚拟机-编辑设置-选项-常规选项。版本选择其他。
-
-虚拟机-虚拟硬件-CPU-选项-CPU/MMU虚拟化-选择“硬件CPU和MMU”。
-
-虚拟机-编辑设置-虚拟硬件-CPU-硬件虚拟化-勾选“向客户机操作系统公开硬件辅助的虚拟化”。
-
-确认虚拟机版本为最新，esxi 5.5u2版本是vm10，如果不是vm9.升级虚拟机兼容性。
-
-点击宿主">
+配置/etc/ntpd.conf文件。
+#vi /etc/ntpd.conf//放行NTP服务中心IP进入本服务器restrict 202.112.7.13restrict 202.112.11.70restrict 202.112.0.38restrict 202.112.">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -88,7 +73,7 @@
   };
 </script>
 
-  <title> vsphere系列 嵌套虚拟化 | 信息系统应用技术实验室 </title>
+  <title> Linux ntp服务配置 | 信息系统应用技术实验室 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -224,7 +209,7 @@
           
           
             
-              vsphere系列 嵌套虚拟化
+              Linux ntp服务配置
             
           
         </h1>
@@ -233,8 +218,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-09-23T20:46:25+08:00" content="2015-09-23">
-            2015-09-23
+          <time itemprop="dateCreated" datetime="2015-10-24T20:46:25+08:00" content="2015-10-24">
+            2015-10-24
           </time>
         </span>
 
@@ -243,8 +228,8 @@
             &nbsp; | &nbsp; 分类于
             
               <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/vsphere/" itemprop="url" rel="index">
-                  <span itemprop="name">vsphere</span>
+                <a href="/categories/黑科技/" itemprop="url" rel="index">
+                  <span itemprop="name">黑科技</span>
                 </a>
               </span>
 
@@ -267,20 +252,34 @@
       
 
       
-        <span itemprop="articleBody"><p>虚拟化嵌套：顾名思义就是在虚拟化环境中在嵌套一层虚拟化。</p>
-<ul>
-<li><p>虚拟机-编辑设置-选项-常规选项。版本选择其他。</p>
+        <span itemprop="articleBody"><h1 id="LINUX_NTP服务器端配置">LINUX NTP服务器端配置</h1><ul>
+<li><p>安装ntp服务</p>
+<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">yum install -y ntp</span><br><span class="line">chkconfig ntpd <span class="function_start"><span class="keyword">on</span></span></span><br></pre></td></tr></table></figure>
 </li>
-<li><p>虚拟机-虚拟硬件-CPU-选项-CPU/MMU虚拟化-选择“硬件CPU和MMU”。</p>
+<li><p>配置/etc/ntpd.conf文件。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">vi /etc/ntpd.conf</span><br><span class="line"><span class="comment">//放行NTP服务中心IP进入本服务器</span></span><br><span class="line"><span class="keyword">restrict</span> <span class="number">202.112</span><span class="number">.7</span><span class="number">.13</span></span><br><span class="line"><span class="keyword">restrict</span> <span class="number">202.112</span><span class="number">.11</span><span class="number">.70</span></span><br><span class="line"><span class="keyword">restrict</span> <span class="number">202.112</span><span class="number">.0</span><span class="number">.38</span></span><br><span class="line"><span class="keyword">restrict</span> <span class="number">202.112</span><span class="number">.10</span><span class="number">.36</span></span><br><span class="line"><span class="comment">//放行局域网来源 ：restrict  [你的IP]  mask  [mask_ip] [parameter]</span></span><br><span class="line"><span class="keyword">restrict</span> <span class="number">10.6</span><span class="number">.32</span><span class="number">.0</span> mask <span class="number">255.255</span><span class="number">.255</span><span class="number">.0</span> nomodify</span><br><span class="line"><span class="keyword">restrict</span> <span class="number">10.6</span><span class="number">.27</span><span class="number">.0</span> mask <span class="number">255.255</span><span class="number">.255</span><span class="number">.0</span> nomodify</span><br><span class="line"><span class="comment">//设置NTP server上层服务器</span></span><br><span class="line">server <span class="number">202.112</span><span class="number">.7</span><span class="number">.13</span> prefer</span><br><span class="line">server <span class="number">202.112</span><span class="number">.11</span><span class="number">.70</span></span><br><span class="line">server <span class="number">202.112</span><span class="number">.0</span><span class="number">.38</span></span><br><span class="line">server <span class="number">202.112</span><span class="number">.10</span><span class="number">.36</span></span><br></pre></td></tr></table></figure>
 </li>
-<li><p>虚拟机-编辑设置-虚拟硬件-CPU-硬件虚拟化-勾选“向客户机操作系统公开硬件辅助的虚拟化”。</p>
+<li><p>配置防火墙</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">vi /etc/sysconfig/iptables</span><br><span class="line">-A INPUT  -p udp -s <span class="number">10.6</span><span class="number">.32</span><span class="number">.0</span>/<span class="number">24</span> --dport <span class="number">123</span> -j ACCEPT</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>确认虚拟机版本为最新，esxi 5.5u2版本是vm10，如果不是vm9.升级虚拟机兼容性。</p>
-</li>
-<li><p>点击宿主ESXI主机-右边配置-网络-属性，找到你ESXI虚拟机连接的端口组，点击编辑，在安全选项中，把混杂模式、伪传输勾选，选择接受！</p>
+<li><p>重启ntp服务</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="title">service</span> ntpd restart</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<p>否则会出现在嵌套环境下的虚拟机操作系统安装完成后，IP能获取，但是上不了外网。</p>
+<h1 id="NTP客户端配置">NTP客户端配置</h1><ul>
+<li><p>安装ntp服务</p>
+<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">yum installntp</span><br><span class="line">chkconfigntpd <span class="function_start"><span class="keyword">on</span></span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置/etc/ntpd.conf文件</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">vi/etc/ntp.conf</span><br><span class="line"><span class="preprocessor">#server <span class="number">0.</span>centos.pool.ntp.org iburst</span></span><br><span class="line"><span class="preprocessor">#server <span class="number">1.</span>centos.pool.ntp.org iburst</span></span><br><span class="line"><span class="preprocessor">#server <span class="number">2.</span>centos.pool.ntp.org iburst</span></span><br><span class="line"><span class="preprocessor">#server <span class="number">3.</span>centos.pool.ntp.org iburst</span></span><br><span class="line"><span class="keyword">restrict</span> <span class="number">10.6</span><span class="number">.27</span><span class="number">.3</span></span><br><span class="line">server <span class="number">10.6</span><span class="number">.27</span><span class="number">.3</span> prefer</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重启ntp服务</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="title">service</span> ntpd restart</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>检查对时状态</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="title">ntpstat</span></span><br><span class="line">ntpq -c peers</span><br><span class="line">ntpq -c assoc</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
 </span>
       
     </div>
@@ -289,9 +288,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/esxi/" rel="tag">#esxi</a>
+            <a href="/tags/linux/" rel="tag">#linux</a>
           
-            <a href="/tags/vsphere/" rel="tag">#vsphere</a>
+            <a href="/tags/ntp/" rel="tag">#ntp</a>
           
         </div>
       
@@ -300,13 +299,11 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/09/25/vsphere-vsan/" rel="prev">vsphere系列 VSAN配置</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/09/11/tran-containerized-mesos-cluster/" rel="next">翻译：在Docker中运行你的Mesos集群</a>
+              <a href="/2015/10/11/cloudstack-update/" rel="next">CloudStack系列 升级</a>
             
           </div>
         </div>
@@ -420,7 +417,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#LINUX_NTP服务器端配置"><span class="nav-number">1.</span> <span class="nav-text">LINUX NTP服务器端配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NTP客户端配置"><span class="nav-number">2.</span> <span class="nav-text">NTP客户端配置</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
