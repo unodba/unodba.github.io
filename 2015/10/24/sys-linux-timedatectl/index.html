@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="CloudStack," />
+  <meta name="keywords" content="linux,timedatectl," />
 
 
 
@@ -39,16 +39,49 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="CloudStack在实验室实践过程，升级部分。">
+<meta name="description" content="几个时钟的定义
+real-time clock RTC 实时时钟
+
+指定的是硬件时钟，一般是主板上的特殊电路，专用用于记录时候，有电池供电，不受服务器的开启关闭，操作系统的关闭开启影响。
+
+系统时钟
+
+操作系统内部的时钟，初始值来自于实时时钟，由内核维护，系统启动之后和RTC就没有关系。
+
+Coordinated Universal Time (UTC) 国际统一时钟
+
+系统时间永远是UTC，在应">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CloudStack系列 升级">
-<meta property="og:url" content="http://yoursite.com/2015/10/11/cloudstack-update/index.html">
+<meta property="og:title" content="Linux 7中timedatectl命令">
+<meta property="og:url" content="http://yoursite.com/2015/10/24/sys-linux-timedatectl/index.html">
 <meta property="og:site_name" content="信息系统应用技术实验室">
-<meta property="og:description" content="CloudStack在实验室实践过程，升级部分。">
-<meta property="og:updated_time" content="2015-10-23T14:12:27.214Z">
+<meta property="og:description" content="几个时钟的定义
+real-time clock RTC 实时时钟
+
+指定的是硬件时钟，一般是主板上的特殊电路，专用用于记录时候，有电池供电，不受服务器的开启关闭，操作系统的关闭开启影响。
+
+系统时钟
+
+操作系统内部的时钟，初始值来自于实时时钟，由内核维护，系统启动之后和RTC就没有关系。
+
+Coordinated Universal Time (UTC) 国际统一时钟
+
+系统时间永远是UTC，在应">
+<meta property="og:updated_time" content="2015-10-24T01:16:47.863Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="CloudStack系列 升级">
-<meta name="twitter:description" content="CloudStack在实验室实践过程，升级部分。">
+<meta name="twitter:title" content="Linux 7中timedatectl命令">
+<meta name="twitter:description" content="几个时钟的定义
+real-time clock RTC 实时时钟
+
+指定的是硬件时钟，一般是主板上的特殊电路，专用用于记录时候，有电池供电，不受服务器的开启关闭，操作系统的关闭开启影响。
+
+系统时钟
+
+操作系统内部的时钟，初始值来自于实时时钟，由内核维护，系统启动之后和RTC就没有关系。
+
+Coordinated Universal Time (UTC) 国际统一时钟
+
+系统时间永远是UTC，在应">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -58,7 +91,7 @@
   };
 </script>
 
-  <title> CloudStack系列 升级 | 信息系统应用技术实验室 </title>
+  <title> Linux 7中timedatectl命令 | 信息系统应用技术实验室 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -194,7 +227,7 @@
           
           
             
-              CloudStack系列 升级
+              Linux 7中timedatectl命令
             
           
         </h1>
@@ -203,8 +236,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-10-11T20:46:25+08:00" content="2015-10-11">
-            2015-10-11
+          <time itemprop="dateCreated" datetime="2015-10-24T20:46:25+08:00" content="2015-10-24">
+            2015-10-24
           </time>
         </span>
 
@@ -213,8 +246,8 @@
             &nbsp; | &nbsp; 分类于
             
               <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/云计算/" itemprop="url" rel="index">
-                  <span itemprop="name">云计算</span>
+                <a href="/categories/黑科技/" itemprop="url" rel="index">
+                  <span itemprop="name">黑科技</span>
                 </a>
               </span>
 
@@ -237,26 +270,47 @@
       
 
       
-        <span itemprop="articleBody"><p>CloudStack在实验室实践过程，升级部分。</p>
-<a id="more"></a>
-<h1 id="Update_System-VM_templates">Update System-VM templates</h1><h1 id="Database_Preparation">Database Preparation</h1><p>Backup current database</p>
-<p>Stop your management server or servers. Run this on all management server hosts:<br>If you are running a usage server or usage servers, stop those as well:</p>
-<figure class="highlight vala"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor"># service cloudstack-management stop</span></span><br><span class="line"><span class="preprocessor"># service cloudstack-usage stop</span></span><br></pre></td></tr></table></figure>
-<p>Make a backup of your MySQL database. If you run into any issues or need to roll back the upgrade, this will assist in debugging or restoring your existing environment. You’ll be prompted for your password.</p>
-<figure class="highlight stata"><table><tr><td class="code"><pre><span class="line"># mysqldump -<span class="keyword">u</span> root -p cloud &gt; cloud-backup_`date '+%Y-%<span class="keyword">m</span>-%<span class="keyword">d</span>'`.sql</span><br><span class="line"># mysqldump -<span class="keyword">u</span> root -p cloud_usage &gt; cloud_usage-backup_`date '+%Y-%<span class="keyword">m</span>-%<span class="keyword">d</span>'`.sql</span><br></pre></td></tr></table></figure>
-<h1 id="Management_Server_on_CentOS/RHEL">Management Server on CentOS/RHEL</h1><p>If you are using CentOS or RHEL, follow this procedure to upgrade your packages. If not, skip to hypervisors section, then System-VMs and Virtual-Routers.</p>
-<p>Note<br>Community Packages: This section assumes you’re using the community supplied packages for CloudStack. If you’ve created your own packages and yum repository, substitute your own URL for the ones used in these examples.</p>
-<h2 id="CloudStack_RPM_repository">CloudStack RPM repository</h2><p>The first order of business will be to change the yum repository for each system with CloudStack packages. This means all management servers, and any hosts that have the KVM agent.</p>
-<p>(No changes should be necessary for hosts that are running VMware or Xen.)</p>
-<p>Start by opening /etc/yum.repos.d/cloudstack.repo on any systems that have CloudStack packages installed.</p>
-<p>This file should have content similar to the following:</p>
-<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="title">[apache-cloudstack]</span></span><br><span class="line"><span class="setting">name=<span class="value">Apache CloudStack</span></span></span><br><span class="line"><span class="setting">baseurl=<span class="value">http://cloudstack.apt-get.eu/rhel/<span class="number">4.4</span>/</span></span></span><br><span class="line"><span class="setting">enabled=<span class="value"><span class="number">1</span></span></span></span><br><span class="line"><span class="setting">gpgcheck=<span class="value"><span class="number">0</span></span></span></span><br></pre></td></tr></table></figure>
-<p>If you are using the community provided package repository, change the base url to <a href="http://packages.shapeblue.com/cloudstack/upstream/centos/4.5/" target="_blank" rel="external">http://packages.shapeblue.com/cloudstack/upstream/centos/4.5/</a> If you want to use the CentOS7 repository use the url <a href="http://packages.shapeblue.com/cloudstack/upstream/centos7/4.5/" target="_blank" rel="external">http://packages.shapeblue.com/cloudstack/upstream/centos7/4.5/</a></p>
-<p>Setup the GPG public key if you wish to enable gpgcheck=1:</p>
-<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">wget <span class="string">http:</span><span class="comment">//packages.shapeblue.com/release.asc</span></span><br><span class="line">rpm --<span class="keyword">import</span> release.asc</span><br></pre></td></tr></table></figure>
-<p>If you’re using your own package repository, change this line to read as appropriate for your 4.5 repository.</p>
-<p>Now that you have the repository configured, it’s time to upgrade the cloudstack-management.</p>
-<h2 id="CloudStack_update">CloudStack update</h2><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="title">yum</span> upgrade cloudstack-management</span><br><span class="line">yum upgrade cloudstack-usage</span><br></pre></td></tr></table></figure>
+        <span itemprop="articleBody"><h1 id="几个时钟的定义">几个时钟的定义</h1><ul>
+<li>real-time clock RTC 实时时钟</li>
+</ul>
+<p>指定的是硬件时钟，一般是主板上的特殊电路，专用用于记录时候，有电池供电，不受服务器的开启关闭，操作系统的关闭开启影响。</p>
+<ul>
+<li>系统时钟</li>
+</ul>
+<p>操作系统内部的时钟，初始值来自于实时时钟，由内核维护，系统启动之后和RTC就没有关系。</p>
+<ul>
+<li>Coordinated Universal Time (UTC) 国际统一时钟</li>
+</ul>
+<p>系统时间永远是UTC，在应用程序使用的时候转换为本地时间，本地时间实际就是自己的时区，包括夏令时，RTC实战可以是UTC会在本地时间，一般UTC是被支持的方式。</p>
+<h1 id="查看_timedatectl_指令用法帮助">查看 timedatectl 指令用法帮助</h1><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">timedatectl <span class="comment">--help</span></span><br><span class="line">timedatectl [OPTIONS...] COMMAND ...</span><br><span class="line"></span><br><span class="line">Query or <span class="operator"><span class="keyword">change</span> <span class="keyword">system</span> <span class="keyword">time</span> <span class="keyword">and</span> <span class="built_in">date</span> <span class="keyword">settings</span>.</span><br><span class="line"></span><br><span class="line">  -h <span class="comment">--help              Show this help</span></span><br><span class="line">     <span class="comment">--version           Show package version</span></span><br><span class="line">     <span class="comment">--adjust-system-clock</span></span><br><span class="line">                         Adjust <span class="keyword">system</span> clock <span class="keyword">when</span> changing <span class="keyword">local</span> RTC <span class="keyword">mode</span></span><br><span class="line">     <span class="comment">--no-pager          Do not pipe output into a pager</span></span><br><span class="line">  -<span class="keyword">P</span> <span class="comment">--privileged        Acquire privileges before execution</span></span><br><span class="line">     <span class="comment">--no-ask-password   Do not prompt for password</span></span><br><span class="line">  -H <span class="comment">--host=[USER@]HOST  Operate on remote host</span></span><br><span class="line"></span><br><span class="line">Commands:</span><br><span class="line">  <span class="keyword">status</span>                 <span class="keyword">Show</span> <span class="keyword">current</span> <span class="keyword">time</span> <span class="keyword">settings</span></span><br><span class="line">  <span class="keyword">set</span>-<span class="keyword">time</span> <span class="keyword">TIME</span>          <span class="keyword">Set</span> <span class="keyword">system</span> <span class="keyword">time</span></span><br><span class="line">  <span class="keyword">set</span>-timezone ZONE      <span class="keyword">Set</span> <span class="keyword">system</span> timezone</span><br><span class="line">  <span class="keyword">list</span>-timezones         <span class="keyword">Show</span> known timezones</span><br><span class="line">  <span class="keyword">set</span>-<span class="keyword">local</span>-rtc BOOL     Control whether RTC <span class="keyword">is</span> <span class="keyword">in</span> <span class="keyword">local</span> <span class="keyword">time</span></span><br><span class="line">  <span class="keyword">set</span>-ntp BOOL           Control whether NTP <span class="keyword">is</span> enabled</span></span><br></pre></td></tr></table></figure>
+<p>更详细的帮助信息也可以通过man timedatectl 进行查看。</p>
+<p>查看当前设置，直接输入timedatectl等同于timedatectl status</p>
+<figure class="highlight less"><table><tr><td class="code"><pre><span class="line"># <span class="tag">timedatectl</span></span><br><span class="line">      <span class="tag">Local</span> <span class="tag">time</span>: <span class="tag">Fri</span> <span class="tag">2015-10-23</span> <span class="tag">21</span><span class="pseudo">:07</span><span class="pseudo">:39</span> <span class="tag">EDT</span></span><br><span class="line">  <span class="tag">Universal</span> <span class="tag">time</span>: <span class="tag">Sat</span> <span class="tag">2015-10-24</span> <span class="tag">01</span><span class="pseudo">:07</span><span class="pseudo">:39</span> <span class="tag">UTC</span></span><br><span class="line">        <span class="tag">RTC</span> <span class="tag">time</span>: <span class="tag">Sat</span> <span class="tag">2015-10-24</span> <span class="tag">01</span><span class="pseudo">:05</span><span class="pseudo">:41</span></span><br><span class="line">        <span class="tag">Timezone</span>: <span class="tag">America</span>/<span class="tag">New_York</span> (EDT, -<span class="number">0400</span>)</span><br><span class="line">     <span class="tag">NTP</span> <span class="tag">enabled</span>: <span class="tag">no</span></span><br><span class="line"><span class="tag">NTP</span> <span class="tag">synchronized</span>: <span class="tag">no</span></span><br><span class="line"> <span class="tag">RTC</span> <span class="tag">in</span> <span class="tag">local</span> <span class="tag">TZ</span>: <span class="tag">no</span></span><br><span class="line">      <span class="tag">DST</span> <span class="tag">active</span>: <span class="tag">yes</span></span><br><span class="line"> <span class="tag">Last</span> <span class="tag">DST</span> <span class="tag">change</span>: <span class="tag">DST</span> <span class="tag">began</span> <span class="tag">at</span></span><br><span class="line">                  <span class="tag">Sun</span> <span class="tag">2015-03-08</span> <span class="tag">01</span><span class="pseudo">:59</span><span class="pseudo">:59</span> <span class="tag">EST</span></span><br><span class="line">                  <span class="tag">Sun</span> <span class="tag">2015-03-08</span> <span class="tag">03</span><span class="pseudo">:00</span><span class="pseudo">:00</span> <span class="tag">EDT</span></span><br><span class="line"> <span class="tag">Next</span> <span class="tag">DST</span> <span class="tag">change</span>: <span class="tag">DST</span> <span class="tag">ends</span> (the clock jumps one hour backwards) <span class="tag">at</span></span><br><span class="line">                  <span class="tag">Sun</span> <span class="tag">2015-11-01</span> <span class="tag">01</span><span class="pseudo">:59</span><span class="pseudo">:59</span> <span class="tag">EDT</span></span><br><span class="line">                  <span class="tag">Sun</span> <span class="tag">2015-11-01</span> <span class="tag">01</span><span class="pseudo">:00</span><span class="pseudo">:00</span> <span class="tag">EST</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>设置日期</li>
+</ul>
+<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">timedatectl <span class="keyword">set</span>-<span class="property">time</span> YYYY-MM-DD</span><br></pre></td></tr></table></figure>
+<ul>
+<li>设置当前时间</li>
+</ul>
+<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">timedatectl <span class="keyword">set</span>-<span class="property">time</span> HH:MM:SS</span><br></pre></td></tr></table></figure>
+<p>默认的，系统是使用UTC时间的，可以用以下命令打开和关闭UTC时间：</p>
+<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">timedatectl <span class="keyword">set</span>-<span class="keyword">local</span>-rtc <span class="type">boolean</span></span><br></pre></td></tr></table></figure>
+<p>把 boolean 替换成yes则表示使用本地时间，替换成no则表示是UTC时间</p>
+<p>注：这里的boolean值也可以用true、flase</p>
+<ul>
+<li>设置时区：</li>
+</ul>
+<p>查看所有的时区：</p>
+<figure class="highlight 1c"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">timedatectl list-timezones<span class="string">|grep Shanghai</span></span><br><span class="line">Asia/Shanghai</span><br></pre></td></tr></table></figure>
+<p>用以下命令设置时区：</p>
+<figure class="highlight actionscript"><table><tr><td class="code"><pre><span class="line">timedatectl <span class="keyword">set</span>-timezone Asia/Shanghai</span><br></pre></td></tr></table></figure>
+<ul>
+<li>远程NTP服务器同步</li>
+</ul>
+<p>timedatectl还可以设置是否打开NTP选项</p>
+<p>timedatectl set-ntp yes(or)no</p>
+<p>除了以上用法，timedatectl 还支持通过-H参数进行远程主机的时间设置。</p>
 </span>
       
     </div>
@@ -265,7 +319,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/CloudStack/" rel="tag">#CloudStack</a>
+            <a href="/tags/linux/" rel="tag">#linux</a>
+          
+            <a href="/tags/timedatectl/" rel="tag">#timedatectl</a>
           
         </div>
       
@@ -274,13 +330,11 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/10/24/sys-linux-ntp/" rel="prev">Linux ntp服务配置</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/10/10/cloudstack-templates/" rel="next">CloudStack 创建模版</a>
+              <a href="/2015/10/24/sys-linux-ntp/" rel="next">Linux ntp服务配置</a>
             
           </div>
         </div>
@@ -394,7 +448,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Update_System-VM_templates"><span class="nav-number">1.</span> <span class="nav-text">Update System-VM templates</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Database_Preparation"><span class="nav-number">2.</span> <span class="nav-text">Database Preparation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Management_Server_on_CentOS/RHEL"><span class="nav-number">3.</span> <span class="nav-text">Management Server on CentOS/RHEL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CloudStack_RPM_repository"><span class="nav-number">3.1.</span> <span class="nav-text">CloudStack RPM repository</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CloudStack_update"><span class="nav-number">3.2.</span> <span class="nav-text">CloudStack update</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#几个时钟的定义"><span class="nav-number">1.</span> <span class="nav-text">几个时钟的定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看_timedatectl_指令用法帮助"><span class="nav-number">2.</span> <span class="nav-text">查看 timedatectl 指令用法帮助</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
