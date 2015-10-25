@@ -45,7 +45,7 @@
 <meta property="og:url" content="http://yoursite.com/2015/09/05/sys-mirror/index.html">
 <meta property="og:site_name" content="信息系统应用技术实验室">
 <meta property="og:description" content="实验室工作中需要时常安装、更新linux下的相关包，由于内部网络限制，使用官方yum安装变得很困难。另外网速这个是硬伤。所以将实验室用到的一些相关源镜像到本地，方便大家工作。">
-<meta property="og:updated_time" content="2015-10-25T05:10:00.275Z">
+<meta property="og:updated_time" content="2015-10-25T12:28:28.143Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="创建开源镜像仓库">
 <meta name="twitter:description" content="实验室工作中需要时常安装、更新linux下的相关包，由于内部网络限制，使用官方yum安装变得很困难。另外网速这个是硬伤。所以将实验室用到的一些相关源镜像到本地，方便大家工作。">
@@ -291,7 +291,7 @@
 <h2 id="配置客户端">配置客户端</h2><p>在其它的服务器上修改APT源地址为该服务器的IP，如”192.178.102.249”，然后使用本地镜像服务了。<br><figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">$ sudo sed -<span class="tag">i</span> s/security<span class="class">.ubuntu</span><span class="class">.com</span>/<span class="number">192.178</span>.<span class="number">102.249</span>/g /etc/apt/sources<span class="class">.list</span></span><br><span class="line">$ sudo sed -<span class="tag">i</span> s/archive<span class="class">.ubuntu</span><span class="class">.com</span>/<span class="number">192.178</span>.<span class="number">102.249</span>/g /etc/apt/sources<span class="class">.list</span></span><br><span class="line">$ sudo apt-get update</span><br></pre></td></tr></table></figure></p>
 <h1 id="Openstack源同步">Openstack源同步</h1><ul>
 <li><p>centos、redhat</p>
-<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">rsync -avrt <span class="string">rsync:</span><span class="comment">//repos.fedorapeople.org/people-repos/openstack /mirror</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="title">rsync</span> -avrt <span class="url">rsync://repos.fedorapeople.org/people-repos/openstack</span> /mirror</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>ubuntu<br>OpenStack(juno,kilo,liberty源)<br>方法同制作ubuntu源，需要修改源地址为</p>
 <figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">deb <span class="string">http:</span><span class="comment">//ubuntu-cloud.archive.canonical.com/ubuntu precise-updates/icehouse main</span></span><br><span class="line">deb-src <span class="string">http:</span><span class="comment">//ubuntu-cloud.archive.canonical.com/ubuntu precise-updates/icehouse main</span></span><br><span class="line">deb <span class="string">http:</span><span class="comment">//ubuntu-cloud.archive.canonical.com/ubuntu trusty-updates/juno main</span></span><br><span class="line">deb-src <span class="string">http:</span><span class="comment">//ubuntu-cloud.archive.canonical.com/ubuntu trusty-updates/juno main</span></span><br><span class="line">deb <span class="string">http:</span><span class="comment">//ubuntu-cloud.archive.canonical.com/ubuntu trusty-updates/kilo main</span></span><br><span class="line">deb-src <span class="string">http:</span><span class="comment">//ubuntu-cloud.archive.canonical.com/ubuntu trusty-updates/kilo main</span></span><br><span class="line">deb <span class="string">http:</span><span class="comment">//ubuntu-cloud.archive.canonical.com/ubuntu trusty-updates/liberty main</span></span><br><span class="line">deb-src <span class="string">http:</span><span class="comment">//ubuntu-cloud.archive.canonical.com/ubuntu trusty-updates/liberty main</span></span><br><span class="line"></span><br><span class="line">ln -s <span class="regexp">/mirror/</span>apt-mirror<span class="regexp">/mirror/</span>ubuntu-cloud.archive.canonical.com<span class="regexp">/ubuntu/</span> <span class="regexp">/usr/</span>share<span class="regexp">/nginx/</span>html/openstack-ubuntu</span><br></pre></td></tr></table></figure>
@@ -407,7 +407,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">22</span>
+              <span class="site-state-item-count">24</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

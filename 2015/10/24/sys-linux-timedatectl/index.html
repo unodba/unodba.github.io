@@ -39,49 +39,22 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="几个时钟的定义
-real-time clock RTC 实时时钟
+<meta name="description" content="timedatectl是用来查询和修改系统时间和配置的Linux应用程序。它是systemd 系统服务管理的一部分，并且允许你检查和修改系统时钟的配置。
 
-指定的是硬件时钟，一般是主板上的特殊电路，专用用于记录时候，有电池供电，不受服务器的开启关闭，操作系统的关闭开启影响。
-
-系统时钟
-
-操作系统内部的时钟，初始值来自于实时时钟，由内核维护，系统启动之后和RTC就没有关系。
-
-Coordinated Universal Time (UTC) 国际统一时钟
-
-系统时间永远是UTC，在应">
+参考：redhat手册部分">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux 7中timedatectl命令">
 <meta property="og:url" content="http://yoursite.com/2015/10/24/sys-linux-timedatectl/index.html">
 <meta property="og:site_name" content="信息系统应用技术实验室">
-<meta property="og:description" content="几个时钟的定义
-real-time clock RTC 实时时钟
+<meta property="og:description" content="timedatectl是用来查询和修改系统时间和配置的Linux应用程序。它是systemd 系统服务管理的一部分，并且允许你检查和修改系统时钟的配置。
 
-指定的是硬件时钟，一般是主板上的特殊电路，专用用于记录时候，有电池供电，不受服务器的开启关闭，操作系统的关闭开启影响。
-
-系统时钟
-
-操作系统内部的时钟，初始值来自于实时时钟，由内核维护，系统启动之后和RTC就没有关系。
-
-Coordinated Universal Time (UTC) 国际统一时钟
-
-系统时间永远是UTC，在应">
-<meta property="og:updated_time" content="2015-10-24T01:16:47.863Z">
+参考：redhat手册部分">
+<meta property="og:updated_time" content="2015-10-25T12:13:35.479Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux 7中timedatectl命令">
-<meta name="twitter:description" content="几个时钟的定义
-real-time clock RTC 实时时钟
+<meta name="twitter:description" content="timedatectl是用来查询和修改系统时间和配置的Linux应用程序。它是systemd 系统服务管理的一部分，并且允许你检查和修改系统时钟的配置。
 
-指定的是硬件时钟，一般是主板上的特殊电路，专用用于记录时候，有电池供电，不受服务器的开启关闭，操作系统的关闭开启影响。
-
-系统时钟
-
-操作系统内部的时钟，初始值来自于实时时钟，由内核维护，系统启动之后和RTC就没有关系。
-
-Coordinated Universal Time (UTC) 国际统一时钟
-
-系统时间永远是UTC，在应">
+参考：redhat手册部分">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -277,47 +250,56 @@ Coordinated Universal Time (UTC) 国际统一时钟
       
 
       
-        <span itemprop="articleBody"><h1 id="几个时钟的定义">几个时钟的定义</h1><ul>
-<li>real-time clock RTC 实时时钟</li>
+        <span itemprop="articleBody"><p>timedatectl是用来查询和修改系统时间和配置的Linux应用程序。它是systemd 系统服务管理的一部分，并且允许你检查和修改系统时钟的配置。</p>
+<blockquote>
+<p>参考：<a href="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/chap-Configuring_the_Date_and_Time.html" target="_blank" rel="external">redhat手册部分</a></p>
+</blockquote>
+<a id="more"></a>
+<h1 id="几个时钟的定义">几个时钟的定义</h1><ul>
+<li>实时时钟(real-time clock RTC or CMOS)</li>
 </ul>
-<p>指定的是硬件时钟，一般是主板上的特殊电路，专用用于记录时候，有电池供电，不受服务器的开启关闭，操作系统的关闭开启影响。</p>
+<p>指定的是硬件时钟，一般是主板上的特殊电路，专用用于记录时候，有电池供电，不受服务器的开启关闭，操作系统的关闭开启影响。无法保存时间标准(UTC 或 localtime)和是否使用夏令时调节。</p>
 <ul>
 <li>系统时钟</li>
 </ul>
-<p>操作系统内部的时钟，初始值来自于实时时钟，由内核维护，系统启动之后和RTC就没有关系。</p>
+<p>与硬件时间分别维护，保存了：时间、时区和夏令时设置。Linux 内核保存为自 UTC 时间 1970 年1月1日经过的秒数。初始系统时钟是从硬件时间计算得来，计算时会考虑/etc/adjtime的设置。系统启动之后，系统时钟与硬件时钟独立运行，Linux 通过时钟中断计数维护系统时钟。<br>因为系统时间是按 32 为整数保存的，最大只能记到 2038 年，所以 32 位 Linux 系统将在 2038 年停止工作。</p>
 <ul>
-<li>Coordinated Universal Time (UTC) 国际统一时钟</li>
+<li>国际统一时钟(Coordinated Universal Time or UTC)</li>
 </ul>
-<p>系统时间永远是UTC，在应用程序使用的时候转换为本地时间，本地时间实际就是自己的时区，包括夏令时，RTC实战可以是UTC会在本地时间，一般UTC是被支持的方式。</p>
-<h1 id="查看_timedatectl_指令用法帮助">查看 timedatectl 指令用法帮助</h1><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">timedatectl <span class="comment">--help</span></span><br><span class="line">timedatectl [OPTIONS...] COMMAND ...</span><br><span class="line"></span><br><span class="line">Query or <span class="operator"><span class="keyword">change</span> <span class="keyword">system</span> <span class="keyword">time</span> <span class="keyword">and</span> <span class="built_in">date</span> <span class="keyword">settings</span>.</span><br><span class="line"></span><br><span class="line">  -h <span class="comment">--help              Show this help</span></span><br><span class="line">     <span class="comment">--version           Show package version</span></span><br><span class="line">     <span class="comment">--adjust-system-clock</span></span><br><span class="line">                         Adjust <span class="keyword">system</span> clock <span class="keyword">when</span> changing <span class="keyword">local</span> RTC <span class="keyword">mode</span></span><br><span class="line">     <span class="comment">--no-pager          Do not pipe output into a pager</span></span><br><span class="line">  -<span class="keyword">P</span> <span class="comment">--privileged        Acquire privileges before execution</span></span><br><span class="line">     <span class="comment">--no-ask-password   Do not prompt for password</span></span><br><span class="line">  -H <span class="comment">--host=[USER@]HOST  Operate on remote host</span></span><br><span class="line"></span><br><span class="line">Commands:</span><br><span class="line">  <span class="keyword">status</span>                 <span class="keyword">Show</span> <span class="keyword">current</span> <span class="keyword">time</span> <span class="keyword">settings</span></span><br><span class="line">  <span class="keyword">set</span>-<span class="keyword">time</span> <span class="keyword">TIME</span>          <span class="keyword">Set</span> <span class="keyword">system</span> <span class="keyword">time</span></span><br><span class="line">  <span class="keyword">set</span>-timezone ZONE      <span class="keyword">Set</span> <span class="keyword">system</span> timezone</span><br><span class="line">  <span class="keyword">list</span>-timezones         <span class="keyword">Show</span> known timezones</span><br><span class="line">  <span class="keyword">set</span>-<span class="keyword">local</span>-rtc BOOL     Control whether RTC <span class="keyword">is</span> <span class="keyword">in</span> <span class="keyword">local</span> <span class="keyword">time</span></span><br><span class="line">  <span class="keyword">set</span>-ntp BOOL           Control whether NTP <span class="keyword">is</span> enabled</span></span><br></pre></td></tr></table></figure>
+<p>UTC 是与时区无关的全球时间标准。尽管概念上有差别，UTC 和 GMT (格林威治时间) 是一样的。localtime 标准则依赖于当前时区。系统时间永远是UTC，在应用程序使用的时候转换为本地时间，本地时间实际就是自己的时区，包括夏令时，RTC实战可以是UTC会在本地时间，一般UTC是被支持的方式。</p>
+<h1 id="timedatectl_使用">timedatectl 使用</h1><ul>
+<li>查看命令帮助<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">timedatectl <span class="comment">--help</span></span><br><span class="line">timedatectl [OPTIONS...] COMMAND ...</span><br><span class="line"></span><br><span class="line">Query or <span class="operator"><span class="keyword">change</span> <span class="keyword">system</span> <span class="keyword">time</span> <span class="keyword">and</span> <span class="built_in">date</span> <span class="keyword">settings</span>.</span><br><span class="line"></span><br><span class="line">  -h <span class="comment">--help              Show this help</span></span><br><span class="line">     <span class="comment">--version           Show package version</span></span><br><span class="line">     <span class="comment">--adjust-system-clock</span></span><br><span class="line">                         Adjust <span class="keyword">system</span> clock <span class="keyword">when</span> changing <span class="keyword">local</span> RTC <span class="keyword">mode</span></span><br><span class="line">     <span class="comment">--no-pager          Do not pipe output into a pager</span></span><br><span class="line">  -<span class="keyword">P</span> <span class="comment">--privileged        Acquire privileges before execution</span></span><br><span class="line">     <span class="comment">--no-ask-password   Do not prompt for password</span></span><br><span class="line">  -H <span class="comment">--host=[USER@]HOST  Operate on remote host</span></span><br><span class="line"></span><br><span class="line">Commands:</span><br><span class="line">  <span class="keyword">status</span>                 <span class="keyword">Show</span> <span class="keyword">current</span> <span class="keyword">time</span> <span class="keyword">settings</span></span><br><span class="line">  <span class="keyword">set</span>-<span class="keyword">time</span> <span class="keyword">TIME</span>          <span class="keyword">Set</span> <span class="keyword">system</span> <span class="keyword">time</span></span><br><span class="line">  <span class="keyword">set</span>-timezone ZONE      <span class="keyword">Set</span> <span class="keyword">system</span> timezone</span><br><span class="line">  <span class="keyword">list</span>-timezones         <span class="keyword">Show</span> known timezones</span><br><span class="line">  <span class="keyword">set</span>-<span class="keyword">local</span>-rtc BOOL     Control whether RTC <span class="keyword">is</span> <span class="keyword">in</span> <span class="keyword">local</span> <span class="keyword">time</span></span><br><span class="line">  <span class="keyword">set</span>-ntp BOOL           Control whether NTP <span class="keyword">is</span> enabled</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
 <p>更详细的帮助信息也可以通过man timedatectl 进行查看。</p>
 <p>查看当前设置，直接输入timedatectl等同于timedatectl status</p>
-<figure class="highlight less"><table><tr><td class="code"><pre><span class="line"># <span class="tag">timedatectl</span></span><br><span class="line">      <span class="tag">Local</span> <span class="tag">time</span>: <span class="tag">Fri</span> <span class="tag">2015-10-23</span> <span class="tag">21</span><span class="pseudo">:07</span><span class="pseudo">:39</span> <span class="tag">EDT</span></span><br><span class="line">  <span class="tag">Universal</span> <span class="tag">time</span>: <span class="tag">Sat</span> <span class="tag">2015-10-24</span> <span class="tag">01</span><span class="pseudo">:07</span><span class="pseudo">:39</span> <span class="tag">UTC</span></span><br><span class="line">        <span class="tag">RTC</span> <span class="tag">time</span>: <span class="tag">Sat</span> <span class="tag">2015-10-24</span> <span class="tag">01</span><span class="pseudo">:05</span><span class="pseudo">:41</span></span><br><span class="line">        <span class="tag">Timezone</span>: <span class="tag">America</span>/<span class="tag">New_York</span> (EDT, -<span class="number">0400</span>)</span><br><span class="line">     <span class="tag">NTP</span> <span class="tag">enabled</span>: <span class="tag">no</span></span><br><span class="line"><span class="tag">NTP</span> <span class="tag">synchronized</span>: <span class="tag">no</span></span><br><span class="line"> <span class="tag">RTC</span> <span class="tag">in</span> <span class="tag">local</span> <span class="tag">TZ</span>: <span class="tag">no</span></span><br><span class="line">      <span class="tag">DST</span> <span class="tag">active</span>: <span class="tag">yes</span></span><br><span class="line"> <span class="tag">Last</span> <span class="tag">DST</span> <span class="tag">change</span>: <span class="tag">DST</span> <span class="tag">began</span> <span class="tag">at</span></span><br><span class="line">                  <span class="tag">Sun</span> <span class="tag">2015-03-08</span> <span class="tag">01</span><span class="pseudo">:59</span><span class="pseudo">:59</span> <span class="tag">EST</span></span><br><span class="line">                  <span class="tag">Sun</span> <span class="tag">2015-03-08</span> <span class="tag">03</span><span class="pseudo">:00</span><span class="pseudo">:00</span> <span class="tag">EDT</span></span><br><span class="line"> <span class="tag">Next</span> <span class="tag">DST</span> <span class="tag">change</span>: <span class="tag">DST</span> <span class="tag">ends</span> (the clock jumps one hour backwards) <span class="tag">at</span></span><br><span class="line">                  <span class="tag">Sun</span> <span class="tag">2015-11-01</span> <span class="tag">01</span><span class="pseudo">:59</span><span class="pseudo">:59</span> <span class="tag">EDT</span></span><br><span class="line">                  <span class="tag">Sun</span> <span class="tag">2015-11-01</span> <span class="tag">01</span><span class="pseudo">:00</span><span class="pseudo">:00</span> <span class="tag">EST</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight less"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line"><span class="tag">timedatectl</span></span><br><span class="line">      <span class="tag">Local</span> <span class="tag">time</span>: <span class="tag">Fri</span> <span class="tag">2015-10-23</span> <span class="tag">21</span><span class="pseudo">:07</span><span class="pseudo">:39</span> <span class="tag">EDT</span></span><br><span class="line">  <span class="tag">Universal</span> <span class="tag">time</span>: <span class="tag">Sat</span> <span class="tag">2015-10-24</span> <span class="tag">01</span><span class="pseudo">:07</span><span class="pseudo">:39</span> <span class="tag">UTC</span></span><br><span class="line">        <span class="tag">RTC</span> <span class="tag">time</span>: <span class="tag">Sat</span> <span class="tag">2015-10-24</span> <span class="tag">01</span><span class="pseudo">:05</span><span class="pseudo">:41</span></span><br><span class="line">        <span class="tag">Timezone</span>: <span class="tag">America</span>/<span class="tag">New_York</span> (EDT, -<span class="number">0400</span>)</span><br><span class="line">     <span class="tag">NTP</span> <span class="tag">enabled</span>: <span class="tag">no</span></span><br><span class="line"><span class="tag">NTP</span> <span class="tag">synchronized</span>: <span class="tag">no</span></span><br><span class="line"> <span class="tag">RTC</span> <span class="tag">in</span> <span class="tag">local</span> <span class="tag">TZ</span>: <span class="tag">no</span></span><br><span class="line">      <span class="tag">DST</span> <span class="tag">active</span>: <span class="tag">yes</span></span><br><span class="line"> <span class="tag">Last</span> <span class="tag">DST</span> <span class="tag">change</span>: <span class="tag">DST</span> <span class="tag">began</span> <span class="tag">at</span></span><br><span class="line">                  <span class="tag">Sun</span> <span class="tag">2015-03-08</span> <span class="tag">01</span><span class="pseudo">:59</span><span class="pseudo">:59</span> <span class="tag">EST</span></span><br><span class="line">                  <span class="tag">Sun</span> <span class="tag">2015-03-08</span> <span class="tag">03</span><span class="pseudo">:00</span><span class="pseudo">:00</span> <span class="tag">EDT</span></span><br><span class="line"> <span class="tag">Next</span> <span class="tag">DST</span> <span class="tag">change</span>: <span class="tag">DST</span> <span class="tag">ends</span> (the clock jumps one hour backwards) <span class="tag">at</span></span><br><span class="line">                  <span class="tag">Sun</span> <span class="tag">2015-11-01</span> <span class="tag">01</span><span class="pseudo">:59</span><span class="pseudo">:59</span> <span class="tag">EDT</span></span><br><span class="line">                  <span class="tag">Sun</span> <span class="tag">2015-11-01</span> <span class="tag">01</span><span class="pseudo">:00</span><span class="pseudo">:00</span> <span class="tag">EST</span></span><br></pre></td></tr></table></figure>
 <ul>
 <li>设置日期</li>
 </ul>
-<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">timedatectl <span class="keyword">set</span>-<span class="property">time</span> YYYY-MM-DD</span><br></pre></td></tr></table></figure>
+<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">timedatectl <span class="keyword">set</span>-<span class="property">time</span> YYYY-MM-DD</span><br></pre></td></tr></table></figure>
 <ul>
 <li>设置当前时间</li>
 </ul>
-<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">timedatectl <span class="keyword">set</span>-<span class="property">time</span> HH:MM:SS</span><br></pre></td></tr></table></figure>
+<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">timedatectl <span class="keyword">set</span>-<span class="property">time</span> HH:MM:SS</span><br></pre></td></tr></table></figure>
 <p>默认的，系统是使用UTC时间的，可以用以下命令打开和关闭UTC时间：</p>
-<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">timedatectl <span class="keyword">set</span>-<span class="keyword">local</span>-rtc <span class="type">boolean</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">timedatectl <span class="keyword">set</span>-<span class="keyword">local</span>-rtc <span class="type">boolean</span></span><br></pre></td></tr></table></figure>
 <p>把 boolean 替换成yes则表示使用本地时间，替换成no则表示是UTC时间</p>
+<blockquote>
 <p>注：这里的boolean值也可以用true、flase</p>
+</blockquote>
 <ul>
 <li>设置时区：</li>
 </ul>
 <p>查看所有的时区：</p>
 <figure class="highlight 1c"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">timedatectl list-timezones<span class="string">|grep Shanghai</span></span><br><span class="line">Asia/Shanghai</span><br></pre></td></tr></table></figure>
 <p>用以下命令设置时区：</p>
-<figure class="highlight actionscript"><table><tr><td class="code"><pre><span class="line">timedatectl <span class="keyword">set</span>-timezone Asia/Shanghai</span><br></pre></td></tr></table></figure>
+<figure class="highlight vala"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">timedatectl <span class="keyword">set</span>-timezone Asia/Shanghai</span><br></pre></td></tr></table></figure>
 <ul>
 <li>远程NTP服务器同步</li>
 </ul>
 <p>timedatectl还可以设置是否打开NTP选项</p>
-<p>timedatectl set-ntp yes(or)no</p>
-<p>除了以上用法，timedatectl 还支持通过-H参数进行远程主机的时间设置。</p>
+<figure class="highlight coffeescript"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">timedatectl set-ntp <span class="literal">yes</span>(<span class="keyword">or</span>)<span class="literal">no</span></span><br></pre></td></tr></table></figure>
 </span>
       
     </div>
@@ -337,7 +319,7 @@ Coordinated Universal Time (UTC) 国际统一时钟
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/10/25/sys-linux-proxy/" rel="prev">Linux设置全局代理</a>
+              <a href="/2015/10/25/openstack-Basic-environment/" rel="prev">openstack安装 基础环境</a>
             
           </div>
 
@@ -409,7 +391,7 @@ Coordinated Universal Time (UTC) 国际统一时钟
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">22</span>
+              <span class="site-state-item-count">24</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -461,7 +443,7 @@ Coordinated Universal Time (UTC) 国际统一时钟
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#几个时钟的定义"><span class="nav-number">1.</span> <span class="nav-text">几个时钟的定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看_timedatectl_指令用法帮助"><span class="nav-number">2.</span> <span class="nav-text">查看 timedatectl 指令用法帮助</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#几个时钟的定义"><span class="nav-number">1.</span> <span class="nav-text">几个时钟的定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#timedatectl_使用"><span class="nav-number">2.</span> <span class="nav-text">timedatectl 使用</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

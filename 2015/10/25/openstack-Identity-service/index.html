@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="Oracle,Swingbench," />
+  <meta name="keywords" content="linux,proxy," />
 
 
 
@@ -39,18 +39,22 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="Swingbench is a free load generator (and benchmarks) designed to stress test an Oracle database (10g,11g,12c).">
+<meta name="description" content="这周在折腾openstack，下面是过程小记。
+
+参考：Chapter 3. Add the Identity service">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用Swingbench对数据库进行压力测试">
-<meta property="og:url" content="http://yoursite.com/2015/09/09/test-swingbench/index.html">
+<meta property="og:title" content="openstack安装 认证服务">
+<meta property="og:url" content="http://yoursite.com/2015/10/25/openstack-Identity-service/index.html">
 <meta property="og:site_name" content="信息系统应用技术实验室">
-<meta property="og:description" content="Swingbench is a free load generator (and benchmarks) designed to stress test an Oracle database (10g,11g,12c).">
-<meta property="og:image" content="http://yoursite.com/images/swingbench_simple.JPG">
-<meta property="og:image" content="http://yoursite.com/images/swingbench_advance.JPG">
-<meta property="og:updated_time" content="2015-10-23T14:02:37.901Z">
+<meta property="og:description" content="这周在折腾openstack，下面是过程小记。
+
+参考：Chapter 3. Add the Identity service">
+<meta property="og:updated_time" content="2015-10-25T15:00:18.632Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="使用Swingbench对数据库进行压力测试">
-<meta name="twitter:description" content="Swingbench is a free load generator (and benchmarks) designed to stress test an Oracle database (10g,11g,12c).">
+<meta name="twitter:title" content="openstack安装 认证服务">
+<meta name="twitter:description" content="这周在折腾openstack，下面是过程小记。
+
+参考：Chapter 3. Add the Identity service">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -60,7 +64,7 @@
   };
 </script>
 
-  <title> 使用Swingbench对数据库进行压力测试 | 信息系统应用技术实验室 </title>
+  <title> openstack安装 认证服务 | 信息系统应用技术实验室 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -196,7 +200,7 @@
           
           
             
-              使用Swingbench对数据库进行压力测试
+              openstack安装 认证服务
             
           
         </h1>
@@ -205,8 +209,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-09-09T20:46:25+08:00" content="2015-09-09">
-            2015-09-09
+          <time itemprop="dateCreated" datetime="2015-10-25T00:00:00+08:00" content="2015-10-25">
+            2015-10-25
           </time>
         </span>
 
@@ -215,8 +219,8 @@
             &nbsp; | &nbsp; 分类于
             
               <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/测试/" itemprop="url" rel="index">
-                  <span itemprop="name">测试</span>
+                <a href="/categories/黑科技/" itemprop="url" rel="index">
+                  <span itemprop="name">黑科技</span>
                 </a>
               </span>
 
@@ -231,8 +235,8 @@
           
             <span class="post-comments-count">
               &nbsp; | &nbsp;
-              <a href="/2015/09/09/test-swingbench/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/09/test-swingbench/" itemprop="commentsCount"></span>
+              <a href="/2015/10/25/openstack-Identity-service/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/25/openstack-Identity-service/" itemprop="commentsCount"></span>
               </a>
             </span>
           
@@ -246,98 +250,29 @@
       
 
       
-        <span itemprop="articleBody"><p>Swingbench is a free load generator (and benchmarks) designed to stress test an Oracle database (10g,11g,12c).</p>
+        <span itemprop="articleBody"><p>这周在折腾openstack，下面是过程小记。</p>
+<blockquote>
+<p>参考：<a href="http://docs.openstack.org/kilo/install-guide/install/yum/content/ch_keystone.html" target="_blank" rel="external">Chapter 3. Add the Identity service</a></p>
+</blockquote>
 <a id="more"></a>
-<h1 id="介绍">介绍</h1><ul>
-<li><p>Swingbench组件：<br>Swingbench是一个图形界面，用户可以编辑配置参数。可以显示实时的图形。<br>Minibench是一个图形界面，可以显示简单的实时图形。<br>Charbench是一个命令行的工具，有很多的命令行选项。</p>
-</li>
-<li><p>四种基准测试</p>
-</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>Benchmark</th>
-<th>描述</th>
-<th>读写比例</th>
-<th>备注</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Order Entry</td>
-<td>经典的Order Entry基准测试。像TPC。</td>
-<td>60/40</td>
-<td>TPC-C类似的，基于Oracle自带的两个Sample Schema：OE和SH</td>
-</tr>
-<tr>
-<td>Calling Circle</td>
-<td>电话公司自助系统</td>
-<td>70/30</td>
-<td>基于电话自助服务系统的基准测试，大小相对固定，每次运行都需要重新生成schema</td>
-</tr>
-<tr>
-<td>Stess Test</td>
-<td>简单的INSERT/DELETE/UPDATE/SELECT</td>
-<td>50/50</td>
-<td>Stress Test是最简单的测试，执行insert/update/delete/select的操作，数据是在运行时产生，可以用于测试TimesTen</td>
-</tr>
-<tr>
-<td>Sales History</td>
-<td>DSS基准测试</td>
-<td>100/0</td>
-<td>数据仓库基准测试，使用datagenerator产生数据，由disk和时间来决定最大的大小，基于Oracle自带的两个Sample Schema：OE和SH</td>
-</tr>
-</tbody>
-</table>
-<h1 id="环境">环境</h1><ul>
-<li>Linux</li>
-<li>Oracle Database 11</li>
-</ul>
-<h1 id="架构示意图">架构示意图</h1><p>单实例<br><img src="/images/swingbench_simple.JPG" alt=""></p>
-<p>RAC<br><img src="/images/swingbench_advance.JPG" alt=""></p>
-<h1 id="安装和设置">安装和设置</h1><ul>
-<li><p>下载<br>目前作者已经发布了最新的2.5版本，本次使用2.5。从dominicgiles.com下载，地址：<a href="http://dominicgiles.com/downloads.html。" target="_blank" rel="external">http://dominicgiles.com/downloads.html。</a></p>
-</li>
-<li><p>验证Java版本<br>2.4和2.5版本需要使用Java 6/7 JVM。</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">yum <span class="operator"><span class="keyword">install</span> -y <span class="keyword">java</span>-<span class="number">1.7</span><span class="number">.0</span>-openjdk.x86_64</span><br><span class="line">$</span><br><span class="line"><span class="keyword">java</span> -<span class="keyword">version</span></span><br><span class="line"><span class="keyword">java</span> <span class="keyword">version</span> <span class="string">"1.7.0_65"</span></span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>安装</p>
-<figure class="highlight stata"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line"><span class="keyword">pwd</span> /home/oracle</span><br><span class="line">unzip swingbench25932.<span class="keyword">zip</span></span><br><span class="line">&lt;略&gt;</span><br><span class="line"><span class="keyword">cd</span> swingbench</span><br><span class="line"><span class="keyword">pwd</span></span><br><span class="line">/home/oracle/swingbench</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>用户设置<br>Unix/Linux平台配置文件为swingbench.env，执行文件路径为bin；Windows下则为swingbenchenv.bat和winbin。在windows平台上注意一定要配置ORACLE_HOME，好像不认注册表。<br>Linux平台下，swingbench是在Oracle用户下执行，请确保它被设置在环境变量以下。</p>
-<figure class="highlight xquery"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line">export ORACLE_BASE=/u01/app/oracle</span><br><span class="line">export ORACLE_HOME=<span class="variable">$ORACLE</span>_BASE/product/<span class="number">11.2</span>.<span class="number">0</span>/dbhome_1</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h1 id="使用">使用</h1><ul>
-<li>配置OE仓库<figure class="highlight armasm"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line"><span class="label">cd</span> <span class="keyword">bin</span><br><span class="line"></span>./oewizard</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>1.按在欢迎屏幕[下一页]</p>
-<p>2.选择Benchmark版本，此处选择版本2.0，然后按[下一页]</p>
-<p>3.选择任务，选择“Create the Order Entry Schema（User,Tables,indexes,Data etc）”，然后按[下一页]</p>
-<p>4.在数据库的详细信息界面，输入必要的信息，然后按[下一页]</p>
-<p>5.在Schema Details界面输入所需信息，然后按[下一页]</p>
-<p>6.在Database Options输入所需的信息，然后按[下一页]<br>可默认</p>
-<p>7.大小细节，建议进入用户自定义，可以使用1GB按[下一步]。</p>
-<p>8.最后，指定并行度，然后按[完成]</p>
-<p>9.日志在一个单独的窗口中打开。</p>
-<p>10.打开完成后的模式创建完成界面。并按[确定]退出。</p>
-<ul>
-<li>测试<figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line">cd <span class="regexp">/home/</span>oracle<span class="regexp">/swingbench/</span>bin</span><br><span class="line">.<span class="regexp">/swingbench -cs /</span><span class="regexp">/oracledb01/</span>orcl112 -dt thin  -rt <span class="number">0</span>:<span class="number">05</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h1 id="测试中遇到的问题和解决方法">测试中遇到的问题和解决方法</h1><ol>
-<li><p>生成AWR<br>在测试开始时可以生成awr快照，但是结束时没有自动生成awr快照。可以运行下列<br>语句手工生成：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">SQL&gt;</span><br><span class="line"><span class="built_in">exec</span> DBMS_WORKLOAD_REPOSITORY.CREATE_SNAPSHOT ;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>遇到等待事件<br>resmgr:cpu quantum<br>根据metalink的note禁止资源管理</p>
-<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">SQL&gt;</span><br><span class="line">alter <span class="built_in">system</span> <span class="keyword">set</span> resource_manager_plan=<span class="string">''</span> scope=both;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>运行swingbench, 没有显示cpu和disk的实时图形<br>./swingbench -cpuloc localhost 带选项-cpuloc，如果是2.4版本，可以指定hostname和用户密码</p>
-</li>
-<li>遇到ora-03111错误<br>查了metalink的note可以通过调节sdu来解决，不过有时还是会出现。<br>(SDU = 16384)<br>(TDU = 16384)</li>
-</ol>
+<h1 id="OpenStack_Identity_concepts">OpenStack Identity concepts</h1><h1 id="Install_and_configure">Install and configure</h1><p>Before you configure the OpenStack Identity service, you must create a database and an administration token.</p>
+<p>创建数据库：<br><figure class="highlight oxygene"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line">mysql -u root -p</span><br><span class="line"></span><br><span class="line">MariaDB [(none)]&gt;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> DATABASE keystone;</span><br><span class="line"></span><br><span class="line">GRANT ALL PRIVILEGES <span class="keyword">ON</span> keystone.* <span class="keyword">TO</span> <span class="string">'keystone'</span>@<span class="string">'localhost'</span> IDENTIFIED <span class="keyword">BY</span> <span class="string">'KEYSTONE_DBPASS'</span>;</span><br><span class="line">GRANT ALL PRIVILEGES <span class="keyword">ON</span> keystone.* <span class="keyword">TO</span> <span class="string">'keystone'</span>@<span class="string">'%'</span> IDENTIFIED <span class="keyword">BY</span> <span class="string">'KEYSTONE_DBPASS'</span>;</span><br></pre></td></tr></table></figure></p>
+<p>生成随机值用于后面作为token初始化：<br><figure class="highlight dns"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line">openssl rand -hex 10</span><br><span class="line">a<span class="number">4d418d94</span>e<span class="number">2c380f61</span>4c</span><br></pre></td></tr></table></figure></p>
+<p>注：上面的作用是生成随机字符串用于用户访问的即keystone.conf中的 admin_token .也可以自己随意写：本次安装admin_token设置为123456</p>
+<blockquote>
+<p>[Note]    Note<br>In Kilo, the keystone project deprecates Eventlet in favor of a WSGI server. This guide uses the Apache HTTP server with mod_wsgi to serve keystone requests on ports 5000 and 35357. By default, the keystone service still listens on ports 5000 and 35357. Therefore, this guide disables the keystone service.</p>
+</blockquote>
+<p>安装<br><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">yum <span class="keyword">install</span> -y openstack-keystone httpd mod_wsgi python-openstackclient memcached python-memcached</span><br></pre></td></tr></table></figure></p>
+<p>启动并开机自启动:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">systemctl <span class="built_in">enable</span> memcached.service</span><br><span class="line">systemctl start memcached.service</span><br></pre></td></tr></table></figure></p>
+<p>编辑etc/keystone/keystone.conf文件：<br><figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">cp /etc/keystone/keystone.conf /etc/keystone/keystone.confbak</span><br><span class="line">echo "[DEFAULT]</span><br><span class="line"><span class="constant">verbose</span> = True</span><br><span class="line"><span class="constant">admin_token</span> = ADMIN_TOKEN</span><br><span class="line">[database]</span><br><span class="line"><span class="constant">connection</span> = mysql://keystone:KEYSTONE_DBPASS@controller/keystone</span><br><span class="line">[memcache]</span><br><span class="line"><span class="constant">servers</span> = localhost:11211</span><br><span class="line">[token]</span><br><span class="line"><span class="constant">provider</span> = keystone.token.providers.uuid.Provider</span><br><span class="line"><span class="constant">driver</span> = keystone.token.persistence.backends.memcache.Token</span><br><span class="line">[revoke]</span><br><span class="line"><span class="constant">driver</span> = keystone.contrib.revoke.backends.sql.Revoke" &gt;/etc/keystone/keystone.conf</span><br></pre></td></tr></table></figure></p>
+<p>同步认证服务数据库:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">su <span class="operator">-s</span> /bin/sh -c <span class="string">"keystone-manage db_sync"</span> keystone</span><br></pre></td></tr></table></figure></p>
+<p>配置 /etc/httpd/conf/httpd.conf 文件:<br><figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line"><span class="keyword">vi</span> /etc/httpd/<span class="keyword">conf</span>/httpd.<span class="keyword">conf</span></span><br><span class="line">ServerName controller</span><br></pre></td></tr></table></figure></p>
+<p>创建/etc/httpd/conf.d/wsgi-keystone.conf 文件:<br><figure class="highlight stata"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">echo "Listen 5000</span><br><span class="line">Listen 35357</span><br><span class="line"></span><br><span class="line">&lt;VirtualHost *:5000&gt;</span><br><span class="line">    WSGIDaemonProcess keystone-public processes=5 threads=1 user=keystone group=keystone <span class="keyword">display</span>-name=%&#123;GROUP&#125;</span><br><span class="line">    WSGIProcessGroup keystone-public</span><br><span class="line">    WSGIScriptAlias / /<span class="keyword">var</span>/www/cgi-bin/keystone/main</span><br><span class="line">    WSGIApplicationGroup %&#123;<span class="keyword">GLOBAL</span>&#125;</span><br><span class="line">    WSGIPassAuthorization <span class="keyword">On</span></span><br><span class="line">    LogLevel info</span><br><span class="line">    ErrorLogFormat \<span class="string">"%&#123;cu&#125;t %M\"</span></span><br><span class="line">    ErrorLog /<span class="keyword">var</span>/<span class="keyword">log</span>/httpd/keystone-<span class="keyword">error</span>.<span class="literal">log</span></span><br><span class="line">    CustomLog /<span class="keyword">var</span>/<span class="keyword">log</span>/httpd/keystone-access.<span class="keyword">log</span> combined</span><br><span class="line">&lt;/VirtualHost&gt;</span><br><span class="line"></span><br><span class="line">&lt;VirtualHost *:35357&gt;</span><br><span class="line">    WSGIDaemonProcess keystone-admin processes=5 threads=1 user=keystone group=keystone <span class="keyword">display</span>-name=%&#123;GROUP&#125;</span><br><span class="line">    WSGIProcessGroup keystone-admin</span><br><span class="line">    WSGIScriptAlias / /<span class="keyword">var</span>/www/cgi-bin/keystone/admin</span><br><span class="line">    WSGIApplicationGroup %&#123;<span class="keyword">GLOBAL</span>&#125;</span><br><span class="line">    WSGIPassAuthorization <span class="keyword">On</span></span><br><span class="line">    LogLevel info</span><br><span class="line">    ErrorLogFormat \<span class="string">"%&#123;cu&#125;t %M\"</span></span><br><span class="line">    ErrorLog /<span class="keyword">var</span>/<span class="keyword">log</span>/httpd/keystone-<span class="keyword">error</span>.<span class="literal">log</span></span><br><span class="line">    CustomLog /<span class="keyword">var</span>/<span class="keyword">log</span>/httpd/keystone-access.<span class="keyword">log</span> combined</span><br><span class="line">&lt;/VirtualHost&gt;" &gt;/etc/httpd/<span class="keyword">conf</span>.<span class="keyword">d</span>/wsgi-keystone.<span class="keyword">conf</span></span><br></pre></td></tr></table></figure></p>
+<p>创建WSGI组件目录:<br><figure class="highlight vala"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">mkdir -p /<span class="keyword">var</span>/www/cgi-bin/keystone</span><br></pre></td></tr></table></figure></p>
+<p>复制WSGI组件到这个目录：<br><figure class="highlight cal"><table><tr><td class="code"><pre><span class="line"># curl http://git.openstack.org/cgit/openstack/keystone/plain/httpd/keystone.py?h=stable/kilo | tee /<span class="keyword">var</span>/www/cgi-bin/keystone/main /<span class="keyword">var</span>/www/cgi-bin/keystone/admin</span><br></pre></td></tr></table></figure></p>
+<p>由于这个需要联网下载，我把内容直接贴过来了。<br><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">"import os</span><br><span class="line">from keystone.server import wsgi as wsgi_server</span><br><span class="line">name = os.path.basename(__file__)</span><br><span class="line">application = wsgi_server.initialize_application(name)"</span> &gt;/<span class="keyword">var</span>/www/cgi-bin/keystone/main</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"import os</span><br><span class="line">from keystone.server import wsgi as wsgi_server</span><br><span class="line">name = os.path.basename(__file__)</span><br><span class="line">application = wsgi_server.initialize_application(name)"</span> &gt;/<span class="keyword">var</span>/www/cgi-bin/keystone/admin</span><br></pre></td></tr></table></figure></p>
+<p>调整目录及目录内文件属组和权限:<br><figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">chown -R keystone:keystone <span class="regexp">/var/</span>www<span class="regexp">/cgi-bin/</span>keystone</span><br><span class="line">chmod <span class="number">755</span> <span class="regexp">/var/</span>www<span class="regexp">/cgi-bin/</span>keystone<span class="comment">/*</span></span><br></pre></td></tr></table></figure></p>
+<p>重启 Apache HTTP server:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">systemctl <span class="built_in">enable</span> httpd.service</span><br><span class="line">systemctl start httpd.service</span><br></pre></td></tr></table></figure></p>
 </span>
       
     </div>
@@ -346,9 +281,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Oracle/" rel="tag">#Oracle</a>
+            <a href="/tags/linux/" rel="tag">#linux</a>
           
-            <a href="/tags/Swingbench/" rel="tag">#Swingbench</a>
+            <a href="/tags/proxy/" rel="tag">#proxy</a>
           
         </div>
       
@@ -357,13 +292,11 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/09/11/tran-containerized-mesos-cluster/" rel="prev">翻译：在Docker中运行你的Mesos集群</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/09/07/sys-cobbler/" rel="next">使用Cobbler部署操作系统</a>
+              <a href="/2015/10/25/openstack-Basic-environment/" rel="next">openstack安装 基础环境</a>
             
           </div>
         </div>
@@ -388,8 +321,8 @@
         
           <div class="comments" id="comments">
             
-              <div class="ds-thread" data-thread-key="2015/09/09/test-swingbench/"
-                   data-title="使用Swingbench对数据库进行压力测试" data-url="http://yoursite.com/2015/09/09/test-swingbench/">
+              <div class="ds-thread" data-thread-key="2015/10/25/openstack-Identity-service/"
+                   data-title="openstack安装 认证服务" data-url="http://yoursite.com/2015/10/25/openstack-Identity-service/">
               </div>
             
           </div>
@@ -481,7 +414,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#环境"><span class="nav-number">2.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#架构示意图"><span class="nav-number">3.</span> <span class="nav-text">架构示意图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装和设置"><span class="nav-number">4.</span> <span class="nav-text">安装和设置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用"><span class="nav-number">5.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#测试中遇到的问题和解决方法"><span class="nav-number">6.</span> <span class="nav-text">测试中遇到的问题和解决方法</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#OpenStack_Identity_concepts"><span class="nav-number">1.</span> <span class="nav-text">OpenStack Identity concepts</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Install_and_configure"><span class="nav-number">2.</span> <span class="nav-text">Install and configure</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

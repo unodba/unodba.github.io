@@ -39,16 +39,22 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="#vim /etc/profilehttp_proxy=192.178.102.30:1080export http_proxyhttps_proxy=192.178.102.30:1080export https_proxyftp_proxy=192.178.102.30:1080export ftp_proxyrsync_proxy=192.178.102.30:1080export rsyn">
+<meta name="description" content="这周在折腾openstack，下面是过程小记。
+
+参考：Chapter 2. Basic environment">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux设置全局代理">
-<meta property="og:url" content="http://yoursite.com/2015/10/25/sys-linux-proxy/index.html">
+<meta property="og:title" content="openstack安装 基础环境">
+<meta property="og:url" content="http://yoursite.com/2015/10/25/openstack-Basic-environment/index.html">
 <meta property="og:site_name" content="信息系统应用技术实验室">
-<meta property="og:description" content="#vim /etc/profilehttp_proxy=192.178.102.30:1080export http_proxyhttps_proxy=192.178.102.30:1080export https_proxyftp_proxy=192.178.102.30:1080export ftp_proxyrsync_proxy=192.178.102.30:1080export rsyn">
-<meta property="og:updated_time" content="2015-10-25T11:23:27.344Z">
+<meta property="og:description" content="这周在折腾openstack，下面是过程小记。
+
+参考：Chapter 2. Basic environment">
+<meta property="og:updated_time" content="2015-10-25T15:00:13.823Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Linux设置全局代理">
-<meta name="twitter:description" content="#vim /etc/profilehttp_proxy=192.178.102.30:1080export http_proxyhttps_proxy=192.178.102.30:1080export https_proxyftp_proxy=192.178.102.30:1080export ftp_proxyrsync_proxy=192.178.102.30:1080export rsyn">
+<meta name="twitter:title" content="openstack安装 基础环境">
+<meta name="twitter:description" content="这周在折腾openstack，下面是过程小记。
+
+参考：Chapter 2. Basic environment">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -58,7 +64,7 @@
   };
 </script>
 
-  <title> Linux设置全局代理 | 信息系统应用技术实验室 </title>
+  <title> openstack安装 基础环境 | 信息系统应用技术实验室 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -194,7 +200,7 @@
           
           
             
-              Linux设置全局代理
+              openstack安装 基础环境
             
           
         </h1>
@@ -229,8 +235,8 @@
           
             <span class="post-comments-count">
               &nbsp; | &nbsp;
-              <a href="/2015/10/25/sys-linux-proxy/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/25/sys-linux-proxy/" itemprop="commentsCount"></span>
+              <a href="/2015/10/25/openstack-Basic-environment/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/25/openstack-Basic-environment/" itemprop="commentsCount"></span>
               </a>
             </span>
           
@@ -244,10 +250,50 @@
       
 
       
-        <span itemprop="articleBody"><a id="more"></a>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">vim /etc/profile</span><br><span class="line">http_proxy=<span class="number">192.178</span><span class="number">.102</span><span class="number">.30</span>:<span class="number">1080</span></span><br><span class="line"><span class="keyword">export</span> http_proxy</span><br><span class="line">https_proxy=<span class="number">192.178</span><span class="number">.102</span><span class="number">.30</span>:<span class="number">1080</span></span><br><span class="line"><span class="keyword">export</span> https_proxy</span><br><span class="line">ftp_proxy=<span class="number">192.178</span><span class="number">.102</span><span class="number">.30</span>:<span class="number">1080</span></span><br><span class="line"><span class="keyword">export</span> ftp_proxy</span><br><span class="line">rsync_proxy=<span class="number">192.178</span><span class="number">.102</span><span class="number">.30</span>:<span class="number">1080</span></span><br><span class="line"><span class="keyword">export</span> rsync_proxy</span><br><span class="line">RSYNC_PROXY=<span class="number">192.178</span><span class="number">.102</span><span class="number">.30</span>:<span class="number">1080</span></span><br><span class="line">EXPORT RSYNC_PROXY</span><br><span class="line">no_proxy=<span class="number">192.168</span><span class="number">.200</span><span class="number">.0</span> <span class="preprocessor"># 访问局域网地址（<span class="number">192.168</span><span class="number">.20</span><span class="number">.0</span>/<span class="number">24</span>网段）时不使用代理，可以用逗号分隔多个地址。</span></span><br><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure>
-<p>#以上几行命令的意思是，这台linux机器所有的http、https、ftp、rsync请求，都只会通过192.178.102.30:1080这台windows代理服务器进行访问</p>
-<p>使用curl cip.cc进行测试，查看IP是否为代理服务IP地址。</p>
+        <span itemprop="articleBody"><p>这周在折腾openstack，下面是过程小记。</p>
+<blockquote>
+<p>参考：<a href="http://docs.openstack.org/kilo/install-guide/install/yum/content/ch_basic_environment.html#basics-prerequisites" target="_blank" rel="external">Chapter 2. Basic environment</a></p>
+</blockquote>
+<a id="more"></a>
+<h1 id="Before_you_begin">Before you begin</h1><h1 id="Security">Security</h1><h1 id="Networking">Networking</h1><ul>
+<li>OpenStack Networking (neutron)</li>
+<li>Legacy networking (nova-network)</li>
+</ul>
+<h1 id="Network_Time_Protocol_(NTP)">Network Time Protocol (NTP)</h1><h1 id="OpenStack_packages">OpenStack packages</h1><ul>
+<li><p>配置epel源</p>
+<figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">curl -o <span class="regexp">/etc/yum</span>.repos.d<span class="regexp">/epel7.repo http:/</span><span class="regexp">/192.178.102.249/</span>help<span class="regexp">/epel7.repo</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置openstack源</p>
+<figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">curl -o <span class="regexp">/etc/yum</span>.repos.d<span class="regexp">/openstack-kilo.repo http:/</span><span class="regexp">/192.178.102.249/</span>help<span class="regexp">/openstack-kilo.repo</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装open-vm-tools<br>我的底层环境使用vsphere esxi5.5 u2，为了更好的体验，安装vmware建议的open-vm-tools客户端工具，cenots 7已经集成进epel源，直接安装即可。</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">yum <span class="keyword">install</span> -y open-vm-tools</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>另外两个事情<br>更新系统到最新</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="title">yum</span> upgrade -y</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<p>注意<br>If the upgrade process includes a new kernel, reboot your system to activate it.</p>
+</blockquote>
+<pre><code><span class="label">RHEL</span> 和 CentOS 默认启用<span class="keyword">SELinux </span>。安装openstack-<span class="keyword">selinux </span>包来对OpenStack 服务相关的安全策略自动管理。
+</code></pre><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">yum <span class="keyword">install</span> -y openstack-selinux</span><br></pre></td></tr></table></figure>
+<h1 id="SQL_database">SQL database</h1><p>大部分OpenStack服务使用数据库存储信息。一般在控制节点安装。支持MariaDB、MySQL其他分支和PostgreSQL。</p>
+<figure class="highlight armasm"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line"><span class="label">yum</span> install -y <span class="keyword">mariadb </span><span class="keyword">mariadb-server </span>MySQL-python</span><br></pre></td></tr></table></figure>
+<p>生成数据库配置文件，记得配置绑定地址到控制节点的管理网络IP以便其他节点可以通过管理网络访问。</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"</span><br><span class="line"></span>[mysqld]</span><br><span class="line">bind-address = <span class="number">192.168</span>.<span class="number">200.220</span></span><br><span class="line">default-storage-engine = innodb</span><br><span class="line">innodb_file_per_table</span><br><span class="line">collation-server = utf8_general_ci</span><br><span class="line">init-connect = <span class="string">'SET NAMES utf8'</span></span><br><span class="line">character-<span class="keyword">set</span>-server = utf8" &gt;/etc/my.<span class="keyword">cnf</span>.<span class="keyword">d</span>/mariadb_openstack.<span class="keyword">cnf</span></span><br></pre></td></tr></table></figure>
+<p>启动数据库服务并配置开机自启动。<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">systemctl <span class="built_in">enable</span> mariadb.service</span><br><span class="line">systemctl start mariadb.service</span><br></pre></td></tr></table></figure></p>
+<p>对数据库进行安全加固，设置root密码，访问权限，移除测试库。</p>
+<figure class="highlight vala"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">mysql_secure_installation</span><br></pre></td></tr></table></figure>
+<p>配置防火墙，允许 MySql service 通过:<br><figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --permanent --<span class="built_ins">add</span>-service=mysql</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --reload</span><br></pre></td></tr></table></figure></p>
+<h1 id="Message_queue">Message queue</h1><p>OpenStack uses a message queue to coordinate operations and status information among services. The message queue service typically runs on the controller node. OpenStack supports several message queue services including RabbitMQ, Qpid, and ZeroMQ. However, most distributions that package OpenStack support a particular message queue service. This guide implements the RabbitMQ message queue service because most distributions support it. If you prefer to implement a different message queue service, consult the documentation associated with it.</p>
+<p>安装：<br><figure class="highlight axapta"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">yum install -y rabbitmq-<span class="keyword">server</span></span><br></pre></td></tr></table></figure></p>
+<p>启动并配置开机自启动：<br><figure class="highlight axapta"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">systemctl enable rabbitmq-<span class="keyword">server</span>.service</span><br><span class="line">systemctl start rabbitmq-<span class="keyword">server</span>.service</span><br></pre></td></tr></table></figure></p>
+<p>添加 openstack 用户:</p>
+<figure class="highlight erlang"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">rabbitmqctl add_user openstack <span class="variable">RABBIT_PASS</span></span><br><span class="line"><span class="variable">Creating</span> user <span class="string">"openstack"</span> ...</span><br><span class="line">...done.</span><br></pre></td></tr></table></figure>
+<p>替换 RABBIT_PASS 为你想设置的密码，此次我不动了。</p>
+<p>给openstack配置读写权限:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">rabbitmqctl <span class="built_in">set</span>_permissions openstack <span class="string">".*"</span> <span class="string">".*"</span> <span class="string">".*"</span></span><br><span class="line">Setting permissions <span class="keyword">for</span> user <span class="string">"openstack"</span> <span class="keyword">in</span> vhost <span class="string">"/"</span> ...</span><br><span class="line">...done.</span><br></pre></td></tr></table></figure>
 </span>
       
     </div>
@@ -266,6 +312,8 @@
       
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/10/25/openstack-Identity-service/" rel="prev">openstack安装 认证服务</a>
             
           </div>
 
@@ -296,8 +344,8 @@
         
           <div class="comments" id="comments">
             
-              <div class="ds-thread" data-thread-key="2015/10/25/sys-linux-proxy/"
-                   data-title="Linux设置全局代理" data-url="http://yoursite.com/2015/10/25/sys-linux-proxy/">
+              <div class="ds-thread" data-thread-key="2015/10/25/openstack-Basic-environment/"
+                   data-title="openstack安装 基础环境" data-url="http://yoursite.com/2015/10/25/openstack-Basic-environment/">
               </div>
             
           </div>
@@ -337,7 +385,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">22</span>
+              <span class="site-state-item-count">24</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -389,7 +437,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Before_you_begin"><span class="nav-number">1.</span> <span class="nav-text">Before you begin</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Security"><span class="nav-number">2.</span> <span class="nav-text">Security</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Networking"><span class="nav-number">3.</span> <span class="nav-text">Networking</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Network_Time_Protocol_(NTP)"><span class="nav-number">4.</span> <span class="nav-text">Network Time Protocol (NTP)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OpenStack_packages"><span class="nav-number">5.</span> <span class="nav-text">OpenStack packages</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SQL_database"><span class="nav-number">6.</span> <span class="nav-text">SQL database</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Message_queue"><span class="nav-number">7.</span> <span class="nav-text">Message queue</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
