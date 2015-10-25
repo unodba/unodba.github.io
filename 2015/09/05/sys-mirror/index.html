@@ -45,7 +45,7 @@
 <meta property="og:url" content="http://yoursite.com/2015/09/05/sys-mirror/index.html">
 <meta property="og:site_name" content="信息系统应用技术实验室">
 <meta property="og:description" content="实验室工作中需要时常安装、更新linux下的相关包，由于内部网络限制，使用官方yum安装变得很困难。另外网速这个是硬伤。所以将实验室用到的一些相关源镜像到本地，方便大家工作。">
-<meta property="og:updated_time" content="2015-10-24T14:08:43.067Z">
+<meta property="og:updated_time" content="2015-10-25T05:10:00.275Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="创建开源镜像仓库">
 <meta name="twitter:description" content="实验室工作中需要时常安装、更新linux下的相关包，由于内部网络限制，使用官方yum安装变得很困难。另外网速这个是硬伤。所以将实验室用到的一些相关源镜像到本地，方便大家工作。">
@@ -227,6 +227,13 @@
 
         
           
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/09/05/sys-mirror/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/05/sys-mirror/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
         
       </div>
     </header>
@@ -237,7 +244,7 @@
       
 
       
-        <span itemprop="articleBody"><p>实验室工作中需要时常安装、更新linux下的相关包，由于内部网络限制，使用官方yum安装变得很困难。另外网速这个是硬伤。所以将实验室用到的一些相关源镜像到<br>本地，方便大家工作。</p>
+        <span itemprop="articleBody"><p>实验室工作中需要时常安装、更新linux下的相关包，由于内部网络限制，使用官方yum安装变得很困难。另外网速这个是硬伤。所以将实验室用到的一些相关源镜像到本地，方便大家工作。</p>
 <a id="more"></a>
 <h1 id="nginx服务搭建">nginx服务搭建</h1><p>选择nginx作为web服务，小巧轻便。操作系统：CentOS 6.x</p>
 <h2 id="nginx安装">nginx安装</h2><ol>
@@ -262,7 +269,7 @@
 <li>epel源：rsync://mirrors.kernel.org/fedora-epel，rsync://mirrors.ustc.edu.cn/epel/</li>
 <li>cpan源：rsync://mirrors.ustc.edu.cn/CPAN/</li>
 <li>ceph源：rsync -avrt rsync://ceph.mirror.iweb.ca/ceph</li>
-<li>openstack源：</li>
+<li>openstack源：rsync -avrt rsync://repos.fedorapeople.org/people-repos/openstack</li>
 <li>mariadb源： rsync -a –partial –delete-after –delay-updates rsync.osuosl.org::mariadb，rsync -avP archive.mariadb.org::mariadb<br>rsync://mirror.aarnet.edu.au/pub/MariaDB</li>
 <li>percona源 rsync -avrt rsync://rsync.percona.com/rsync /mirror/percona/</li>
 </ol>
@@ -271,9 +278,9 @@
 <h1 id="Ubuntu源同步">Ubuntu源同步</h1><h2 id="安装apt-mirror">安装apt-mirror</h2><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">yum <span class="keyword">install</span> -y apt-mirror</span><br></pre></td></tr></table></figure>
 <h2 id="配置说明">配置说明</h2><p>目前Ubuntu的主要版本有5个，具体如下：<br>Ubuntu 15.04 (Vivid Vervet)<br>Ubuntu 14.10 (Utopic Unicorn)<br>Ubuntu 14.04.3 LTS (Trusty Tahr)<br>Ubuntu 12.04.5 LTS (Precise Pangolin)<br>Ubuntu 10.04.4 LTS (Lucid Lynx)</p>
 <p>下面就构建Ubuntu 14.04 64bit的本地Ubuntu mirror服务器为例子，来说明如何配置：</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">mkdir -p /mirror/apt-mirror</span><br><span class="line">mv /etc/apt-mirror.list /etc/apt-mirror.listbak</span><br><span class="line">vi /etc/apt-mirror.list</span><br><span class="line">############# config ##################</span><br><span class="line"><span class="operator"><span class="keyword">set</span> base_path    /mirror/apt-mirror</span><br><span class="line"><span class="keyword">set</span> mirror_path  $base_path/mirror</span><br><span class="line"><span class="keyword">set</span> skel_path    $base_path/skel</span><br><span class="line"><span class="keyword">set</span> var_path     $base_path/<span class="keyword">var</span></span><br><span class="line"><span class="keyword">set</span> cleanscript $var_path/clean.sh</span><br><span class="line">#<span class="keyword">set</span> defaultarch  &lt;running host architecture&gt;</span><br><span class="line"><span class="keyword">set</span> defaultarch amd64</span><br><span class="line"><span class="keyword">set</span> postmirror_script $var_path/postmirror.sh</span><br><span class="line"><span class="keyword">set</span> run_postmirror <span class="number">0</span></span><br><span class="line"><span class="keyword">set</span> nthreads     <span class="number">20</span></span><br><span class="line"><span class="keyword">set</span> _tilde <span class="number">0</span></span><br><span class="line">############# <span class="keyword">end</span> config ##############</span><br><span class="line">deb-amd64 <span class="keyword">http</span>://mirrors.sohu.com/ubuntu/  precise  <span class="keyword">main</span> <span class="keyword">restricted</span> universe multiverse</span><br><span class="line">deb-amd64 <span class="keyword">http</span>://mirrors.sohu.com/ubuntu/  precise-backports  <span class="keyword">main</span> <span class="keyword">restricted</span> universe multiverse</span><br><span class="line">deb-amd64 <span class="keyword">http</span>://mirrors.sohu.com/ubuntu/  precise-proposed  <span class="keyword">main</span> <span class="keyword">restricted</span> universe multiverse</span><br><span class="line">deb-amd64 <span class="keyword">http</span>://mirrors.sohu.com/ubuntu/  precise-<span class="keyword">security</span>  <span class="keyword">main</span> <span class="keyword">restricted</span> universe multiverse</span><br><span class="line">deb-amd64 <span class="keyword">http</span>://mirrors.sohu.com/ubuntu/  precise-updates  <span class="keyword">main</span> <span class="keyword">restricted</span> universe multiverse</span><br><span class="line">deb-amd64 <span class="keyword">http</span>://mirrors.sohu.com/ubuntu/  trysty  <span class="keyword">main</span> <span class="keyword">restricted</span> universe multiverse</span><br><span class="line">deb-amd64 <span class="keyword">http</span>://mirrors.sohu.com/ubuntu/  trysty-backports  <span class="keyword">main</span> <span class="keyword">restricted</span> universe multiverse</span><br><span class="line">deb-amd64 <span class="keyword">http</span>://mirrors.sohu.com/ubuntu/  trysty-proposed  <span class="keyword">main</span> <span class="keyword">restricted</span> universe multiverse</span><br><span class="line">deb-amd64 <span class="keyword">http</span>://mirrors.sohu.com/ubuntu/  trysty-<span class="keyword">security</span>  <span class="keyword">main</span> <span class="keyword">restricted</span> universe multiverse</span><br><span class="line">deb-amd64 <span class="keyword">http</span>://mirrors.sohu.com/ubuntu/  trysty-updates  <span class="keyword">main</span> <span class="keyword">restricted</span> universe multiverse</span><br><span class="line"></span><br><span class="line">deb-src <span class="keyword">http</span>://extras.ubuntu.com/ubuntu precise <span class="keyword">main</span></span><br><span class="line">deb-amd64 <span class="keyword">http</span>://extras.ubuntu.com/ubuntu precise <span class="keyword">main</span></span><br><span class="line">clean</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">mkdir -p /mirror/apt-mirror</span><br><span class="line">mv /etc/apt-mirror.list /etc/apt-mirror.listbak</span><br><span class="line">vi /etc/apt-mirror.list</span><br><span class="line">############# config ##################</span><br><span class="line"><span class="operator"><span class="keyword">set</span> base_path    /mirror/apt-mirror</span><br><span class="line"><span class="keyword">set</span> mirror_path  $base_path/mirror</span><br><span class="line"><span class="keyword">set</span> skel_path    $base_path/skel</span><br><span class="line"><span class="keyword">set</span> var_path     $base_path/<span class="keyword">var</span></span><br><span class="line"><span class="keyword">set</span> cleanscript $var_path/clean.sh</span><br><span class="line">#<span class="keyword">set</span> defaultarch  &lt;running host architecture&gt;</span><br><span class="line"><span class="keyword">set</span> defaultarch amd64</span><br><span class="line"><span class="keyword">set</span> postmirror_script $var_path/postmirror.sh</span><br><span class="line"><span class="keyword">set</span> run_postmirror <span class="number">0</span></span><br><span class="line"><span class="keyword">set</span> nthreads     <span class="number">20</span></span><br><span class="line"><span class="keyword">set</span> _tilde <span class="number">0</span></span><br><span class="line">############# <span class="keyword">end</span> config ##############</span><br><span class="line">deb-amd64 <span class="keyword">http</span>://mirrors.sohu.com/ubuntu/  precise  <span class="keyword">main</span> <span class="keyword">restricted</span> universe multiverse</span><br><span class="line">deb-amd64 <span class="keyword">http</span>://mirrors.sohu.com/ubuntu/  precise-backports  <span class="keyword">main</span> <span class="keyword">restricted</span> universe multiverse</span><br><span class="line">deb-amd64 <span class="keyword">http</span>://mirrors.sohu.com/ubuntu/  precise-proposed  <span class="keyword">main</span> <span class="keyword">restricted</span> universe multiverse</span><br><span class="line">deb-amd64 <span class="keyword">http</span>://mirrors.sohu.com/ubuntu/  precise-<span class="keyword">security</span>  <span class="keyword">main</span> <span class="keyword">restricted</span> universe multiverse</span><br><span class="line">deb-amd64 <span class="keyword">http</span>://mirrors.sohu.com/ubuntu/  precise-updates  <span class="keyword">main</span> <span class="keyword">restricted</span> universe multiverse</span><br><span class="line">deb-amd64 <span class="keyword">http</span>://mirrors.sohu.com/ubuntu/  trysty  <span class="keyword">main</span> <span class="keyword">restricted</span> universe multiverse</span><br><span class="line">deb-amd64 <span class="keyword">http</span>://mirrors.sohu.com/ubuntu/  trysty-backports  <span class="keyword">main</span> <span class="keyword">restricted</span> universe multiverse</span><br><span class="line">deb-amd64 <span class="keyword">http</span>://mirrors.sohu.com/ubuntu/  trysty-proposed  <span class="keyword">main</span> <span class="keyword">restricted</span> universe multiverse</span><br><span class="line">deb-amd64 <span class="keyword">http</span>://mirrors.sohu.com/ubuntu/  trysty-<span class="keyword">security</span>  <span class="keyword">main</span> <span class="keyword">restricted</span> universe multiverse</span><br><span class="line">deb-amd64 <span class="keyword">http</span>://mirrors.sohu.com/ubuntu/  trysty-updates  <span class="keyword">main</span> <span class="keyword">restricted</span> universe multiverse</span><br><span class="line">clean <span class="keyword">http</span>://mirrors.sohu.com/ubuntu</span><br><span class="line">#ubuntu extras</span><br><span class="line">deb-src <span class="keyword">http</span>://extras.ubuntu.com/ubuntu precise <span class="keyword">main</span></span><br><span class="line">deb <span class="keyword">http</span>://extras.ubuntu.com/ubuntu precise <span class="keyword">main</span></span><br><span class="line">deb-src <span class="keyword">http</span>://extras.ubuntu.com/ubuntu trysty <span class="keyword">main</span></span><br><span class="line">deb <span class="keyword">http</span>://extras.ubuntu.com/ubuntu trysty <span class="keyword">main</span></span><br><span class="line">clean <span class="keyword">http</span>://extras.ubuntu.com/ubuntu</span><br><span class="line">#mesosphere源</span><br><span class="line">deb <span class="keyword">http</span>://repos.mesosphere.io/ubuntu trusty <span class="keyword">main</span></span><br><span class="line">clean <span class="keyword">http</span>://repos.mesosphere.io/ubuntu</span></span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>备注：<br>deb-amd64 http:// 表示下载64bit 版本的deb 软件；<br>precise 表示Ubuntu 12.04的代号；<br>只下载precise ,大约需要43GB的存储空间；<br>下载precise-backports precise-proposed precise-security precise-updates，估计需要75GB的空间。</p>
+<p>备注：<br>deb-amd64 表示下载64bit 版本的deb 软件；<br>precise 表示Ubuntu 12.04的代号；<br>只下载precise ,大约需要43GB的存储空间；<br>下载precise-backports precise-proposed precise-security precise-updates，估计需要75GB的空间。</p>
 </blockquote>
 <h2 id="同步镜像">同步镜像</h2><p>设置完成后，然后新建一个screen终端（个人习惯），用于后台运行镜像同步。</p>
 <figure class="highlight openscad"><table><tr><td class="code"><pre><span class="line"><span class="built_in">#</span></span><br><span class="line">yum install -y screen</span><br><span class="line">screen -dmS apt-<span class="built_in">mirror</span></span><br><span class="line">screen -r apt-<span class="built_in">mirror</span></span><br><span class="line">apt-<span class="built_in">mirror</span></span><br></pre></td></tr></table></figure>
@@ -295,7 +302,7 @@
 <p>参考：<a href="http://cloudstack.apt-get.eu/README" target="_blank" rel="external">http://cloudstack.apt-get.eu/README</a></p>
 </blockquote>
 <p>官方文档（但是存在错误），应该按照下面的来：<br><figure class="highlight crystal"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">mkdir -p /mirror/cloudstack</span><br><span class="line">cd /mirror/cloudstack</span><br><span class="line">rsync -avr --delete cloudstack.apt-get.<span class="symbol">eu:</span><span class="symbol">:cloudstack</span></span><br><span class="line">/<span class="regexp">/For Debian/</span><span class="constant">Ubuntu</span><span class="symbol">:</span></span><br><span class="line">rsync -avr --delete cloudstack.apt-get.<span class="symbol">eu:</span><span class="symbol">:cloudstack/ubuntu</span> .</span><br><span class="line">/<span class="regexp">/For RedHat/</span><span class="constant">CentOS</span></span><br><span class="line">rsync -avr --delete cloudstack.apt-get.<span class="symbol">eu:</span><span class="symbol">:cloudstack/rhel</span> .</span><br></pre></td></tr></table></figure></p>
-<p>备注：rsync 参数解释：-a 参数，相当于-rlptgoD，-r 是递归 -l 是链接文件，意思是拷贝链接文件；-p 表示保持文件原有权限；-t 保持文件原有时间；-g 保持文件原有用户组；-o 保持文件原有属主；-D 相当于块设备文件；-v 传输时的进度等信息；<br>同步系统模版<br><figure class="highlight livecodeserver"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">wget -r -p -k -np <span class="keyword">http</span>://cloudstack.apt-<span class="built_in">get</span>.eu/systemvm/</span><br></pre></td></tr></table></figure></p>
+<p>备注：rsync 参数解释：-a 参数，相当于-rlptgoD，-l 是链接文件，意思是拷贝链接文件；-p 表示保持文件原有权限；-t 保持文件原有时间；-g 保持文件原有用户组；-o 保持文件原有属主；-D 相当于块设备文件；-r 是递归，-v 传输时的进度等信息；</p>
 <h1 id="配置本地yum源">配置本地yum源</h1><h2 id="挂载镜像">挂载镜像</h2><figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">mkdir <span class="regexp">/media/</span>rhel</span><br><span class="line">mount <span class="regexp">/dev/</span>cdrom <span class="regexp">/media/</span>rhel</span><br></pre></td></tr></table></figure>
 <h2 id="生成YUM通用数据库(可选)">生成YUM通用数据库(可选)</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">yum <span class="operator"><span class="keyword">install</span>  createrepo</span><br><span class="line">cd /<span class="keyword">var</span>/<span class="keyword">ftp</span>/pub</span><br><span class="line">createrepo .</span></span><br></pre></td></tr></table></figure>
 <h2 id="配置本地yum源-1">配置本地yum源</h2><figure class="highlight stata"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line"><span class="keyword">cd</span> /etc/yum.repos.<span class="keyword">d</span>/</span><br><span class="line">vi rhel-media.repo</span><br><span class="line">[<span class="keyword">Local</span>]</span><br><span class="line">name=<span class="keyword">Local</span></span><br><span class="line">baseurl=<span class="keyword">file</span>:<span class="comment">///media/rhel</span></span><br><span class="line">enable=1</span><br><span class="line">gpgcheck=0</span><br></pre></td></tr></table></figure>
@@ -359,6 +366,10 @@
         
           <div class="comments" id="comments">
             
+              <div class="ds-thread" data-thread-key="2015/09/05/sys-mirror/"
+                   data-title="创建开源镜像仓库" data-url="http://yoursite.com/2015/09/05/sys-mirror/">
+              </div>
+            
           </div>
         
       </div>
@@ -396,7 +407,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-count">22</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -410,7 +421,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">17</span>
+              <span class="site-state-item-count">18</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
@@ -496,11 +507,26 @@
   
   
     
-    
 
   
+    
+  
 
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhugaoxiao"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
 
+    
   
   
   <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
