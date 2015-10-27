@@ -88,7 +88,7 @@
 <meta property="og:image" content="http://yoursite.com/images/CloudStack-Advanced-Network-Zone-feature-31.png">
 <meta property="og:image" content="http://yoursite.com/images/CloudStack-Advanced-Network-Zone-feature-32.png">
 <meta property="og:image" content="http://yoursite.com/images/CloudStack-Advanced-Network-Zone-feature-33.png">
-<meta property="og:updated_time" content="2015-10-23T13:51:32.805Z">
+<meta property="og:updated_time" content="2015-10-26T02:23:56.962Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CloudStack 高级网络">
 <meta name="twitter:description" content="CloudStack在实验室实践过程，高级网络部分。">
@@ -316,39 +316,39 @@
 <li>负载均衡</li>
 </ul>
 <p>使用上面环境在用户shennan的高级网络SN-Network01下建立3台试验虚拟机。</p>
-<p><img src="images/CloudStack-Advanced-Network-Zone-feature-1.png" alt="advanced network"></p>
+<p><img src="/images/CloudStack-Advanced-Network-Zone-feature-1.png" alt="advanced network"></p>
 <h1 id="DHCP">DHCP</h1><p>虚拟路由器被设置为DHCP服务器为虚拟网络内部VM自动分配IP地址，前面文章已有图示介绍。</p>
 <h1 id="DNS">DNS</h1><p>虚拟路由器被设置为内部DNS服务器为虚拟网络内部VM进行域名解析，也可以直接使用外部DNS。</p>
 <h1 id="源NAT">源NAT</h1><p>新建网络会自动配置源NAT映射</p>
-<p><img src="images/CloudStack-Advanced-Network-Zone-feature-2.png" alt="advanced network"></p>
+<p><img src="/images/CloudStack-Advanced-Network-Zone-feature-2.png" alt="advanced network"></p>
 <p>源NAT 用于将VM的内部IP映射成外部IP地址，用于VM访问外部网络。外部网络计算机无法直接访问VM的内部IP。</p>
-<p><img src="images/CloudStack-Advanced-Network-Zone-feature-3.png" alt="advanced network"></p>
+<p><img src="/images/CloudStack-Advanced-Network-Zone-feature-3.png" alt="advanced network"></p>
 <h1 id="端口转发">端口转发</h1><p>外部网络的计算机需要访问内部网络的VM，需要手动配置端口转发规则。</p>
 <p>例：将虚拟路由器外部IP：111.111.101.109的8081端口影射到内部网络VM1的80端口。</p>
-<p><img src="images/CloudStack-Advanced-Network-Zone-feature-4.png" alt="advanced network"><br><img src="images/CloudStack-Advanced-Network-Zone-feature-5.png" alt="advanced network"><br>配置端口转发规则</p>
-<p><img src="images/CloudStack-Advanced-Network-Zone-feature-6.png" alt="advanced network"><br> 设置专用端口范围 80 – 80，公用端口范围8081 – 8081，选择协议TCP。</p>
-<p><img src="images/CloudStack-Advanced-Network-Zone-feature-7.png" alt="advanced network"><br> 选择Win2003-NLB01虚拟机。</p>
-<p><img src="images/CloudStack-Advanced-Network-Zone-feature-8.png" alt="advanced network"> 重复添加好3条映射规则<br><img src="images/CloudStack-Advanced-Network-Zone-feature-9.png" alt="advanced network"><br>此时外部计算机还无法访问，还需要配置对应的防火墙规则。</p>
+<p><img src="/images/CloudStack-Advanced-Network-Zone-feature-4.png" alt="advanced network"><br><img src="/images/CloudStack-Advanced-Network-Zone-feature-5.png" alt="advanced network"><br>配置端口转发规则</p>
+<p><img src="/images/CloudStack-Advanced-Network-Zone-feature-6.png" alt="advanced network"><br> 设置专用端口范围 80 – 80，公用端口范围8081 – 8081，选择协议TCP。</p>
+<p><img src="/images/CloudStack-Advanced-Network-Zone-feature-7.png" alt="advanced network"><br> 选择Win2003-NLB01虚拟机。</p>
+<p><img src="/images/CloudStack-Advanced-Network-Zone-feature-8.png" alt="advanced network"> 重复添加好3条映射规则<br><img src="/images/CloudStack-Advanced-Network-Zone-feature-9.png" alt="advanced network"><br>此时外部计算机还无法访问，还需要配置对应的防火墙规则。</p>
 <h1 id="防火墙">防火墙</h1><p>刚才设置的端口转发还无法访问，因为需要进行防火墙规则配置。</p>
-<p><img src="images/CloudStack-Advanced-Network-Zone-feature-10.png" alt="advanced network"><br>配置防火墙规则</p>
-<p><img src="images/CloudStack-Advanced-Network-Zone-feature-11.png" alt="advanced network"><br>配置规则允许端口8081 – 8083 的访问</p>
-<p><img src="images/CloudStack-Advanced-Network-Zone-feature-12.png" alt="advanced network"><br>添加成功后测试Http访问。</p>
-<p><img src="images/CloudStack-Advanced-Network-Zone-feature-13.png" alt="advanced network"></p>
+<p><img src="/images/CloudStack-Advanced-Network-Zone-feature-10.png" alt="advanced network"><br>配置防火墙规则</p>
+<p><img src="/images/CloudStack-Advanced-Network-Zone-feature-11.png" alt="advanced network"><br>配置规则允许端口8081 – 8083 的访问</p>
+<p><img src="/images/CloudStack-Advanced-Network-Zone-feature-12.png" alt="advanced network"><br>添加成功后测试Http访问。</p>
+<p><img src="/images/CloudStack-Advanced-Network-Zone-feature-13.png" alt="advanced network"></p>
 <h1 id="静态NAT">静态NAT</h1><p>静态NAT是建立内部网络IP到外部网络IP的双向映射。因此使用静态NAT后外部计算机可以直接访问内部网络VM。</p>
 <p>每条规则对应一VM实例，并且每条静态NAT映射规则需独占1外网IP地址。</p>
-<p><img src="images/CloudStack-Advanced-Network-Zone-feature-14.png" alt="advanced network"><br><img src="images/CloudStack-Advanced-Network-Zone-feature-15.png" alt="advanced network"><br>因为静态NAT需要独占外网IP，首先需要为虚拟路由器申请3个新的外网IP。</p>
-<p><img src="images/CloudStack-Advanced-Network-Zone-feature-16.png" alt="advanced network"><br>重复3次申请3个新外网IP</p>
-<p><img src="images/CloudStack-Advanced-Network-Zone-feature-17.png" alt="advanced network"><br>设置静态NAT映射</p>
-<p><img src="images/CloudStack-Advanced-Network-Zone-feature-18.png" alt="advanced network"><br>选择Win2003-NLB01</p>
-<p><img src="images/CloudStack-Advanced-Network-Zone-feature-19.png" alt="advanced network"><br>完成映射后，修改防火前规则，允许80端口访问。</p>
-<p><img src="images/CloudStack-Advanced-Network-Zone-feature-20.png" alt="advanced network"><br><img src="images/CloudStack-Advanced-Network-Zone-feature-21.png" alt="advanced network"><br>重复以上操作，完成3条规则配置。</p>
-<p><img src="images/CloudStack-Advanced-Network-Zone-feature-22.png" alt="advanced network"><br>使用外网IP直接访问VM测试。</p>
-<p><img src="images/CloudStack-Advanced-Network-Zone-feature-23.png" alt="advanced network"></p>
+<p><img src="/images/CloudStack-Advanced-Network-Zone-feature-14.png" alt="advanced network"><br><img src="/images/CloudStack-Advanced-Network-Zone-feature-15.png" alt="advanced network"><br>因为静态NAT需要独占外网IP，首先需要为虚拟路由器申请3个新的外网IP。</p>
+<p><img src="/images/CloudStack-Advanced-Network-Zone-feature-16.png" alt="advanced network"><br>重复3次申请3个新外网IP</p>
+<p><img src="/images/CloudStack-Advanced-Network-Zone-feature-17.png" alt="advanced network"><br>设置静态NAT映射</p>
+<p><img src="/images/CloudStack-Advanced-Network-Zone-feature-18.png" alt="advanced network"><br>选择Win2003-NLB01</p>
+<p><img src="/images/CloudStack-Advanced-Network-Zone-feature-19.png" alt="advanced network"><br>完成映射后，修改防火前规则，允许80端口访问。</p>
+<p><img src="/images/CloudStack-Advanced-Network-Zone-feature-20.png" alt="advanced network"><br><img src="/images/CloudStack-Advanced-Network-Zone-feature-21.png" alt="advanced network"><br>重复以上操作，完成3条规则配置。</p>
+<p><img src="/images/CloudStack-Advanced-Network-Zone-feature-22.png" alt="advanced network"><br>使用外网IP直接访问VM测试。</p>
+<p><img src="/images/CloudStack-Advanced-Network-Zone-feature-23.png" alt="advanced network"></p>
 <h1 id="负载均衡">负载均衡</h1><p>负载均衡规则</p>
-<p><img src="images/CloudStack-Advanced-Network-Zone-feature-24.png" alt="advanced network"><br><img src="images/CloudStack-Advanced-Network-Zone-feature-25.png" alt="advanced network"><br>设置负载均衡规则</p>
-<p><img src="images/CloudStack-Advanced-Network-Zone-feature-26.png" alt="advanced network"></p>
+<p><img src="/images/CloudStack-Advanced-Network-Zone-feature-24.png" alt="advanced network"><br><img src="/images/CloudStack-Advanced-Network-Zone-feature-25.png" alt="advanced network"><br>设置负载均衡规则</p>
+<p><img src="/images/CloudStack-Advanced-Network-Zone-feature-26.png" alt="advanced network"></p>
 <p>选择均衡算法:<br>（算法选择工作原理请参考专业负载均衡设备文档，如果有需要的NetScaler文档的朋友可以给我发邮件索取）</p>
-<p><img src="images/CloudStack-Advanced-Network-Zone-feature-27.png" alt="advanced network"></p>
+<p><img src="/images/CloudStack-Advanced-Network-Zone-feature-27.png" alt="advanced network"></p>
 <p>设置粘性，在NetScaler设备上也称为会话持久性策略，一般用于带cookies认证Web访问。</p>
 <ul>
 <li>None: 不使用会话持久性策略.</li>
@@ -357,15 +357,15 @@
 <li>LBCookie: 将会有虚拟路由器向数据保证插入Cookie, 记录访问分配</li>
 </ul>
 <p>一般前2种比较常用. 这里我们先择SorceBased方式。</p>
-<p><img src="images/CloudStack-Advanced-Network-Zone-feature-28.png" alt="advanced network"><br><img src="images/CloudStack-Advanced-Network-Zone-feature-29.png" alt="advanced network"><br>AutoScale : 自动扩展内容较多, 并且可能需要额外的配置工具。会单独写篇文章进行讨论。</p>
+<p><img src="/images/CloudStack-Advanced-Network-Zone-feature-28.png" alt="advanced network"><br><img src="/images/CloudStack-Advanced-Network-Zone-feature-29.png" alt="advanced network"><br>AutoScale : 自动扩展内容较多, 并且可能需要额外的配置工具。会单独写篇文章进行讨论。</p>
 <p>创建好后，设置防火墙规则。就可以通过浏览器进行访问测试了。我们强行关闭任意1-2台，访问会自动故障转移到其他Web Server。</p>
-<p><img src="images/CloudStack-Advanced-Network-Zone-feature-30.png" alt="advanced network"></p>
+<p><img src="/images/CloudStack-Advanced-Network-Zone-feature-30.png" alt="advanced network"></p>
 <h1 id="VPN">VPN</h1><p>CloudStack帐户所有者可以创建虚拟专用网络（VPN）来访问他们的虚拟机。如果来宾网络是从提供远程访问VPN服务中实例化产生的，虚拟路由器（基于系统虚拟机）可以用于提供该服务。CloudStack为来宾虚拟网络提供L2TP-over-IPsec-based远程访问VPN服务。由于每个网络获取自己的虚拟路由器，因此VPN不能跨网络共享。Windows、Mac OS X和iOS的自身VPN客户端可用于连接客户网络。帐户的所有者可以对其用户的VPN进行创建和管理。为达此目的，CloudStack不使用其帐户数据库，而使用单独的表。VPN用户数据库之间共享帐户所有者创建的所有VPN。所有VPN用户可以访问所有帐户所有者创建的VPN。</p>
 <p>可以在全局设置中自定义VPN相关参数。</p>
-<p><img src="images/CloudStack-Advanced-Network-Zone-feature-34.png" alt="advanced network"><br>使用VPN</p>
-<p><img src="images/CloudStack-Advanced-Network-Zone-feature-31.png" alt="advanced network"><br>启用后获得共享密钥，创建VPN用户：shennan。</p>
-<p><img src="images/CloudStack-Advanced-Network-Zone-feature-32.png" alt="advanced network"><br>创建VPN连接，之后进行测试。外网计算机VPN拨号后，获得内网地址可以直接访问VM内部网络地址。</p>
-<p><img src="images/CloudStack-Advanced-Network-Zone-feature-33.png" alt="advanced network"><br>以上就是关于CloudStack高级网络功能应用的介绍。</p>
+<p><img src="/images/CloudStack-Advanced-Network-Zone-feature-34.png" alt="advanced network"><br>使用VPN</p>
+<p><img src="/images/CloudStack-Advanced-Network-Zone-feature-31.png" alt="advanced network"><br>启用后获得共享密钥，创建VPN用户：shennan。</p>
+<p><img src="/images/CloudStack-Advanced-Network-Zone-feature-32.png" alt="advanced network"><br>创建VPN连接，之后进行测试。外网计算机VPN拨号后，获得内网地址可以直接访问VM内部网络地址。</p>
+<p><img src="/images/CloudStack-Advanced-Network-Zone-feature-33.png" alt="advanced network"><br>以上就是关于CloudStack高级网络功能应用的介绍。</p>
 </span>
       
     </div>
@@ -455,7 +455,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-count">26</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
