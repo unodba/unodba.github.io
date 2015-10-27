@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="linux,proxy," />
+  <meta name="keywords" content="keystone,openstack," />
 
 
 
@@ -43,15 +43,15 @@
 
 参考：Chapter 3. Add the Identity service">
 <meta property="og:type" content="article">
-<meta property="og:title" content="openstack安装 认证服务">
+<meta property="og:title" content="openstack之kilo安装 认证服务">
 <meta property="og:url" content="http://yoursite.com/2015/10/25/openstack-Identity-service/index.html">
 <meta property="og:site_name" content="信息系统应用技术实验室">
 <meta property="og:description" content="这周在折腾openstack，下面是过程小记。
 
 参考：Chapter 3. Add the Identity service">
-<meta property="og:updated_time" content="2015-10-26T08:07:10.305Z">
+<meta property="og:updated_time" content="2015-10-27T14:57:56.686Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="openstack安装 认证服务">
+<meta name="twitter:title" content="openstack之kilo安装 认证服务">
 <meta name="twitter:description" content="这周在折腾openstack，下面是过程小记。
 
 参考：Chapter 3. Add the Identity service">
@@ -64,7 +64,7 @@
   };
 </script>
 
-  <title> openstack安装 认证服务 | 信息系统应用技术实验室 </title>
+  <title> openstack之kilo安装 认证服务 | 信息系统应用技术实验室 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -200,7 +200,7 @@
           
           
             
-              openstack安装 认证服务
+              openstack之kilo安装 认证服务
             
           
         </h1>
@@ -219,8 +219,8 @@
             &nbsp; | &nbsp; 分类于
             
               <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/黑科技/" itemprop="url" rel="index">
-                  <span itemprop="name">黑科技</span>
+                <a href="/categories/openstack/" itemprop="url" rel="index">
+                  <span itemprop="name">openstack</span>
                 </a>
               </span>
 
@@ -311,6 +311,10 @@
 <p>As the demo user, attempt to list users to verify that it cannot execute admin-only CLI commands:</p>
 <figure class="highlight brainfuck"><table><tr><td class="code"><pre><span class="line"><span class="comment">$</span></span><br><span class="line"><span class="comment">openstack</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">os</span><span class="literal">-</span><span class="comment">auth</span><span class="literal">-</span><span class="comment">url</span> <span class="comment">http://controller:5000</span> <span class="comment">\</span></span><br><span class="line">  <span class="literal">-</span><span class="literal">-</span><span class="comment">os</span><span class="literal">-</span><span class="comment">project</span><span class="literal">-</span><span class="comment">domain</span><span class="literal">-</span><span class="comment">id</span> <span class="comment">default</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">os</span><span class="literal">-</span><span class="comment">user</span><span class="literal">-</span><span class="comment">domain</span><span class="literal">-</span><span class="comment">id</span> <span class="comment">default</span> <span class="comment">\</span></span><br><span class="line">  <span class="literal">-</span><span class="literal">-</span><span class="comment">os</span><span class="literal">-</span><span class="comment">project</span><span class="literal">-</span><span class="comment">name</span> <span class="comment">demo</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">os</span><span class="literal">-</span><span class="comment">username</span> <span class="comment">demo</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">os</span><span class="literal">-</span><span class="comment">auth</span><span class="literal">-</span><span class="comment">type</span> <span class="comment">password</span> <span class="comment">\</span></span><br><span class="line">  <span class="comment">user</span> <span class="comment">list</span></span><br></pre></td></tr></table></figure>
 <p>ERROR: openstack You are not authorized to perform the requested action, admin_required. (HTTP 403)</p>
+<h1 id="Create_OpenStack_client_environment_scripts">Create OpenStack client environment scripts</h1><p>The previous section used a combination of environment variables and command options to interact with the Identity service via the openstack client. To increase efficiency of client operations, OpenStack supports simple client environment scripts also known as OpenRC files. These scripts typically contain common options for all clients, but also support unique options. For more information, see the OpenStack User Guide.</p>
+<p>编辑 admin-openrc.sh 文件:<br><figure class="highlight 1c"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">echo <span class="string">"export OS_PROJECT_DOMAIN_ID=default</span></span><br><span class="line">export OS_USER_DOMAIN_ID=default</span><br><span class="line">export OS_PROJECT_NAME=admin</span><br><span class="line">export OS_TENANT_NAME=admin</span><br><span class="line">export OS_USERNAME=admin</span><br><span class="line">export OS_PASSWORD=admin</span><br><span class="line">export OS_AUTH_URL=http:<span class="comment">//controller:35357/v3" &gt;admin-openrc.sh</span></span><br></pre></td></tr></table></figure></p>
+<p>编辑demo-openrc.sh文件：<br><figure class="highlight 1c"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">echo <span class="string">"export OS_PROJECT_DOMAIN_ID=default</span></span><br><span class="line">export OS_USER_DOMAIN_ID=default</span><br><span class="line">export OS_PROJECT_NAME=demo</span><br><span class="line">export OS_TENANT_NAME=demo</span><br><span class="line">export OS_USERNAME=demo</span><br><span class="line">export OS_PASSWORD=demo</span><br><span class="line">export OS_AUTH_URL=http:<span class="comment">//controller:5000/v3" &gt;demo-openrc.sh</span></span><br></pre></td></tr></table></figure></p>
+<p>加载 client environment scripts<br><figure class="highlight stata"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line">source admin-openrc.<span class="keyword">sh</span></span><br><span class="line">openstack <span class="keyword">token</span> issue</span><br></pre></td></tr></table></figure></p>
 </span>
       
     </div>
@@ -319,9 +323,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/linux/" rel="tag">#linux</a>
+            <a href="/tags/keystone/" rel="tag">#keystone</a>
           
-            <a href="/tags/proxy/" rel="tag">#proxy</a>
+            <a href="/tags/openstack/" rel="tag">#openstack</a>
           
         </div>
       
@@ -330,13 +334,13 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/10/25/openstack-Basic-environment/" rel="prev">openstack安装 基础环境</a>
+              <a href="/2015/10/26/openstack-image-service/" rel="prev">openstack之kilo安装 镜像服务</a>
             
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/10/24/sys-linux-timedatectl/" rel="next">Linux 7中timedatectl命令</a>
+              <a href="/2015/10/25/openstack-Basic-environment/" rel="next">openstack之kilo安装 基础环境</a>
             
           </div>
         </div>
@@ -362,7 +366,7 @@
           <div class="comments" id="comments">
             
               <div class="ds-thread" data-thread-key="2015/10/25/openstack-Identity-service/"
-                   data-title="openstack安装 认证服务" data-url="http://yoursite.com/2015/10/25/openstack-Identity-service/">
+                   data-title="openstack之kilo安装 认证服务" data-url="http://yoursite.com/2015/10/25/openstack-Identity-service/">
               </div>
             
           </div>
@@ -402,21 +406,21 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">26</span>
+              <span class="site-state-item-count">28</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-count">6</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-count">22</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
@@ -454,7 +458,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#OpenStack_Identity_concepts"><span class="nav-number">1.</span> <span class="nav-text">OpenStack Identity concepts</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Install_and_configure"><span class="nav-number">2.</span> <span class="nav-text">Install and configure</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Create_the_service_entity_and_API_endpoint"><span class="nav-number">3.</span> <span class="nav-text">Create the service entity and API endpoint</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Create_projects,_users,_and_roles"><span class="nav-number">4.</span> <span class="nav-text">Create projects, users, and roles</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Verify_operation"><span class="nav-number">5.</span> <span class="nav-text">Verify operation</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#OpenStack_Identity_concepts"><span class="nav-number">1.</span> <span class="nav-text">OpenStack Identity concepts</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Install_and_configure"><span class="nav-number">2.</span> <span class="nav-text">Install and configure</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Create_the_service_entity_and_API_endpoint"><span class="nav-number">3.</span> <span class="nav-text">Create the service entity and API endpoint</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Create_projects,_users,_and_roles"><span class="nav-number">4.</span> <span class="nav-text">Create projects, users, and roles</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Verify_operation"><span class="nav-number">5.</span> <span class="nav-text">Verify operation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Create_OpenStack_client_environment_scripts"><span class="nav-number">6.</span> <span class="nav-text">Create OpenStack client environment scripts</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
