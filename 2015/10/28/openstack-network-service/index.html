@@ -1,0 +1,804 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="大自然的搬运工" />
+
+
+
+  <meta name="keywords" content="neutron,openstack," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="这周在折腾openstack，下面是过程小记。
+
+参考：Chapter 6. Add a networking component
+
+neutron服务安装在控制节点、网络节点、计算节点。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="openstack之kilo安装 网络服务">
+<meta property="og:url" content="http://yoursite.com/2015/10/28/openstack-network-service/index.html">
+<meta property="og:site_name" content="信息系统应用技术实验室">
+<meta property="og:description" content="这周在折腾openstack，下面是过程小记。
+
+参考：Chapter 6. Add a networking component
+
+neutron服务安装在控制节点、网络节点、计算节点。">
+<meta property="og:updated_time" content="2015-10-28T08:41:48.473Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="openstack之kilo安装 网络服务">
+<meta name="twitter:description" content="这周在折腾openstack，下面是过程小记。
+
+参考：Chapter 6. Add a networking component
+
+neutron服务安装在控制节点、网络节点、计算节点。">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> openstack之kilo安装 网络服务 | 信息系统应用技术实验室 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">信息系统应用技术实验室</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu menu-left">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <form class="site-search-form">
+    <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+  </form>
+
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'CzK1KgsZV7UDQV2N5maz','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              openstack之kilo安装 网络服务
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-10-28T00:00:00+08:00" content="2015-10-28">
+            2015-10-28
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/openstack/" itemprop="url" rel="index">
+                  <span itemprop="name">openstack</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/10/28/openstack-network-service/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/28/openstack-network-service/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>这周在折腾openstack，下面是过程小记。</p>
+<blockquote>
+<p>参考：<a href="http://docs.openstack.org/kilo/install-guide/install/yum/content/ch_networking.html" target="_blank" rel="external">Chapter 6. Add a networking component</a></p>
+</blockquote>
+<p>neutron服务安装在控制节点、网络节点、计算节点。</p>
+<a id="more"></a>
+<h1 id="Install_and_configure_controller_node">Install and configure controller node</h1><p>创建数据库:<br><figure class="highlight oxygene"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line">mysql -u root -p</span><br><span class="line">MariaDB [(none)]&gt;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> DATABASE neutron;</span><br><span class="line"></span><br><span class="line">GRANT ALL PRIVILEGES <span class="keyword">ON</span> neutron.* <span class="keyword">TO</span> <span class="string">'neutron'</span>@<span class="string">'localhost'</span> \</span><br><span class="line">  IDENTIFIED <span class="keyword">BY</span> <span class="string">'NEUTRON_DBPASS'</span>;</span><br><span class="line">GRANT ALL PRIVILEGES <span class="keyword">ON</span> neutron.* <span class="keyword">TO</span> <span class="string">'neutron'</span>@<span class="string">'%'</span> \</span><br><span class="line">  IDENTIFIED <span class="keyword">BY</span> <span class="string">'NEUTRON_DBPASS'</span>;</span><br><span class="line"><span class="keyword">EXIT</span></span><br></pre></td></tr></table></figure></p>
+<p>Source the admin credentials to gain access to admin-only CLI commands:<br><figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line"><span class="keyword">source</span> admin-openrc.<span class="keyword">sh</span></span><br></pre></td></tr></table></figure></p>
+<p>创建neutron user:<br><figure class="highlight livecodeserver"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line">openstack user <span class="built_in">create</span> <span class="comment">--password-prompt neutron</span></span><br></pre></td></tr></table></figure></p>
+<p>添加admin role to the neutron user:<br><figure class="highlight brainfuck"><table><tr><td class="code"><pre><span class="line"><span class="comment">$</span></span><br><span class="line"><span class="comment">openstack</span> <span class="comment">role</span> <span class="comment">add</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">project</span> <span class="comment">service</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">user</span> <span class="comment">neutron</span> <span class="comment">admin</span></span><br></pre></td></tr></table></figure></p>
+<p>创建neutron service entity:<br><figure class="highlight livecodeserver"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line">openstack service <span class="built_in">create</span> <span class="comment">--name neutron \</span></span><br><span class="line">  <span class="comment">--description "OpenStack Networking" network</span></span><br></pre></td></tr></table></figure></p>
+<p>创建Networking service API endpoint:<br><figure class="highlight haml"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line">openstack endpoint create \</span><br><span class="line">  -<span class="ruby">-publicurl <span class="symbol">http:</span>/<span class="regexp">/controller:9696 \</span><br><span class="line"></span></span>  -<span class="ruby"><span class="regexp">-adminurl http:/</span><span class="regexp">/controller:9696 \</span><br><span class="line"></span></span>  -<span class="ruby"><span class="regexp">-internalurl http:/</span><span class="regexp">/controller:9696 \</span><br><span class="line"></span></span>  -<span class="ruby"><span class="regexp">-region RegionOne \</span><br><span class="line"></span></span>  network</span><br></pre></td></tr></table></figure></p>
+<p>安装Networking components<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">yum install -y openstack-neutron openstack-neutron-ml2 python-neutronclient <span class="built_in">which</span></span><br></pre></td></tr></table></figure></p>
+<p>编辑 /etc/neutron/neutron.conf 文件:<br><figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">cp /etc/neutron/neutron.conf  /etc/neutron/neutron.confbak</span><br><span class="line">echo "[DEFAULT]</span><br><span class="line"><span class="constant">rpc_backend</span> = rabbit</span><br><span class="line"><span class="constant">auth_strategy</span> = keystone</span><br><span class="line"><span class="constant">core_plugin</span> = ml2</span><br><span class="line"><span class="constant">service_plugins</span> = router</span><br><span class="line"><span class="constant">allow_overlapping_ips</span> = True</span><br><span class="line"><span class="constant">notify_nova_on_port_status_changes</span> = True</span><br><span class="line"><span class="constant">notify_nova_on_port_data_changes</span> = True</span><br><span class="line"><span class="constant">nova_url</span> = http://controller:8774/v2</span><br><span class="line"><span class="constant">verbose</span> = True</span><br><span class="line">[database]</span><br><span class="line"><span class="constant">connection</span> = mysql://neutron:NEUTRON_DBPASS@controller/neutron</span><br><span class="line">[oslo_messaging_rabbit]</span><br><span class="line"><span class="constant">rabbit_host</span> = controller</span><br><span class="line"><span class="constant">rabbit_userid</span> = openstack</span><br><span class="line"><span class="constant">rabbit_password</span> = RABBIT_PASS</span><br><span class="line">[keystone_authtoken]</span><br><span class="line"><span class="constant">auth_uri</span> = http://controller:5000</span><br><span class="line"><span class="constant">auth_url</span> = http://controller:35357</span><br><span class="line"><span class="constant">auth_plugin</span> = password</span><br><span class="line"><span class="constant">project_domain_id</span> = default</span><br><span class="line"><span class="constant">user_domain_id</span> = default</span><br><span class="line"><span class="constant">project_name</span> = service</span><br><span class="line"><span class="constant">username</span> = neutron</span><br><span class="line"><span class="constant">password</span> = neutron</span><br><span class="line">[nova]</span><br><span class="line"><span class="constant">auth_url</span> = http://controller:35357</span><br><span class="line"><span class="constant">auth_plugin</span> = password</span><br><span class="line"><span class="constant">project_domain_id</span> = default</span><br><span class="line"><span class="constant">user_domain_id</span> = default</span><br><span class="line"><span class="constant">region_name</span> = RegionOne</span><br><span class="line"><span class="constant">project_name</span> = service</span><br><span class="line"><span class="constant">username</span> = nova</span><br><span class="line"><span class="constant">password</span> = nova"&gt;/etc/neutron/neutron.conf</span><br></pre></td></tr></table></figure></p>
+<p>To configure the Modular Layer 2 (ML2) plug-in</p>
+<p>The ML2 plug-in uses the Open vSwitch (OVS) mechanism (agent) to build the virtual networking framework for instances. However, the controller node does not need the OVS components because it does not handle instance network traffic.</p>
+<p>编辑/etc/neutron/plugins/ml2/ml2_conf.ini 文件:</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">cp /etc/neutron/plugins/ml2/ml2_conf.ini /etc/neutron/plugins/ml2/ml2_conf.inibak</span><br><span class="line">echo "[ml2]</span><br><span class="line"><span class="constant">type_drivers</span> = flat,vlan,gre,vxlan</span><br><span class="line"><span class="constant">tenant_network_types</span> = gre</span><br><span class="line"><span class="constant">mechanism_drivers</span> = openvswitch</span><br><span class="line">[ml2_type_gre]</span><br><span class="line"><span class="constant">tunnel_id_ranges</span> = 1:1000</span><br><span class="line">[securitygroup]</span><br><span class="line"><span class="constant">enable_security_group</span> = True</span><br><span class="line"><span class="constant">enable_ipset</span> = True</span><br><span class="line"><span class="constant">firewall_driver</span> = neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver"&gt;/etc/neutron/plugins/ml2/ml2_conf.ini</span><br></pre></td></tr></table></figure>
+<p>The Networking service initialization scripts expect a symbolic link /etc/neutron/plugin.ini pointing to the ML2 plug-in configuration file, /etc/neutron/plugins/ml2/ml2_conf.ini. If this symbolic link does not exist, create it using the following command:</p>
+<figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">ln -s <span class="regexp">/etc/</span>neutron<span class="regexp">/plugins/m</span>l2<span class="regexp">/ml2_conf.ini /</span>etc<span class="regexp">/neutron/</span>plugin.ini</span><br></pre></td></tr></table></figure>
+<p>配置Compute to use Networking</p>
+<p>By default, distribution packages configure Compute to use legacy networking. You must reconfigure Compute to manage networks through Networking.</p>
+<p>在控制节点编辑/etc/nova/nova.conf file :</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">echo "[DEFAULT]</span><br><span class="line"><span class="constant">network_api_class</span> = nova.network.neutronv2.api.API</span><br><span class="line"><span class="constant">security_group_api</span> = neutron</span><br><span class="line"><span class="constant">linuxnet_interface_driver</span> = nova.network.linux_net.LinuxOVSInterfaceDriver</span><br><span class="line"><span class="constant">firewall_driver</span> = nova.virt.firewall.NoopFirewallDriver</span><br><span class="line">[neutron]</span><br><span class="line"><span class="constant">url</span> = http://controller:9696</span><br><span class="line"><span class="constant">auth_strategy</span> = keystone</span><br><span class="line"><span class="constant">admin_auth_url</span> = http://controller:35357/v2.0</span><br><span class="line"><span class="constant">admin_tenant_name</span> = service</span><br><span class="line"><span class="constant">admin_username</span> = neutron</span><br><span class="line"><span class="constant">admin_password</span> = neutron"&gt;&gt;/etc/nova/nova.conf</span><br></pre></td></tr></table></figure>
+<p>同步database:<br><figure class="highlight stata"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line"><span class="keyword">su</span> -s /bin/<span class="keyword">sh</span> -c "neutron-<span class="keyword">db</span>-manage --config-<span class="keyword">file</span> /etc/neutron/neutron.<span class="keyword">conf</span> \</span><br><span class="line">  --config-<span class="keyword">file</span> /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head" neutron</span><br></pre></td></tr></table></figure></p>
+<p>重启 Compute services:<br><figure class="highlight css"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line"><span class="tag">systemctl</span> <span class="tag">restart</span> <span class="tag">openstack-nova-api</span><span class="class">.service</span> <span class="tag">openstack-nova-scheduler</span><span class="class">.service</span> \</span><br><span class="line">  <span class="tag">openstack-nova-conductor</span><span class="class">.service</span></span><br></pre></td></tr></table></figure></p>
+<p>启动Networking service and configure it to start when the system boots:<br><figure class="highlight axapta"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">systemctl enable neutron-<span class="keyword">server</span>.service</span><br><span class="line">systemctl start neutron-<span class="keyword">server</span>.service</span><br></pre></td></tr></table></figure></p>
+<p>在控制节点验证：<br><figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line"><span class="keyword">source</span> admin-openrc.<span class="keyword">sh</span></span><br><span class="line">neutron ext-<span class="keyword">list</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="Install_and_configure_network_node">Install and configure network node</h1><p>The network node primarily handles internal and external routing and DHCP services for virtual networks.</p>
+<p>编辑 /etc/sysctl.conf 调整内核网络参数:<br><figure class="highlight stata"><table><tr><td class="code"><pre><span class="line">echo "</span><br><span class="line">#<span class="keyword">For</span> openstack</span><br><span class="line"><span class="keyword">net</span>.ipv4.ip_forward=1</span><br><span class="line"><span class="keyword">net</span>.ipv4.<span class="keyword">conf</span>.all.rp_filter=0</span><br><span class="line"><span class="keyword">net</span>.ipv4.<span class="keyword">conf</span>.default.rp_filter=0" &gt;&gt; /etc/sysctl.<span class="keyword">conf</span></span><br><span class="line">#</span><br><span class="line">sysctl -p</span><br></pre></td></tr></table></figure></p>
+<p>安装 Networking components：<br><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">yum <span class="keyword">install</span> -y openstack-neutron openstack-neutron-ml2 openstack-neutron-openvswitch</span><br></pre></td></tr></table></figure></p>
+<p>编辑 /etc/neutron/neutron.conf 文件完成网络通用组件配置:</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">cp /etc/neutron/neutron.conf /etc/neutron/neutron.confbak</span><br><span class="line">echo "[DEFAULT]</span><br><span class="line"><span class="constant">rpc_backend</span> = rabbit</span><br><span class="line">[oslo_messaging_rabbit]</span><br><span class="line"><span class="constant">rabbit_host</span> = controller</span><br><span class="line"><span class="constant">rabbit_userid</span> = openstack</span><br><span class="line"><span class="constant">rabbit_password</span> = RABBIT_PASS</span><br><span class="line"><span class="constant">auth_strategy</span> = keystone</span><br><span class="line"><span class="constant">core_plugin</span> = ml2</span><br><span class="line"><span class="constant">service_plugins</span> = router</span><br><span class="line"><span class="constant">allow_overlapping_ips</span> = True</span><br><span class="line"><span class="constant">verbose</span> = True</span><br><span class="line">[keystone_authtoken]</span><br><span class="line"><span class="constant">auth_uri</span> = http://controller:5000</span><br><span class="line"><span class="constant">auth_url</span> = http://controller:35357</span><br><span class="line"><span class="constant">auth_plugin</span> = password</span><br><span class="line"><span class="constant">project_domain_id</span> = default</span><br><span class="line"><span class="constant">user_domain_id</span> = default</span><br><span class="line"><span class="constant">project_name</span> = service</span><br><span class="line"><span class="constant">username</span> = neutron</span><br><span class="line"><span class="constant">password</span> = neutron" &gt;/etc/neutron/neutron.conf</span><br></pre></td></tr></table></figure>
+<p>To configure the Modular Layer 2 (ML2) plug-in</p>
+<p>The ML2 plug-in uses the Open vSwitch (OVS) mechanism (agent) to build the virtual networking framework for instances.</p>
+<p>编辑/etc/neutron/plugins/ml2/ml2_conf.ini 文件:<br><figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">cp /etc/neutron/plugins/ml2/ml2_conf.ini /etc/neutron/plugins/ml2/ml2_conf.inibak</span><br><span class="line">echo "[ml2]</span><br><span class="line"><span class="constant">type_drivers</span> = flat,vlan,gre,vxlan</span><br><span class="line"><span class="constant">tenant_network_types</span> = gre</span><br><span class="line"><span class="constant">mechanism_drivers</span> = openvswitch</span><br><span class="line">[ml2_type_flat]</span><br><span class="line"><span class="constant">flat_networks</span> = external</span><br><span class="line">[ml2_type_gre]</span><br><span class="line"><span class="constant">tunnel_id_ranges</span> = 1:1000</span><br><span class="line">[securitygroup]</span><br><span class="line"><span class="constant">enable_security_group</span> = True</span><br><span class="line"><span class="constant">enable_ipset</span> = True</span><br><span class="line"><span class="constant">firewall_driver</span> = neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver</span><br><span class="line">[ovs]</span><br><span class="line"><span class="constant">local_ip</span> = 172.168.200.221</span><br><span class="line"><span class="constant">bridge_mappings</span> = external:br-ex</span><br><span class="line">[agent]</span><br><span class="line"><span class="constant">tunnel_types</span> = gre"&gt;/etc/neutron/plugins/ml2/ml2_conf.ini</span><br></pre></td></tr></table></figure></p>
+<p>The Networking service initialization scripts expect a symbolic link /etc/neutron/plugin.ini pointing to the ML2 plug-in configuration file, /etc/neutron/plugins/ml2/ml2_conf.ini. If this symbolic link does not exist, create it using the following command:</p>
+<figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">ln -s <span class="regexp">/etc/</span>neutron<span class="regexp">/plugins/m</span>l2<span class="regexp">/ml2_conf.ini /</span>etc<span class="regexp">/neutron/</span>plugin.ini</span><br></pre></td></tr></table></figure>
+<p>To configure the Layer-3 (L3) agent</p>
+<p>The Layer-3 (L3) agent provides routing services for virtual networks.</p>
+<p>编辑/etc/neutron/l3_agent.ini 文件:<br><figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">cp /etc/neutron/l3_agent.ini /etc/neutron/l3_agent.inibak</span><br><span class="line">echo "[DEFAULT]</span><br><span class="line"><span class="constant">interface_driver</span> = neutron.agent.linux.interface.OVSInterfaceDriver</span><br><span class="line"><span class="constant">external_network_bridge</span> =</span><br><span class="line"><span class="constant">router_delete_namespaces</span> = True</span><br><span class="line"><span class="constant">verbose</span> = True"&gt;/etc/neutron/l3_agent.ini</span><br></pre></td></tr></table></figure></p>
+<p>To configure the DHCP agent</p>
+<p>The DHCP agent provides DHCP services for virtual networks.</p>
+<p>编辑/etc/neutron/dhcp_agent.ini 文件:<br><figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">cp /etc/neutron/dhcp_agent.ini /etc/neutron/dhcp_agent.inibak</span><br><span class="line">echo "[DEFAULT]</span><br><span class="line"><span class="constant">interface_driver</span> = neutron.agent.linux.interface.OVSInterfaceDriver</span><br><span class="line"><span class="constant">dhcp_driver</span> = neutron.agent.linux.dhcp.Dnsmasq</span><br><span class="line"><span class="constant">dhcp_delete_namespaces</span> = True</span><br><span class="line"><span class="constant">verbose</span> = True"&gt;/etc/neutron/dhcp_agent.ini</span><br></pre></td></tr></table></figure></p>
+<p>Tunneling protocols such as GRE include additional packet headers that increase overhead and decrease space available for the payload or user data. Without knowledge of the virtual network infrastructure, instances attempt to send packets using the default Ethernet maximum transmission unit (MTU) of 1500 bytes. Internet protocol (IP) networks contain the path MTU discovery (PMTUD) mechanism to detect end-to-end MTU and adjust packet size accordingly. However, some operating systems and networks block or otherwise lack support for PMTUD causing performance degradation or connectivity failure.</p>
+<p>Ideally, you can prevent these problems by enabling jumbo frames on the physical network that contains your tenant virtual networks. Jumbo frames support MTUs up to approximately 9000 bytes which negates the impact of GRE overhead on virtual networks. However, many network devices lack support for jumbo frames and OpenStack administrators often lack control over network infrastructure. Given the latter complications, you can also prevent MTU problems by reducing the instance MTU to account for GRE overhead. Determining the proper MTU value often takes experimentation, but 1454 bytes works in most environments. You can configure the DHCP server that assigns IP addresses to your instances to also adjust the MTU.</p>
+<blockquote>
+<p>[Note]    Note<br>Some cloud images ignore the DHCP MTU option in which case you should configure it using metadata, a script, or another suitable method.</p>
+</blockquote>
+<p>编辑 /etc/neutron/dhcp_agent.ini 文件:<br><figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">cp <span class="regexp">/etc/</span>neutron<span class="regexp">/dhcp_agent.ini /</span>etc<span class="regexp">/neutron/</span>dhcp_agent.inibak</span><br><span class="line">echo <span class="string">"dnsmasq_config_file = /etc/neutron/dnsmasq-neutron.conf"</span>&gt;&gt;<span class="regexp">/etc/</span>neutron<span class="regexp">/dhcp_agent.ini</span></span><br></pre></td></tr></table></figure></p>
+<p>编辑/etc/neutron/dnsmasq-neutron.conf文件， Enable the DHCP MTU option (26) and configure it to 1454 bytes:</p>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">echo <span class="string">"dhcp-option-force=26,1454"</span><span class="prompt">&gt;&gt;</span>/etc/neutron/dnsmasq-neutron.conf</span><br></pre></td></tr></table></figure>
+<p>Kill any existing dnsmasq processes:<br><figure class="highlight vala"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor"># pkill dnsmasq</span></span><br></pre></td></tr></table></figure></p>
+<p>To configure the metadata agent</p>
+<p>The metadata agent provides configuration information such as credentials to instances.</p>
+<p>编辑/etc/neutron/metadata_agent.ini file and complete the following actions:<br><figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">cp /etc/neutron/metadata_agent.ini /etc/neutron/metadata_agent.inibak</span><br><span class="line">echo "[DEFAULT]</span><br><span class="line"><span class="constant">auth_uri</span> = http://controller:5000</span><br><span class="line"><span class="constant">auth_url</span> = http://controller:35357</span><br><span class="line"><span class="constant">auth_region</span> = RegionOne</span><br><span class="line"><span class="constant">auth_plugin</span> = password</span><br><span class="line"><span class="constant">project_domain_id</span> = default</span><br><span class="line"><span class="constant">user_domain_id</span> = default</span><br><span class="line"><span class="constant">project_name</span> = service</span><br><span class="line"><span class="constant">username</span> = neutron</span><br><span class="line"><span class="constant">password</span> = neutron</span><br><span class="line"><span class="constant">nova_metadata_ip</span> = controller</span><br><span class="line"><span class="constant">metadata_proxy_shared_secret</span> = METADATA_SECRET</span><br><span class="line"><span class="constant">verbose</span> = True"&gt;/etc/neutron/metadata_agent.ini</span><br></pre></td></tr></table></figure></p>
+<p>在控制节点，编辑/etc/nova/nova.conf file and complete the following action:<br><figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">echo <span class="string">"[neutron]</span><br><span class="line">service_metadata_proxy = True</span><br><span class="line">metadata_proxy_shared_secret = METADATA_SECRET"</span><span class="prompt">&gt;&gt;</span>/etc/nova/nova.conf</span><br></pre></td></tr></table></figure></p>
+<p>在控制节点, 重启Compute API service:<br><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="title">systemctl</span> restart openstack-nova-api.service</span><br></pre></td></tr></table></figure></p>
+<p>To configure the Open vSwitch (OVS) service</p>
+<p>The OVS service provides the underlying virtual networking framework for instances. The integration bridge br-int handles internal instance network traffic within OVS. The external bridge br-ex handles external instance network traffic within OVS. The external bridge requires a port on the physical external network interface to provide instances with external network access. In essence, this port connects the virtual and physical external networks in your environment.</p>
+<p>启动OVS service and并配置开机自启动:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">systemctl <span class="built_in">enable</span> openvswitch.service</span><br><span class="line">systemctl start openvswitch.service</span><br></pre></td></tr></table></figure></p>
+<p>添加 external bridge:<br><figure class="highlight smali"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">ovs-vsctl<span class="instruction"> add-br </span>br-ex</span><br></pre></td></tr></table></figure></p>
+<p>Add a port to the external bridge that connects to the physical external network interface:<br>Replace INTERFACE_NAME with the actual interface name. For example, eth2 or ens256.<br><figure class="highlight smali"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">ovs-vsctl<span class="instruction"> add-port </span>br-ex ens224</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>[Note]    Note<br>Depending on your network interface driver, you may need to disable generic receive offload (GRO) to achieve suitable throughput between your instances and the external network.</p>
+</blockquote>
+<p>To temporarily disable GRO on the external network interface while testing your environment:<br><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="title">ethtool</span> -K ens224 gro <span class="built_in">off</span></span><br></pre></td></tr></table></figure></p>
+<p>To finalize the installation</p>
+<p>Due to a packaging bug, the Open vSwitch agent initialization script explicitly looks for the Open vSwitch plug-in configuration file rather than a symbolic link /etc/neutron/plugin.ini pointing to the ML2 plug-in configuration file. Run the following commands to resolve this issue:</p>
+<figure class="highlight crystal"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">cp /usr/<span class="class"><span class="keyword">lib</span>/<span class="title">systemd</span>/<span class="title">system</span>/<span class="title">neutron</span>-<span class="title">openvswitch</span>-<span class="title">agent</span>.<span class="title">service</span> \</span></span><br><span class="line">  /usr/<span class="class"><span class="keyword">lib</span>/<span class="title">systemd</span>/<span class="title">system</span>/<span class="title">neutron</span>-<span class="title">openvswitch</span>-<span class="title">agent</span>.<span class="title">service</span>.<span class="title">orig</span></span></span><br><span class="line">sed -i <span class="string">'s,plugins/openvswitch/ovs_neutron_plugin.ini,plugin.ini,g'</span> \</span><br><span class="line">  /usr/<span class="class"><span class="keyword">lib</span>/<span class="title">systemd</span>/<span class="title">system</span>/<span class="title">neutron</span>-<span class="title">openvswitch</span>-<span class="title">agent</span>.<span class="title">service</span></span></span><br></pre></td></tr></table></figure>
+<p>Start the Networking services and configure them to start when the system boots:</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line"><span class="tag">systemctl</span> <span class="tag">enable</span> <span class="tag">neutron-openvswitch-agent</span><span class="class">.service</span> <span class="tag">neutron-l3-agent</span><span class="class">.service</span> \</span><br><span class="line">  <span class="tag">neutron-dhcp-agent</span><span class="class">.service</span> <span class="tag">neutron-metadata-agent</span><span class="class">.service</span> \</span><br><span class="line">  <span class="tag">neutron-ovs-cleanup</span><span class="class">.service</span></span><br><span class="line"><span class="tag">systemctl</span> <span class="tag">start</span> <span class="tag">neutron-openvswitch-agent</span><span class="class">.service</span> <span class="tag">neutron-l3-agent</span><span class="class">.service</span> \</span><br><span class="line">  <span class="tag">neutron-dhcp-agent</span><span class="class">.service</span> <span class="tag">neutron-metadata-agent</span><span class="class">.service</span></span><br></pre></td></tr></table></figure>
+<p>[Note]    Note<br>Do not explicitly start the neutron-ovs-cleanup service.</p>
+<p>在控制节点验证：<br><figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line"><span class="keyword">source</span> admin-openrc.<span class="keyword">sh</span></span><br><span class="line">neutron agent-<span class="keyword">list</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="Install_and_configure_compute_node">Install and configure compute node</h1><p>The compute node handles connectivity and security groups for instances.</p>
+<p>编辑 /etc/sysctl.conf 文件，修改网络内核参数:<br><figure class="highlight dos"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line"><span class="keyword">echo</span> "<span class="winutils">net</span>.ipv4.conf.all.rp_filter=<span class="number">0</span></span><br><span class="line"><span class="winutils">net</span>.ipv4.conf.default.rp_filter=<span class="number">0</span></span><br><span class="line"><span class="winutils">net</span>.bridge.bridge-nf-<span class="flow">call</span>-iptables=<span class="number">1</span></span><br><span class="line"><span class="winutils">net</span>.bridge.bridge-nf-<span class="flow">call</span>-ip6tables=<span class="number">1</span>"&gt;&gt;/etc/sysctl.conf</span><br><span class="line">#</span><br><span class="line">sysctl -p</span><br></pre></td></tr></table></figure></p>
+<p>安装 Networking组件：<br><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">yum <span class="keyword">install</span> -y openstack-neutron openstack-neutron-ml2 openstack-neutron-openvswitch</span><br></pre></td></tr></table></figure></p>
+<p>配置Networking common components</p>
+<p>编辑/etc/neutron/neutron.conf文件:<br><figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">cp /etc/neutron/neutron.conf /etc/neutron/neutron.confbak</span><br><span class="line">echo "[DEFAULT]</span><br><span class="line"><span class="constant">core_plugin</span> = ml2</span><br><span class="line"><span class="constant">service_plugins</span> = router</span><br><span class="line"><span class="constant">allow_overlapping_ips</span> = True</span><br><span class="line"><span class="constant">verbose</span> = True</span><br><span class="line"><span class="constant">rpc_backend</span> = rabbit</span><br><span class="line"><span class="constant">auth_strategy</span> = keystone</span><br><span class="line">[oslo_messaging_rabbit]</span><br><span class="line"><span class="constant">rabbit_host</span> = controller</span><br><span class="line"><span class="constant">rabbit_userid</span> = openstack</span><br><span class="line"><span class="constant">rabbit_password</span> = RABBIT_PASS</span><br><span class="line">[keystone_authtoken]</span><br><span class="line"><span class="constant">auth_uri</span> = http://controller:5000</span><br><span class="line"><span class="constant">auth_url</span> = http://controller:35357</span><br><span class="line"><span class="constant">auth_plugin</span> = password</span><br><span class="line"><span class="constant">project_domain_id</span> = default</span><br><span class="line"><span class="constant">user_domain_id</span> = default</span><br><span class="line"><span class="constant">project_name</span> = service</span><br><span class="line"><span class="constant">username</span> = neutron</span><br><span class="line"><span class="constant">password</span> = neutron"&gt;/etc/neutron/neutron.conf</span><br></pre></td></tr></table></figure></p>
+<p>配置Modular Layer 2 (ML2) plug-in</p>
+<p>The ML2 plug-in uses the Open vSwitch (OVS) mechanism (agent) to build the virtual networking framework for instances.</p>
+<p>编辑/etc/neutron/plugins/ml2/ml2_conf.ini文件:<br><figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">cp /etc/neutron/plugins/ml2/ml2_conf.ini /etc/neutron/plugins/ml2/ml2_conf.inibak</span><br><span class="line">echo "[ml2]</span><br><span class="line"><span class="constant">type_drivers</span> = flat,vlan,gre,vxlan</span><br><span class="line"><span class="constant">tenant_network_types</span> = gre</span><br><span class="line"><span class="constant">mechanism_drivers</span> = openvswitch</span><br><span class="line">[ml2_type_gre]</span><br><span class="line"><span class="constant">tunnel_id_ranges</span> = 1:1000</span><br><span class="line">[securitygroup]</span><br><span class="line"><span class="constant">enable_security_group</span> = True</span><br><span class="line"><span class="constant">enable_ipset</span> = True</span><br><span class="line"><span class="constant">firewall_driver</span> = neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver</span><br><span class="line">[ovs]</span><br><span class="line"><span class="constant">local_ip</span> = 172.168.200.222</span><br><span class="line">[agent]</span><br><span class="line"><span class="constant">tunnel_types</span> = gre"&gt;/etc/neutron/plugins/ml2/ml2_conf.ini</span><br></pre></td></tr></table></figure></p>
+<p>To finalize the installation</p>
+<p>The Networking service initialization scripts expect a symbolic link /etc/neutron/plugin.ini pointing to the ML2 plug-in configuration file, /etc/neutron/plugins/ml2/ml2_conf.ini. If this symbolic link does not exist, create it using the following command:</p>
+<figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">ln -s <span class="regexp">/etc/</span>neutron<span class="regexp">/plugins/m</span>l2<span class="regexp">/ml2_conf.ini /</span>etc<span class="regexp">/neutron/</span>plugin.ini</span><br></pre></td></tr></table></figure>
+<p>To configure the Open vSwitch (OVS) service</p>
+<p>The OVS service provides the underlying virtual networking framework for instances.</p>
+<p>Start the OVS service and configure it to start when the system boots:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">systemctl <span class="built_in">enable</span> openvswitch.service</span><br><span class="line">systemctl start openvswitch.service</span><br></pre></td></tr></table></figure>
+<p>To configure Compute to use Networking</p>
+<p>By default, distribution packages configure Compute to use legacy networking. You must reconfigure Compute to manage networks through Networking.</p>
+<p>编辑/etc/nova/nova.conf file and complete the following actions:<br><figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">cp /etc/nova/nova.conf /etc/nova/nova.conf</span><br><span class="line">echo "[DEFAULT]</span><br><span class="line"><span class="constant">network_api_class</span> = nova.network.neutronv2.api.API</span><br><span class="line"><span class="constant">security_group_api</span> = neutron</span><br><span class="line"><span class="constant">linuxnet_interface_driver</span> = nova.network.linux_net.LinuxOVSInterfaceDriver</span><br><span class="line"><span class="constant">firewall_driver</span> = nova.virt.firewall.NoopFirewallDriver</span><br><span class="line">[neutron]</span><br><span class="line"><span class="constant">url</span> = http://controller:9696</span><br><span class="line"><span class="constant">auth_strategy</span> = keystone</span><br><span class="line"><span class="constant">admin_auth_url</span> = http://controller:35357/v2.0</span><br><span class="line"><span class="constant">admin_tenant_name</span> = service</span><br><span class="line"><span class="constant">admin_username</span> = neutron</span><br><span class="line"><span class="constant">admin_password</span> = neutron"&gt;&gt;/etc/nova/nova.conf</span><br></pre></td></tr></table></figure></p>
+<p>Due to a packaging bug, the Open vSwitch agent initialization script explicitly looks for the Open vSwitch plug-in configuration file rather than a symbolic link /etc/neutron/plugin.ini pointing to the ML2 plug-in configuration file. Run the following commands to resolve this issue:<br><figure class="highlight crystal"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">cp /usr/<span class="class"><span class="keyword">lib</span>/<span class="title">systemd</span>/<span class="title">system</span>/<span class="title">neutron</span>-<span class="title">openvswitch</span>-<span class="title">agent</span>.<span class="title">service</span> \</span></span><br><span class="line">  /usr/<span class="class"><span class="keyword">lib</span>/<span class="title">systemd</span>/<span class="title">system</span>/<span class="title">neutron</span>-<span class="title">openvswitch</span>-<span class="title">agent</span>.<span class="title">service</span>.<span class="title">orig</span></span></span><br><span class="line">sed -i <span class="string">'s,plugins/openvswitch/ovs_neutron_plugin.ini,plugin.ini,g'</span> \</span><br><span class="line">  /usr/<span class="class"><span class="keyword">lib</span>/<span class="title">systemd</span>/<span class="title">system</span>/<span class="title">neutron</span>-<span class="title">openvswitch</span>-<span class="title">agent</span>.<span class="title">service</span></span></span><br></pre></td></tr></table></figure></p>
+<p>重启Compute service:<br><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="title">systemctl</span> restart openstack-nova-compute.service</span><br></pre></td></tr></table></figure></p>
+<p>启动 Open vSwitch (OVS) agent 并配置开机自启动:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">systemctl <span class="built_in">enable</span> neutron-openvswitch-agent.service</span><br><span class="line">systemctl start neutron-openvswitch-agent.service</span><br></pre></td></tr></table></figure></p>
+<p>在控制节点验证：<br><figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line"><span class="keyword">source</span> admin-openrc.<span class="keyword">sh</span></span><br><span class="line">neutron agent-<span class="keyword">list</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="Create_initial_networks">Create initial networks</h1><ul>
+<li>External network</li>
+</ul>
+<p>The external network typically provides Internet access for your instances. By default, this network only allows Internet access from instances using Network Address Translation (NAT). You can enable Internet access to individual instances using a floating IP address and suitable security group rules. The admin tenant owns this network because it provides external network access for multiple tenants.</p>
+<blockquote>
+<p>[Note]    Note<br>Perform these commands on the controller node.</p>
+</blockquote>
+<p>创建external network<br><figure class="highlight brainfuck"><table><tr><td class="code"><pre><span class="line"><span class="comment">$</span></span><br><span class="line"><span class="comment">source</span> <span class="comment">admin</span><span class="literal">-</span><span class="comment">openrc</span><span class="string">.</span><span class="comment">sh</span></span><br><span class="line"><span class="comment">neutron</span> <span class="comment">net</span><span class="literal">-</span><span class="comment">create</span> <span class="comment">ext</span><span class="literal">-</span><span class="comment">net</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">router:external</span> <span class="comment">\</span></span><br><span class="line">  <span class="literal">-</span><span class="literal">-</span><span class="comment">provider:physical_network</span> <span class="comment">external</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">provider:network_type</span> <span class="comment">flat</span></span><br></pre></td></tr></table></figure></p>
+<p>Like a physical network, a virtual network requires a subnet assigned to it. The external network shares the same subnet and gateway associated with the physical network connected to the external interface on the network node. You should specify an exclusive slice of this subnet for router and floating IP addresses to prevent interference with other devices on the external network.</p>
+<p>创建subnet on the external network：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line">neutron subnet-create ext-net <span class="number">192.168</span><span class="number">.199</span><span class="number">.0</span>/<span class="number">24</span> --name ext-subnet \</span><br><span class="line">  --allocation-pool start=<span class="number">192.168</span><span class="number">.199</span><span class="number">.100</span>,end=<span class="number">192.168</span><span class="number">.199</span><span class="number">.200</span> \</span><br><span class="line">  --disable-dhcp --gateway <span class="number">192.168</span><span class="number">.199</span><span class="number">.254</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>Tenant network</li>
+</ul>
+<p>The tenant network provides internal network access for instances. The architecture isolates this type of network from other tenants. The demo tenant owns this network because it only provides network access for instances within it.</p>
+<p>创建tenant network：</p>
+<figure class="highlight stata"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line">source demo-openrc.<span class="keyword">sh</span></span><br><span class="line">neutron <span class="keyword">net</span>-create demo-<span class="keyword">net</span></span><br></pre></td></tr></table></figure>
+<p>  Example using 192.168.1.0/24:</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line">neutron subnet-create demo-net <span class="number">10.10</span><span class="number">.10</span><span class="number">.0</span>/<span class="number">24</span> \</span><br><span class="line">    --name demo-subnet --gateway <span class="number">10.10</span><span class="number">.10</span><span class="number">.1</span></span><br></pre></td></tr></table></figure>
+<p>  A virtual router passes network traffic between two or more virtual networks. Each router requires one or more interfaces and/or gateways that provide access to specific networks. In this case, you create a router and attach your tenant and external networks to it.</p>
+<p>  To create a router on the tenant network and attach the external and tenant networks to it</p>
+<p>创建router:<br><figure class="highlight crystal"><table><tr><td class="code"><pre><span class="line"><span class="variable">$</span><br><span class="line"></span>neutron router-create demo-router</span><br></pre></td></tr></table></figure></p>
+<p>附加router to the demo tenant subnet:<br><figure class="highlight monkey"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line">neutron router-<span class="class"><span class="keyword">interface</span>-<span class="title">add</span> <span class="title">demo</span>-<span class="title">router</span> <span class="title">demo</span>-<span class="title">subnet</span></span></span><br></pre></td></tr></table></figure></p>
+<p>附加router to the external network by setting it as the gateway:<br><figure class="highlight dos"><table><tr><td class="code"><pre><span class="line">$ neutron router-gateway-<span class="keyword">set</span> demo-router ext-<span class="winutils">net</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>Verify connectivity</li>
+</ul>
+<p>We recommend that you verify network connectivity and resolve any issues before proceeding further. Following the external network subnet example using 203.0.113.0/24, the tenant router gateway should occupy the lowest IP address in the floating IP address range, 203.0.113.101. If you configured your external physical network and virtual networks correctly, you should be able to ping this IP address from any host on your external physical network.</p>
+<p>[Note]    Note<br>If you are building your OpenStack nodes as virtual machines, you must configure the hypervisor to permit promiscuous mode on the external network.</p>
+<p>To verify network connectivity</p>
+<p>From a host on the the external network, ping the tenant router gateway:</p>
+<p>$ ping -c 4 203.0.113.101<br>PING 203.0.113.101 (203.0.113.101) 56(84) bytes of data.<br>64 bytes from 203.0.113.101: icmp_req=1 ttl=64 time=0.619 ms<br>64 bytes from 203.0.113.101: icmp_req=2 ttl=64 time=0.189 ms<br>64 bytes from 203.0.113.101: icmp_req=3 ttl=64 time=0.165 ms<br>64 bytes from 203.0.113.101: icmp_req=4 ttl=64 time=0.216 ms</p>
+<p>— 203.0.113.101 ping statistics —<br>4 packets transmitted, 4 received, 0% packet loss, time 2999ms<br>rtt min/avg/max/mdev = 0.165/0.297/0.619/0.187 ms</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/neutron/" rel="tag">#neutron</a>
+          
+            <a href="/tags/openstack/" rel="tag">#openstack</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/10/28/openstack-dashboad-service/" rel="next">openstack之kilo安装 bashboard服务</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2015/10/28/openstack-network-service/"
+                   data-title="openstack之kilo安装 网络服务" data-url="http://yoursite.com/2015/10/28/openstack-network-service/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="https://avatars2.githubusercontent.com/u/7880839?v=3&s=460" alt="unodba" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">unodba</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">大自然的搬运工</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/unodba" target="_blank">github</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/unodba" target="_blank">twitter</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Install_and_configure_controller_node"><span class="nav-number">1.</span> <span class="nav-text">Install and configure controller node</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Install_and_configure_network_node"><span class="nav-number">2.</span> <span class="nav-text">Install and configure network node</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Install_and_configure_compute_node"><span class="nav-number">3.</span> <span class="nav-text">Install and configure compute node</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Create_initial_networks"><span class="nav-number">4.</span> <span class="nav-text">Create initial networks</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2015</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">unodba</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhugaoxiao"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

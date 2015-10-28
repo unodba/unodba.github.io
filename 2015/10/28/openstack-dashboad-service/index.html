@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="linux,ntp," />
+  <meta name="keywords" content="dashboard,openstack," />
 
 
 
@@ -39,16 +39,22 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="基本每个系统都有要求NTP对时，简单记录一下。">
+<meta name="description" content="这周在折腾openstack，下面是过程小记。
+
+参考：Chapter 7. Add the dashboard">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux ntp服务配置">
-<meta property="og:url" content="http://yoursite.com/2015/10/24/sys-linux-ntp/index.html">
+<meta property="og:title" content="openstack之kilo安装 bashboard服务">
+<meta property="og:url" content="http://yoursite.com/2015/10/28/openstack-dashboad-service/index.html">
 <meta property="og:site_name" content="信息系统应用技术实验室">
-<meta property="og:description" content="基本每个系统都有要求NTP对时，简单记录一下。">
-<meta property="og:updated_time" content="2015-10-25T12:24:13.985Z">
+<meta property="og:description" content="这周在折腾openstack，下面是过程小记。
+
+参考：Chapter 7. Add the dashboard">
+<meta property="og:updated_time" content="2015-10-28T14:19:04.470Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Linux ntp服务配置">
-<meta name="twitter:description" content="基本每个系统都有要求NTP对时，简单记录一下。">
+<meta name="twitter:title" content="openstack之kilo安装 bashboard服务">
+<meta name="twitter:description" content="这周在折腾openstack，下面是过程小记。
+
+参考：Chapter 7. Add the dashboard">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -58,7 +64,7 @@
   };
 </script>
 
-  <title> Linux ntp服务配置 | 信息系统应用技术实验室 </title>
+  <title> openstack之kilo安装 bashboard服务 | 信息系统应用技术实验室 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -194,7 +200,7 @@
           
           
             
-              Linux ntp服务配置
+              openstack之kilo安装 bashboard服务
             
           
         </h1>
@@ -203,8 +209,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-10-24T20:46:25+08:00" content="2015-10-24">
-            2015-10-24
+          <time itemprop="dateCreated" datetime="2015-10-28T00:00:00+08:00" content="2015-10-28">
+            2015-10-28
           </time>
         </span>
 
@@ -213,8 +219,8 @@
             &nbsp; | &nbsp; 分类于
             
               <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/黑科技/" itemprop="url" rel="index">
-                  <span itemprop="name">黑科技</span>
+                <a href="/categories/openstack/" itemprop="url" rel="index">
+                  <span itemprop="name">openstack</span>
                 </a>
               </span>
 
@@ -229,8 +235,8 @@
           
             <span class="post-comments-count">
               &nbsp; | &nbsp;
-              <a href="/2015/10/24/sys-linux-ntp/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/24/sys-linux-ntp/" itemprop="commentsCount"></span>
+              <a href="/2015/10/28/openstack-dashboad-service/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/28/openstack-dashboad-service/" itemprop="commentsCount"></span>
               </a>
             </span>
           
@@ -244,41 +250,33 @@
       
 
       
-        <span itemprop="articleBody"><p>基本每个系统都有要求NTP对时，简单记录一下。</p>
+        <span itemprop="articleBody"><p>这周在折腾openstack，下面是过程小记。</p>
+<blockquote>
+<p>参考：<a href="http://docs.openstack.org/kilo/install-guide/install/yum/content/ch_horizon.html" target="_blank" rel="external">Chapter 7. Add the dashboard</a></p>
+</blockquote>
 <a id="more"></a>
-<h1 id="NTP服务器端配置">NTP服务器端配置</h1><ul>
-<li><p>安装ntp服务</p>
-<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">yum install -y ntp</span><br><span class="line">chkconfig ntpd <span class="function_start"><span class="keyword">on</span></span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>配置/etc/ntpd.conf文件。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">vi /etc/ntpd.conf</span><br><span class="line"><span class="preprocessor">#放行局域网来源 ：restrict  [你的IP]  mask  [mask_ip] [parameter]，nomodify  表明客户端不可以修改服务器的地址</span></span><br><span class="line"><span class="keyword">restrict</span> <span class="number">192.168</span><span class="number">.0</span><span class="number">.0</span> mask <span class="number">255.255</span><span class="number">.0</span><span class="number">.0</span> nomodify</span><br><span class="line"><span class="preprocessor">#设置NTP server上层服务器，可以使用默认，如网络不好注释后换下面的</span></span><br><span class="line">server time.nist.gov</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>配置防火墙</p>
-<figure class="highlight stata"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">/sbin/iptables -I <span class="keyword">INPUT</span> -p udp --dport 123 -j ACCEPT</span><br><span class="line">/etc/rc.<span class="keyword">d</span>/init.<span class="keyword">d</span>/iptables <span class="keyword">save</span></span><br><span class="line">service iptables status</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>重启ntp服务</p>
-<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="title">service</span> ntpd restart</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>手动更新<br>NTP服务启动后大约需要3～5分钟的时间才会进行一次时间同步。可以通过命令ntpstat查看同步情况，</p>
-<figure class="highlight livecodeserver"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">service ntpd <span class="built_in">stop</span></span><br><span class="line">ntpdate <span class="built_in">time</span>.nist.gov</span><br><span class="line">ntpstat</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h1 id="NTP客户端配置">NTP客户端配置</h1><ul>
-<li><p>安装ntp服务</p>
-<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">yum install ntp</span><br><span class="line">chkconfig ntpd <span class="function_start"><span class="keyword">on</span></span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查询可用NTP服务端</p>
-</li>
-<li><p>配置/etc/ntpd.conf文件</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">vi/etc/ntp.conf</span><br><span class="line"><span class="preprocessor">#server <span class="number">0.</span>centos.pool.ntp.org iburst</span></span><br><span class="line"><span class="preprocessor">#server <span class="number">1.</span>centos.pool.ntp.org iburst</span></span><br><span class="line"><span class="preprocessor">#server <span class="number">2.</span>centos.pool.ntp.org iburst</span></span><br><span class="line"><span class="preprocessor">#server <span class="number">3.</span>centos.pool.ntp.org iburst</span></span><br><span class="line">server <span class="number">192.178</span><span class="number">.102</span><span class="number">.249</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>重启ntp服务</p>
-<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="title">service</span> ntpd restart</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>检查对时状态</p>
-<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="title">ntpstat</span></span><br><span class="line">ntpq -p</span><br><span class="line">ntpq -c peers</span><br><span class="line">ntpq -c assoc</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
+<h1 id="Install_and_configure">Install and configure</h1><p>This section describes how to install and configure the dashboard on the controller node.</p>
+<p>Before you proceed, verify that your system meets the requirements in the section called “System requirements”. Also, the dashboard relies on functional core services including Identity, Image service, Compute, and either Networking (neutron) or legacy networking (nova-network). Environments with stand-alone services such as Object Storage cannot use the dashboard. For more information, see the developer documentation.</p>
+<p>This section assumes proper installation, configuration, and operation of the Identity service using the Apache HTTP server and Memcached as described in the section called “Install and configure”.</p>
+<p>安装packages:</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">yum <span class="keyword">install</span> -y openstack-dashboard httpd mod_wsgi memcached python-memcached</span><br></pre></td></tr></table></figure>
+<p>To configure the dashboard</p>
+<p>编辑 /etc/openstack-dashboard/local_settings 文件:</p>
+<p>Configure the dashboard to use OpenStack services on the controller node:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">vi  /etc/openstack-dashboard/<span class="built_in">local</span>_settings</span><br><span class="line">OPENSTACK_HOST = <span class="string">"controller"</span></span><br><span class="line">ALLOWED_HOSTS = <span class="string">'*'</span></span><br></pre></td></tr></table></figure>
+<p>Configure the memcached session storage service:</p>
+<figure class="highlight xquery"><table><tr><td class="code"><pre><span class="line">CACHES = &#123;</span><br><span class="line">   <span class="string">'default'</span>: &#123;</span><br><span class="line">       <span class="string">'BACKEND'</span>: <span class="string">'django.core.cache.backends.memcached.MemcachedCache'</span>,</span><br><span class="line">       <span class="string">'LOCATION'</span>: <span class="string">'127.0.0.1:11211'</span>,</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>[Note]    Note<br>Comment out any other session storage configuration.</p>
+</blockquote>
+<p>Configure user as the default role for users that you create via the dashboard:<br>OPENSTACK_KEYSTONE_DEFAULT_ROLE = “user”</p>
+<p>Optionally, configure the time zone:<br>TIME_ZONE = “TIME_ZONE”</p>
+<p>Replace TIME_ZONE with an appropriate time zone identifier. For more information, see the list of time zones.</p>
+<p>配置SELinux 运行 web server 连接 OpenStack services:<br><figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">setsebool -P httpd_can_network_connect <span class="function_start"><span class="keyword">on</span></span></span><br></pre></td></tr></table></figure></p>
+<p>Due to a packaging bug, the dashboard CSS fails to load properly. Run the following command to resolve this issue:<br><figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">chown -R apache:apache <span class="regexp">/usr/</span>share<span class="regexp">/openstack-dashboard/</span><span class="keyword">static</span></span><br></pre></td></tr></table></figure></p>
+<p>启动 web server and session storage service and configure them to start when the system boots:</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line"><span class="tag">systemctl</span> <span class="tag">enable</span> <span class="tag">httpd</span><span class="class">.service</span> <span class="tag">memcached</span><span class="class">.service</span></span><br><span class="line"><span class="tag">systemctl</span> <span class="tag">restart</span> <span class="tag">httpd</span><span class="class">.service</span> <span class="tag">memcached</span><span class="class">.service</span></span><br></pre></td></tr></table></figure>
+<p>CentOS 7 采用了 firewalld 防火墙，如要查询是否开启80端口则：<br><figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#controller horizon</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=80/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --<span class="built_ins">add</span>-port=80/tcp</span><br><span class="line"><span class="comment">#controller nova</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=9696/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --<span class="built_ins">add</span>-port=9696/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --<span class="built_ins">add</span>-port=35357/tcp</span><br><span class="line"><span class="comment">#controller glance</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=9292/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --<span class="built_ins">add</span>-port=9292/tcp</span><br><span class="line"><span class="comment">#controller vnc</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=6080/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --<span class="built_ins">add</span>-port=6080/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=5900/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --<span class="built_ins">add</span>-port=5900/tcp</span><br><span class="line"><span class="comment"># computer vnc</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=5900/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --<span class="built_ins">add</span>-port=5900/tcp</span><br><span class="line"><span class="comment">#neutron </span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=5672/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --<span class="built_ins">add</span>-port=5672/tcp</span><br></pre></td></tr></table></figure></p>
 </span>
       
     </div>
@@ -287,9 +285,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/linux/" rel="tag">#linux</a>
+            <a href="/tags/dashboard/" rel="tag">#dashboard</a>
           
-            <a href="/tags/ntp/" rel="tag">#ntp</a>
+            <a href="/tags/openstack/" rel="tag">#openstack</a>
           
         </div>
       
@@ -298,13 +296,13 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/10/25/openstack-Identity-service/" rel="prev">openstack之kilo安装 认证服务</a>
+              <a href="/2015/10/28/openstack-network-service/" rel="prev">openstack之kilo安装 网络服务</a>
             
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/10/24/sys-linux-timedatectl/" rel="next">Linux 7中timedatectl命令</a>
+              <a href="/2015/10/27/openstack-compute-service/" rel="next">openstack之kilo安装 计算服务</a>
             
           </div>
         </div>
@@ -329,8 +327,8 @@
         
           <div class="comments" id="comments">
             
-              <div class="ds-thread" data-thread-key="2015/10/24/sys-linux-ntp/"
-                   data-title="Linux ntp服务配置" data-url="http://yoursite.com/2015/10/24/sys-linux-ntp/">
+              <div class="ds-thread" data-thread-key="2015/10/28/openstack-dashboad-service/"
+                   data-title="openstack之kilo安装 bashboard服务" data-url="http://yoursite.com/2015/10/28/openstack-dashboad-service/">
               </div>
             
           </div>
@@ -422,7 +420,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#NTP服务器端配置"><span class="nav-number">1.</span> <span class="nav-text">NTP服务器端配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NTP客户端配置"><span class="nav-number">2.</span> <span class="nav-text">NTP客户端配置</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Install_and_configure"><span class="nav-number">1.</span> <span class="nav-text">Install and configure</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
