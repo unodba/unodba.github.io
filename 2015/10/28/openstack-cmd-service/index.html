@@ -49,7 +49,7 @@
 <meta property="og:description" content="这周在折腾openstack，下面是过程小记。
 
 参考：Chapter 6. Add a networking component">
-<meta property="og:updated_time" content="2015-10-29T14:42:58.588Z">
+<meta property="og:updated_time" content="2015-11-02T01:08:09.842Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="openstack之kilo安装 常用命令">
 <meta name="twitter:description" content="这周在折腾openstack，下面是过程小记。
@@ -255,11 +255,17 @@
 <p>参考：<a href="http://docs.openstack.org/kilo/install-guide/install/yum/content/ch_networking.html" target="_blank" rel="external">Chapter 6. Add a networking component</a></p>
 </blockquote>
 <a id="more"></a>
-<p>Source the admin credentials to gain access to admin-only CLI commands:<br><figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line"><span class="keyword">source</span> admin-openrc.<span class="keyword">sh</span></span><br></pre></td></tr></table></figure></p>
-<h1 id="nova">nova</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">$ nova image-<span class="built_in">list</span></span><br><span class="line">$ nova flavor-<span class="built_in">list</span></span><br><span class="line">$ nova boot --image <span class="number">949</span>c80c8-b4ac-<span class="number">4315</span>-<span class="number">844e-69</span>f9bef39ed1 --flavor <span class="number">2</span> my_instance</span><br><span class="line">$ nova <span class="built_in">list</span></span><br><span class="line">$ nova show <span class="number">66129319</span>-<span class="number">1f</span>1d-<span class="number">420</span>d-a226-bf9fc5ea0138</span><br></pre></td></tr></table></figure>
-<p>配置 stack 用户</p>
-<p>创建 stack 用户+</p>
+<h1 id="配置_stack_用户">配置 stack 用户</h1><p>创建 stack 用户+</p>
 <p>sudo groupadd stack<br>sudo useradd -g stack -s /bin/bash -d /opt/stack -m stack<br>添加 stack 用户权限。<br>sudo echo “stack ALL=(ALL) NOPASSWD: ALL” &gt;&gt; /etc/sudoers<br>切换到 stack 用户<br>sudo su - stack</p>
+<p>Source the admin credentials to gain access to admin-only CLI commands:<br><figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line"><span class="keyword">source</span> admin-openrc.<span class="keyword">sh</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="openstack">openstack</h1><figure class="highlight vala"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor"># openstack-status</span></span><br></pre></td></tr></table></figure>
+<h1 id="nova">nova</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">nova-manage service <span class="built_in">list</span></span><br><span class="line">$ nova image-<span class="built_in">list</span></span><br><span class="line">$ nova flavor-<span class="built_in">list</span></span><br><span class="line">$ nova boot --image <span class="number">949</span>c80c8-b4ac-<span class="number">4315</span>-<span class="number">844e-69</span>f9bef39ed1 --flavor <span class="number">2</span> my_instance</span><br><span class="line">$ nova <span class="built_in">list</span></span><br><span class="line">$ nova show <span class="number">66129319</span>-<span class="number">1f</span>1d-<span class="number">420</span>d-a226-bf9fc5ea0138</span><br><span class="line">nova service-<span class="built_in">list</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">keystone endpoint-<span class="type">list</span></span><br><span class="line">keystone user-<span class="type">list</span></span><br><span class="line">keystone user-<span class="keyword">get</span>  <span class="number">7</span>a98251d2efd4385bb06128d5f98086d</span><br><span class="line">keystone user-password-update \</span><br><span class="line"><span class="comment">--pass new_passwd \</span></span><br><span class="line">user_id</span><br></pre></td></tr></table></figure>
+<p>cinder service-list</p>
+<h1 id="neutron">neutron</h1><figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">neutron subnet-<span class="type">list</span></span><br><span class="line">neutron port-<span class="type">list</span></span><br><span class="line">neutron agent-<span class="type">list</span></span><br><span class="line">neutron router-<span class="type">list</span></span><br></pre></td></tr></table></figure>
+<p>rabbitmqctl status</p>
+<p> heat</p>
+<p><a href="https://wiki.centos.org/Cloud" target="_blank" rel="external">https://wiki.centos.org/Cloud</a></p>
 </span>
       
     </div>
@@ -279,13 +285,13 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/10/28/openstack-network-service/" rel="prev">openstack之kilo安装 网络服务</a>
+              <a href="/2015/10/29/openstack-dashboad-service/" rel="prev">openstack之kilo安装 dashboard服务</a>
             
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/10/27/openstack-compute-service/" rel="next">openstack之kilo安装 计算服务</a>
+              <a href="/2015/10/28/openstack-network-service/" rel="next">openstack之kilo安装 网络服务</a>
             
           </div>
         </div>
@@ -351,21 +357,21 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">31</span>
+              <span class="site-state-item-count">35</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">8</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-count">30</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
@@ -403,7 +409,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#nova"><span class="nav-number">1.</span> <span class="nav-text">nova</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#配置_stack_用户"><span class="nav-number">1.</span> <span class="nav-text">配置 stack 用户</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#openstack"><span class="nav-number">2.</span> <span class="nav-text">openstack</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#nova"><span class="nav-number">3.</span> <span class="nav-text">nova</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#neutron"><span class="nav-number">4.</span> <span class="nav-text">neutron</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

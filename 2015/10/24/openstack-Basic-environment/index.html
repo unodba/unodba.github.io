@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="linux,proxy," />
+  <meta name="keywords" content="mariadb,openstack,rabbitmq," />
 
 
 
@@ -49,7 +49,8 @@
 <meta property="og:description" content="这周在折腾openstack，下面是过程小记。
 
 参考：Chapter 2. Basic environment">
-<meta property="og:updated_time" content="2015-10-28T12:56:59.652Z">
+<meta property="og:image" content="http://docs.openstack.org/kilo/install-guide/install/yum/content/figures/1/a/common/figures/installguidearch-neutron-networks.png">
+<meta property="og:updated_time" content="2015-11-04T15:16:02.981Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="openstack之kilo安装 基础环境">
 <meta name="twitter:description" content="这周在折腾openstack，下面是过程小记。
@@ -255,16 +256,53 @@
 <p>参考：<a href="http://docs.openstack.org/kilo/install-guide/install/yum/content/ch_basic_environment.html#basics-prerequisites" target="_blank" rel="external">Chapter 2. Basic environment</a></p>
 </blockquote>
 <a id="more"></a>
-<h1 id="Before_you_begin">Before you begin</h1><h1 id="Security">Security</h1><h1 id="Networking">Networking</h1><ul>
-<li>OpenStack Networking (neutron)</li>
-<li>Legacy networking (nova-network)</li>
+<h1 id="Before_you_begin">Before you begin</h1><ul>
+<li>配置 stack 用户<figure class="highlight stata"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">sudo groupadd <span class="keyword">stack</span></span><br><span class="line">sudo useradd -<span class="keyword">g</span> <span class="keyword">stack</span> -s /bin/bash  -<span class="keyword">m</span> <span class="keyword">stack</span></span><br><span class="line">#添加 <span class="keyword">stack</span> 用户权限。</span><br><span class="line">sudo echo <span class="string">"stack ALL=(ALL) NOPASSWD: ALL"</span> &gt;&gt; /etc/sudoers</span><br><span class="line">#切换到 <span class="keyword">stack</span> 用户</span><br><span class="line">sudo <span class="keyword">su</span> - <span class="keyword">stack</span></span><br></pre></td></tr></table></figure>
+</li>
 </ul>
+<h1 id="Security">Security</h1><h1 id="Networking">Networking</h1><ul>
+<li>OpenStack Networking (neutron)<br>The example architecture with OpenStack Networking (neutron) requires one controller node, one network node, and at least one compute node. The controller node contains one network interface on the management network. The network node contains one network interface on the management network, one on the instance tunnels network, and one on the external network. The compute node contains one network interface on the management network and one on the instance tunnels network.</li>
+</ul>
+<p>The example architecture assumes use of the following networks:</p>
+<p>Management on 10.0.0.0/24 with gateway 10.0.0.1</p>
+<blockquote>
+<p>[Note]    Note<br>This network requires a gateway to provide Internet access to all nodes for administrative purposes such as package installation, security updates, DNS, and NTP.</p>
+</blockquote>
+<p>Instance tunnels on 10.0.1.0/24 without a gateway</p>
+<blockquote>
+<p>[Note]    Note<br>This network does not require a gateway because communication only occurs among network and compute nodes in your OpenStack environment.</p>
+</blockquote>
+<p>External on 203.0.113.0/24 with gateway 203.0.113.1</p>
+<blockquote>
+<p>[Note]    Note<br>This network requires a gateway to provide Internet access to instances in your OpenStack environment.</p>
+</blockquote>
+<p>You can modify these ranges and gateways to work with your particular network infrastructure.</p>
+<p>Minimal architecture example with OpenStack Networking (neutron)—Network layout<br><img src="http://docs.openstack.org/kilo/install-guide/install/yum/content/figures/1/a/common/figures/installguidearch-neutron-networks.png" alt=""></p>
+<ul>
+<li>控制节点</li>
+</ul>
+<figure class="highlight vala"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">hostnamectl <span class="keyword">set</span>-hostname controller --<span class="keyword">static</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">cat &lt;&lt;EOF &gt; /etc/sysconfig/network-scripts/ifcfg-eth0</span><br><span class="line">DEVICE=eth0</span><br><span class="line">TYPE=Ethernet</span><br><span class="line">ONBOOT=yes</span><br><span class="line">NM_CONTROLLED=no</span><br><span class="line">BOOTPROTO=<span class="keyword">static</span></span><br><span class="line">IPADDR=<span class="number">10.0</span><span class="number">.0</span><span class="number">.11</span></span><br><span class="line">NETMASK=<span class="number">255.255</span><span class="number">.255</span><span class="number">.0</span></span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">cat &lt;&lt;EOF &gt;&gt; /etc/hosts</span><br><span class="line"><span class="preprocessor"># controller</span></span><br><span class="line"><span class="number">10.0</span><span class="number">.0</span><span class="number">.11</span>       controller</span><br><span class="line"><span class="preprocessor"># network</span></span><br><span class="line"><span class="number">10.0</span><span class="number">.0</span><span class="number">.21</span>       network</span><br><span class="line"><span class="preprocessor"># compute1</span></span><br><span class="line"><span class="number">10.0</span><span class="number">.0</span><span class="number">.31</span>       compute1</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<ul>
+<li>网络节点</li>
+</ul>
+<figure class="highlight vala"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">hostnamectl <span class="keyword">set</span>-hostname network --<span class="keyword">static</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#Management network</span></span><br><span class="line">cat &lt;&lt;EOF &gt; /etc/sysconfig/network-scripts/ifcfg-eth0</span><br><span class="line">DEVICE=eth0</span><br><span class="line">TYPE=Ethernet</span><br><span class="line">ONBOOT=yes</span><br><span class="line">NM_CONTROLLED=no</span><br><span class="line">BOOTPROTO=<span class="keyword">static</span></span><br><span class="line">IPADDR=<span class="number">10.0</span><span class="number">.0</span><span class="number">.21</span></span><br><span class="line">NETMASK=<span class="number">255.255</span><span class="number">.255</span><span class="number">.0</span></span><br><span class="line">EOF</span><br><span class="line"><span class="preprocessor">#Tunnel network</span></span><br><span class="line">cat &lt;&lt;EOF &gt; /etc/sysconfig/network-scripts/ifcfg-eth1</span><br><span class="line">DEVICE=eth1</span><br><span class="line">TYPE=Ethernet</span><br><span class="line">ONBOOT=yes</span><br><span class="line">NM_CONTROLLED=no</span><br><span class="line">BOOTPROTO=<span class="keyword">static</span></span><br><span class="line">IPADDR=<span class="number">10.0</span><span class="number">.1</span><span class="number">.21</span></span><br><span class="line">NETMASK=<span class="number">255.255</span><span class="number">.255</span><span class="number">.0</span></span><br><span class="line">EOF</span><br><span class="line"><span class="preprocessor">#Set hosts</span></span><br><span class="line">cat &lt;&lt;EOF &gt;&gt; /etc/hosts</span><br><span class="line"><span class="preprocessor"># controller</span></span><br><span class="line"><span class="number">10.0</span><span class="number">.0</span><span class="number">.11</span>       controller</span><br><span class="line"><span class="preprocessor"># network</span></span><br><span class="line"><span class="number">10.0</span><span class="number">.0</span><span class="number">.21</span>       network</span><br><span class="line"><span class="preprocessor"># compute1</span></span><br><span class="line"><span class="number">10.0</span><span class="number">.0</span><span class="number">.31</span>       compute1</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<p>The external interface uses a special configuration without an IP address assigned to it. Configure the third interface as the external interface:</p>
+<p>Replace INTERFACE_NAME with the actual interface name. For example, eth2 or ens256.</p>
+<p>Edit the /etc/sysconfig/network-scripts/ifcfg-INTERFACE_NAME file to contain the following:<br><figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#External network</span></span><br><span class="line">cat &lt;&lt;EOF &gt; /etc/sysconfig/network-scripts/ifcfg-eth2</span><br><span class="line"><span class="constant">DEVICE</span>=eth2</span><br><span class="line"><span class="constant">TYPE</span>=Ethernet</span><br><span class="line"><span class="constant">ONBOOT</span>=yes</span><br><span class="line"><span class="constant">BOOTPROTO</span>=none</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>计算节点</li>
+</ul>
+<figure class="highlight vala"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">hostnamectl <span class="keyword">set</span>-hostname compute1 --<span class="keyword">static</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#Management network</span></span><br><span class="line">cat &lt;&lt;EOF &gt; /etc/sysconfig/network-scripts/ifcfg-eth0</span><br><span class="line">DEVICE=eth0</span><br><span class="line">TYPE=Ethernet</span><br><span class="line">ONBOOT=yes</span><br><span class="line">NM_CONTROLLED=no</span><br><span class="line">BOOTPROTO=<span class="keyword">static</span></span><br><span class="line">IPADDR=<span class="number">10.0</span><span class="number">.0</span><span class="number">.31</span></span><br><span class="line">NETMASK=<span class="number">255.255</span><span class="number">.255</span><span class="number">.0</span></span><br><span class="line">EOF</span><br><span class="line"><span class="preprocessor">#Tunnel network</span></span><br><span class="line">cat &lt;&lt;EOF &gt; /etc/sysconfig/network-scripts/ifcfg-eth1</span><br><span class="line">DEVICE=eth1</span><br><span class="line">TYPE=Ethernet</span><br><span class="line">ONBOOT=yes</span><br><span class="line">NM_CONTROLLED=no</span><br><span class="line">BOOTPROTO=<span class="keyword">static</span></span><br><span class="line">IPADDR=<span class="number">10.0</span><span class="number">.1</span><span class="number">.31</span></span><br><span class="line">NETMASK=<span class="number">255.255</span><span class="number">.255</span><span class="number">.0</span></span><br><span class="line">EOF</span><br><span class="line"><span class="preprocessor">#Storage network</span></span><br><span class="line">cat &lt;&lt;EOF &gt; /etc/sysconfig/network-scripts/ifcfg-eth2</span><br><span class="line">DEVICE=eth2</span><br><span class="line">TYPE=Ethernet</span><br><span class="line">ONBOOT=yes</span><br><span class="line">NM_CONTROLLED=no</span><br><span class="line">BOOTPROTO=<span class="keyword">static</span></span><br><span class="line">IPADDR=<span class="number">10.0</span><span class="number">.2</span><span class="number">.31</span></span><br><span class="line">NETMASK=<span class="number">255.255</span><span class="number">.255</span><span class="number">.0</span></span><br><span class="line">EOF</span><br><span class="line"><span class="preprocessor">#Set hosts</span></span><br><span class="line">cat &lt;&lt;EOF &gt;&gt; /etc/hosts</span><br><span class="line"><span class="preprocessor"># controller</span></span><br><span class="line"><span class="number">10.0</span><span class="number">.0</span><span class="number">.11</span>       controller</span><br><span class="line"><span class="preprocessor"># network</span></span><br><span class="line"><span class="number">10.0</span><span class="number">.0</span><span class="number">.21</span>       network</span><br><span class="line"><span class="preprocessor"># compute1</span></span><br><span class="line"><span class="number">10.0</span><span class="number">.0</span><span class="number">.31</span>       compute1</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
 <h1 id="Network_Time_Protocol_(NTP)">Network Time Protocol (NTP)</h1><h1 id="OpenStack_packages">OpenStack packages</h1><ul>
 <li><p>配置epel源</p>
-<figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">curl -o <span class="regexp">/etc/yum</span>.repos.d<span class="regexp">/epel7.repo http:/</span><span class="regexp">/192.178.102.249/</span>help<span class="regexp">/epel7.repo</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight crystal"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">curl -o /etc/yum.repos.d/epel7.repo <span class="symbol">http:</span>/<span class="regexp">/192.178.102.249/help</span><span class="regexp">/epel7.repo</span><br><span class="line">curl -o /etc</span><span class="regexp">/yum.repos.d/epel</span>.repo <span class="symbol">http:</span>/<span class="regexp">/mirrors.aliyun.com/repo</span><span class="regexp">/epel-7.repo</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>配置openstack源</p>
-<figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">curl -o <span class="regexp">/etc/yum</span>.repos.d<span class="regexp">/openstack-kilo.repo http:/</span><span class="regexp">/192.178.102.249/</span>help<span class="regexp">/openstack-kilo.repo</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight crystal"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">curl -o /etc/yum.repos.d/openstack-kilo.repo <span class="symbol">http:</span>/<span class="regexp">/192.178.102.249/help</span><span class="regexp">/openstack-kilo.repo</span><br><span class="line">yum install -y http:/</span><span class="regexp">/rdo.fedorapeople.org/openstack</span>-kilo/rdo-release-kilo.rpm</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>安装open-vm-tools<br>我的底层环境使用vsphere esxi5.5 u2，为了更好的体验，安装vmware建议的open-vm-tools客户端工具，cenots 7已经集成进epel源，直接安装即可。</p>
 <figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">yum <span class="keyword">install</span> -y open-vm-tools</span><br></pre></td></tr></table></figure>
@@ -276,24 +314,19 @@
 <blockquote>
 <p>注意<br>If the upgrade process includes a new kernel, reboot your system to activate it.</p>
 </blockquote>
-<pre><code><span class="label">RHEL</span> 和 CentOS 默认启用<span class="keyword">SELinux </span>。安装openstack-<span class="keyword">selinux </span>包来对OpenStack 服务相关的安全策略自动管理。
-</code></pre><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">yum <span class="keyword">install</span> -y openstack-selinux</span><br></pre></td></tr></table></figure>
+<p>RHEL 和 CentOS 默认启用SELinux 。安装openstack-selinux 包来对OpenStack 服务相关的安全策略自动管理。<br><figure class="highlight vala"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">yum install -y openstack-selinux</span><br><span class="line"><span class="preprocessor">#或者关闭selinux</span></span><br><span class="line">setenforce <span class="number">0</span></span><br><span class="line">sed -i <span class="string">"s/\(^SELINUX=\).*\$/\1disabled/"</span> /etc/selinux/config</span><br></pre></td></tr></table></figure></p>
 <h1 id="SQL_database">SQL database</h1><p>大部分OpenStack服务使用数据库存储信息。一般在控制节点安装。支持MariaDB、MySQL其他分支和PostgreSQL。</p>
 <figure class="highlight armasm"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line"><span class="label">yum</span> install -y <span class="keyword">mariadb </span><span class="keyword">mariadb-server </span>MySQL-python</span><br></pre></td></tr></table></figure>
-<p>生成数据库配置文件，记得配置绑定地址到控制节点的管理网络IP以便其他节点可以通过管理网络访问。</p>
-<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"</span><br><span class="line"></span>[mysqld]</span><br><span class="line">bind-address = <span class="number">192.168</span>.<span class="number">200.220</span></span><br><span class="line">default-storage-engine = innodb</span><br><span class="line">innodb_file_per_table</span><br><span class="line">collation-server = utf8_general_ci</span><br><span class="line">init-connect = <span class="string">'SET NAMES utf8'</span></span><br><span class="line">character-<span class="keyword">set</span>-server = utf8" &gt;/etc/my.<span class="keyword">cnf</span>.<span class="keyword">d</span>/mariadb_openstack.<span class="keyword">cnf</span></span><br></pre></td></tr></table></figure>
+<p>生成数据库配置文件，记得配置绑定地址到控制节点的管理网络IP以便其他节点可以通过管理网络访问。<br><figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"</span><br><span class="line"></span>[mysqld]</span><br><span class="line">bind-address = controller</span><br><span class="line">default-storage-engine = innodb</span><br><span class="line">innodb_file_per_table</span><br><span class="line">collation-server = utf8_general_ci</span><br><span class="line">init-connect = <span class="string">'SET NAMES utf8'</span></span><br><span class="line">character-<span class="keyword">set</span>-server = utf8" &gt;/etc/my.<span class="keyword">cnf</span>.<span class="keyword">d</span>/mariadb_openstack.<span class="keyword">cnf</span></span><br></pre></td></tr></table></figure></p>
 <p>启动数据库服务并配置开机自启动。<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">systemctl <span class="built_in">enable</span> mariadb.service</span><br><span class="line">systemctl start mariadb.service</span><br></pre></td></tr></table></figure></p>
-<p>对数据库进行安全加固，设置root密码，访问权限，移除测试库。</p>
-<figure class="highlight vala"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">mysql_secure_installation</span><br></pre></td></tr></table></figure>
+<p>对数据库进行安全加固，设置root密码，访问权限，移除测试库。<br><figure class="highlight vala"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">mysql_secure_installation</span><br></pre></td></tr></table></figure></p>
 <p>配置防火墙，允许 MySql service 通过:<br><figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --permanent --<span class="built_ins">add</span>-service=mysql</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --reload</span><br></pre></td></tr></table></figure></p>
 <h1 id="Message_queue">Message queue</h1><p>OpenStack uses a message queue to coordinate operations and status information among services. The message queue service typically runs on the controller node. OpenStack supports several message queue services including RabbitMQ, Qpid, and ZeroMQ. However, most distributions that package OpenStack support a particular message queue service. This guide implements the RabbitMQ message queue service because most distributions support it. If you prefer to implement a different message queue service, consult the documentation associated with it.</p>
 <p>安装：<br><figure class="highlight axapta"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">yum install -y rabbitmq-<span class="keyword">server</span></span><br></pre></td></tr></table></figure></p>
 <p>启动并配置开机自启动：<br><figure class="highlight axapta"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">systemctl enable rabbitmq-<span class="keyword">server</span>.service</span><br><span class="line">systemctl start rabbitmq-<span class="keyword">server</span>.service</span><br></pre></td></tr></table></figure></p>
-<p>添加 openstack 用户:</p>
-<figure class="highlight erlang"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">rabbitmqctl add_user openstack <span class="variable">RABBIT_PASS</span></span><br><span class="line"><span class="variable">Creating</span> user <span class="string">"openstack"</span> ...</span><br><span class="line">...done.</span><br></pre></td></tr></table></figure>
-<p>替换 RABBIT_PASS 为你想设置的密码，此次我不动了。</p>
-<p>给openstack配置读写权限:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">rabbitmqctl <span class="built_in">set</span>_permissions openstack <span class="string">".*"</span> <span class="string">".*"</span> <span class="string">".*"</span></span><br><span class="line">Setting permissions <span class="keyword">for</span> user <span class="string">"openstack"</span> <span class="keyword">in</span> vhost <span class="string">"/"</span> ...</span><br><span class="line">...done.</span><br></pre></td></tr></table></figure>
+<p>添加 openstack 用户:<br><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="title">rabbitmqctl</span> add_user openstack RABBIT_PASS</span><br></pre></td></tr></table></figure></p>
+<p>修改 RABBIT_PASS 为你想设置的密码，这里我改了。</p>
+<p>给openstack配置读写权限:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">rabbitmqctl <span class="built_in">set</span>_permissions openstack <span class="string">".*"</span> <span class="string">".*"</span> <span class="string">".*"</span></span><br></pre></td></tr></table></figure></p>
 </span>
       
     </div>
@@ -302,9 +335,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/linux/" rel="tag">#linux</a>
+            <a href="/tags/mariadb/" rel="tag">#mariadb</a>
           
-            <a href="/tags/proxy/" rel="tag">#proxy</a>
+            <a href="/tags/openstack/" rel="tag">#openstack</a>
+          
+            <a href="/tags/rabbitmq/" rel="tag">#rabbitmq</a>
           
         </div>
       
@@ -385,21 +420,21 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">31</span>
+              <span class="site-state-item-count">35</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">8</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-count">30</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

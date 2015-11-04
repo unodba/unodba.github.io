@@ -49,7 +49,7 @@
 <meta property="og:description" content="这周在折腾openstack，下面是过程小记。
 
 参考：Chapter 7. Add the dashboard">
-<meta property="og:updated_time" content="2015-10-29T00:42:02.532Z">
+<meta property="og:updated_time" content="2015-11-02T03:41:46.139Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="openstack之kilo安装 dashboard服务">
 <meta name="twitter:description" content="这周在折腾openstack，下面是过程小记。
@@ -276,7 +276,7 @@
 <p>Due to a packaging bug, the dashboard CSS fails to load properly. Run the following command to resolve this issue:<br><figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">chown -R apache:apache <span class="regexp">/usr/</span>share<span class="regexp">/openstack-dashboard/</span><span class="keyword">static</span></span><br></pre></td></tr></table></figure></p>
 <p>启动 web server and session storage service and configure them to start when the system boots:</p>
 <figure class="highlight css"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line"><span class="tag">systemctl</span> <span class="tag">enable</span> <span class="tag">httpd</span><span class="class">.service</span> <span class="tag">memcached</span><span class="class">.service</span></span><br><span class="line"><span class="tag">systemctl</span> <span class="tag">restart</span> <span class="tag">httpd</span><span class="class">.service</span> <span class="tag">memcached</span><span class="class">.service</span></span><br></pre></td></tr></table></figure>
-<p>CentOS 7 采用了 firewalld 防火墙，如要查询是否开启80端口则：<br><figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#controller horizon</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=80/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --<span class="built_ins">add</span>-port=80/tcp</span><br><span class="line"><span class="comment">#controller nova</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=9696/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --<span class="built_ins">add</span>-port=9696/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --<span class="built_ins">add</span>-port=35357/tcp</span><br><span class="line"><span class="comment">#controller glance</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=9292/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --<span class="built_ins">add</span>-port=9292/tcp</span><br><span class="line"><span class="comment">#controller vnc</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=6080/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --<span class="built_ins">add</span>-port=6080/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=5900/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --<span class="built_ins">add</span>-port=5900/tcp</span><br><span class="line"><span class="comment"># computer vnc</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=5900/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --<span class="built_ins">add</span>-port=5900/tcp</span><br><span class="line"><span class="comment">#neutron</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=5672/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --<span class="built_ins">add</span>-port=5672/tcp</span><br></pre></td></tr></table></figure></p>
+<p>CentOS 7 采用了 firewalld 防火墙，如要查询是否开启80端口则：<br><figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#controller horizon</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=80/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --<span class="built_ins">add</span>-port=80/tcp</span><br><span class="line"><span class="comment">#controller nova</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=9696/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --permanent --<span class="built_ins">add</span>-port=9696/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=35357/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --permanent --<span class="built_ins">add</span>-port=35357/tcp</span><br><span class="line"><span class="comment">#controller glance</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=9292/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --permanent --<span class="built_ins">add</span>-port=9292/tcp</span><br><span class="line"><span class="comment">#controller vnc</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=6080/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --permanent --<span class="built_ins">add</span>-port=6080/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=5900/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --permanent --<span class="built_ins">add</span>-port=5900/tcp</span><br><span class="line"><span class="comment"># computer vnc</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=5900/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --permanent --<span class="built_ins">add</span>-port=5900/tcp</span><br><span class="line"><span class="comment">#neutron</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=5672/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --permanent --<span class="built_ins">add</span>-port=5672/tcp</span><br></pre></td></tr></table></figure></p>
 </span>
       
     </div>
@@ -296,11 +296,13 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2015/11/01/sys-linux-firewall-cmd/" rel="prev">Linux-firewall-cmd</a>
+            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/10/28/openstack-network-service/" rel="next">openstack之kilo安装 网络服务</a>
+              <a href="/2015/10/28/openstack-cmd-service/" rel="next">openstack之kilo安装 常用命令</a>
             
           </div>
         </div>
@@ -366,21 +368,21 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">31</span>
+              <span class="site-state-item-count">35</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">8</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-count">30</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
