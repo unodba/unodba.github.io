@@ -50,7 +50,7 @@
 
 参考：Chapter 2. Basic environment">
 <meta property="og:image" content="http://docs.openstack.org/kilo/install-guide/install/yum/content/figures/1/a/common/figures/installguidearch-neutron-networks.png">
-<meta property="og:updated_time" content="2015-11-04T15:16:02.981Z">
+<meta property="og:updated_time" content="2015-11-05T08:47:07.849Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="openstack之kilo安装 基础环境">
 <meta name="twitter:description" content="这周在折腾openstack，下面是过程小记。
@@ -284,6 +284,7 @@
 <figure class="highlight vala"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">hostnamectl <span class="keyword">set</span>-hostname controller --<span class="keyword">static</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">cat &lt;&lt;EOF &gt; /etc/sysconfig/network-scripts/ifcfg-eth0</span><br><span class="line">DEVICE=eth0</span><br><span class="line">TYPE=Ethernet</span><br><span class="line">ONBOOT=yes</span><br><span class="line">NM_CONTROLLED=no</span><br><span class="line">BOOTPROTO=<span class="keyword">static</span></span><br><span class="line">IPADDR=<span class="number">10.0</span><span class="number">.0</span><span class="number">.11</span></span><br><span class="line">NETMASK=<span class="number">255.255</span><span class="number">.255</span><span class="number">.0</span></span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">cat &lt;&lt;EOF &gt;&gt; /etc/hosts</span><br><span class="line"><span class="preprocessor"># controller</span></span><br><span class="line"><span class="number">10.0</span><span class="number">.0</span><span class="number">.11</span>       controller</span><br><span class="line"><span class="preprocessor"># network</span></span><br><span class="line"><span class="number">10.0</span><span class="number">.0</span><span class="number">.21</span>       network</span><br><span class="line"><span class="preprocessor"># compute1</span></span><br><span class="line"><span class="number">10.0</span><span class="number">.0</span><span class="number">.31</span>       compute1</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<p>ip addr | grep ^2: |awk -F “:” ‘{print$2}’ | awk -F “ “ ‘{print$1}’</p>
 <ul>
 <li>网络节点</li>
 </ul>
@@ -348,13 +349,13 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/10/24/sys-linux-ntp/" rel="prev">Linux ntp服务配置</a>
+              <a href="/2015/10/25/openstack-Identity-service/" rel="prev">openstack之kilo安装 认证服务</a>
             
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/10/24/sys-linux-proxy/" rel="next">Linux设置全局代理</a>
+              <a href="/2015/10/23/trans-It's the community,stupid/" rel="next">翻译：傻瓜，社区才是关键啊!</a>
             
           </div>
         </div>
@@ -420,7 +421,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">35</span>
+              <span class="site-state-item-count">36</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -434,7 +435,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-count">32</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

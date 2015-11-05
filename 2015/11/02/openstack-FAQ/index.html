@@ -55,7 +55,7 @@
 无法启动
 
 # systemctl start httpd.serviceJob for httpd.service failed. See &apos;systemctl status httpd.service&apos; and &apos;journalctl -xn&apos; for details.# systemctl status httpd.serviceh">
-<meta property="og:updated_time" content="2015-11-04T05:32:32.734Z">
+<meta property="og:updated_time" content="2015-11-05T00:53:18.335Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="openstack之kilo安装 FAQ">
 <meta name="twitter:description" content="这周在折腾openstack，下面是过程中问题小记。
@@ -270,6 +270,7 @@
 <li>无法创建实例</li>
 </ol>
 <figure class="highlight stata"><table><tr><td class="code"><pre><span class="line">消息  Build of instance 6a1d5331-542c-4f05-8ef6-df5bc0aea44a aborted: Could not clean up failed build, not rescheduling</span><br><span class="line">编码  500</span><br><span class="line">详情  <span class="keyword">File</span> <span class="string">"/usr/lib/python2.7/site-packages/nova/compute/manager.py"</span>, <span class="keyword">line</span> 2235, <span class="keyword">in</span> _do_build_and_run_instance filter_properties) <span class="keyword">File</span> <span class="string">"/usr/lib/python2.7/site-packages/nova/compute/manager.py"</span>, <span class="keyword">line</span> 2349, <span class="keyword">in</span> _build_and_run_instance 'create.<span class="keyword">error</span>', fault=<span class="keyword">e</span>) <span class="keyword">File</span> <span class="string">"/usr/lib/python2.7/site-packages/oslo_utils/excutils.py"</span>, <span class="keyword">line</span> 85, <span class="keyword">in</span> __exit__ six.reraise(self.type_, self.value, self.tb) <span class="keyword">File</span> <span class="string">"/usr/lib/python2.7/site-packages/nova/compute/manager.py"</span>, <span class="keyword">line</span> 2333, <span class="keyword">in</span> _build_and_run_instance block_device_info=block_device_info) <span class="keyword">File</span> <span class="string">"/usr/lib64/python2.7/contextlib.py"</span>, <span class="keyword">line</span> 35, <span class="keyword">in</span> __exit__ self.<span class="keyword">gen</span>.throw(<span class="keyword">type</span>, value, traceback) <span class="keyword">File</span> <span class="string">"/usr/lib/python2.7/site-packages/nova/compute/manager.py"</span>, <span class="keyword">line</span> 2485, <span class="keyword">in</span> _build_resources instance_uuid=instance.uuid, reason=msg)</span><br></pre></td></tr></table></figure>
+<figure class="highlight crystal"><table><tr><td class="code"><pre><span class="line"><span class="comment"># keystone tenant-list | awk '/ service / &#123; print $2 &#125;'</span></span><br><span class="line">/usr/<span class="class"><span class="keyword">lib</span>/<span class="title">python2</span>.7/<span class="title">site</span>-<span class="title">packages</span>/<span class="title">keystoneclient</span>/<span class="title">shell</span>.<span class="title">py</span>:65: <span class="title">DeprecationWarning</span>: <span class="title">The</span> <span class="title">keystone</span> <span class="title">CLI</span> <span class="title">is</span> <span class="title">deprecated</span> <span class="title">in</span> <span class="title">favor</span> <span class="title">of</span> <span class="title">python</span>-<span class="title">openstackclient</span>. <span class="title">For</span> <span class="title">a</span> <span class="title">Python</span> <span class="title">library</span>, <span class="title">continue</span> <span class="title">using</span> <span class="title">python</span>-<span class="title">keystoneclient</span>.</span></span><br><span class="line">  <span class="string">'python-keystoneclient.'</span>, <span class="constant">DeprecationWarning</span>)</span><br><span class="line"><span class="constant">Authorization</span> <span class="constant">Failed</span><span class="symbol">:</span> <span class="constant">The</span> resource could not be found. (<span class="constant">HTTP</span> <span class="number">404</span>) (<span class="constant">Request</span>-<span class="constant">ID</span><span class="symbol">:</span> req-d081607d-<span class="number">0</span>af5-<span class="number">441</span>d-a08a-<span class="number">688</span>db7a45612)</span><br></pre></td></tr></table></figure>
 </span>
       
     </div>
@@ -289,13 +290,11 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/11/02/sys-linux-tcpdump/" rel="prev">Linux-tcpdump</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/11/01/sys-linux-firewall-cmd/" rel="next">Linux-firewall-cmd</a>
+              <a href="/2015/10/30/openstack-block-service/" rel="next">openstack之kilo安装 dashboard服务</a>
             
           </div>
         </div>
@@ -361,7 +360,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">35</span>
+              <span class="site-state-item-count">36</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -375,7 +374,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-count">32</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

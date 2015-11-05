@@ -41,20 +41,26 @@
 
 <meta name="description" content="这周在折腾openstack，下面是过程小记。
 
-参考：Chapter 7. Add the dashboard">
+参考：Chapter 7. Add the dashboard
+
+dashboard 安装在控制节点。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="openstack之kilo安装 dashboard服务">
 <meta property="og:url" content="http://yoursite.com/2015/10/29/openstack-dashboad-service/index.html">
 <meta property="og:site_name" content="信息系统应用技术实验室">
 <meta property="og:description" content="这周在折腾openstack，下面是过程小记。
 
-参考：Chapter 7. Add the dashboard">
-<meta property="og:updated_time" content="2015-11-02T03:41:46.139Z">
+参考：Chapter 7. Add the dashboard
+
+dashboard 安装在控制节点。">
+<meta property="og:updated_time" content="2015-11-05T03:11:28.927Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="openstack之kilo安装 dashboard服务">
 <meta name="twitter:description" content="这周在折腾openstack，下面是过程小记。
 
-参考：Chapter 7. Add the dashboard">
+参考：Chapter 7. Add the dashboard
+
+dashboard 安装在控制节点。">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -254,29 +260,22 @@
 <blockquote>
 <p>参考：<a href="http://docs.openstack.org/kilo/install-guide/install/yum/content/ch_horizon.html" target="_blank" rel="external">Chapter 7. Add the dashboard</a></p>
 </blockquote>
+<p>dashboard 安装在控制节点。</p>
 <a id="more"></a>
-<h1 id="Install_and_configure">Install and configure</h1><p>This section describes how to install and configure the dashboard on the controller node.</p>
-<p>Before you proceed, verify that your system meets the requirements in the section called “System requirements”. Also, the dashboard relies on functional core services including Identity, Image service, Compute, and either Networking (neutron) or legacy networking (nova-network). Environments with stand-alone services such as Object Storage cannot use the dashboard. For more information, see the developer documentation.</p>
+<h1 id="Install_and_configure">Install and configure</h1><p>Before you proceed, verify that your system meets the requirements in the section called “System requirements”. Also, the dashboard relies on functional core services including Identity, Image service, Compute, and either Networking (neutron) or legacy networking (nova-network). Environments with stand-alone services such as Object Storage cannot use the dashboard. For more information, see the developer documentation.</p>
 <p>This section assumes proper installation, configuration, and operation of the Identity service using the Apache HTTP server and Memcached as described in the section called “Install and configure”.</p>
 <p>安装packages:</p>
 <figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">yum <span class="keyword">install</span> -y openstack-dashboard httpd mod_wsgi memcached python-memcached</span><br></pre></td></tr></table></figure>
-<p>To configure the dashboard</p>
-<p>编辑 /etc/openstack-dashboard/local_settings 文件:</p>
-<p>Configure the dashboard to use OpenStack services on the controller node:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">vi  /etc/openstack-dashboard/<span class="built_in">local</span>_settings</span><br><span class="line">OPENSTACK_HOST = <span class="string">"controller"</span></span><br><span class="line">ALLOWED_HOSTS = <span class="string">'*'</span></span><br></pre></td></tr></table></figure>
-<p>Configure the memcached session storage service:</p>
-<figure class="highlight xquery"><table><tr><td class="code"><pre><span class="line">CACHES = &#123;</span><br><span class="line">   <span class="string">'default'</span>: &#123;</span><br><span class="line">       <span class="string">'BACKEND'</span>: <span class="string">'django.core.cache.backends.memcached.MemcachedCache'</span>,</span><br><span class="line">       <span class="string">'LOCATION'</span>: <span class="string">'127.0.0.1:11211'</span>,</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编辑 /etc/openstack-dashboard/local_settings 文件，配置dashboard:</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">vi  /etc/openstack-dashboard/local_settings</span><br><span class="line">#Configure the dashboard to <span class="operator"><span class="keyword">use</span> OpenStack services <span class="keyword">on</span> the controller node:</span><br><span class="line">OPENSTACK_HOST = <span class="string">"controller"</span></span><br><span class="line">ALLOWED_HOSTS = <span class="string">'*'</span></span><br><span class="line">#Configure the memcached <span class="keyword">session</span> <span class="keyword">storage</span> service:</span><br><span class="line">CACHES = &#123;</span><br><span class="line">   <span class="string">'default'</span>: &#123;</span><br><span class="line">       <span class="string">'BACKEND'</span>: <span class="string">'django.core.cache.backends.memcached.MemcachedCache'</span>,</span><br><span class="line">       <span class="string">'LOCATION'</span>: <span class="string">'127.0.0.1:11211'</span>,</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line">#Configure <span class="keyword">user</span> <span class="keyword">as</span> the <span class="keyword">default</span> <span class="keyword">role</span> <span class="keyword">for</span> <span class="keyword">users</span> that you <span class="keyword">create</span> via the dashboard:</span><br><span class="line">OPENSTACK_KEYSTONE_DEFAULT_ROLE = <span class="string">"user"</span></span><br><span class="line">#<span class="keyword">Optionally</span>, configure the <span class="keyword">time</span> zone:</span><br><span class="line"><span class="keyword">TIME_ZONE</span> = <span class="string">"TIME_ZONE"</span></span></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>[Note]    Note<br>Comment out any other session storage configuration.</p>
 </blockquote>
-<p>Configure user as the default role for users that you create via the dashboard:<br>OPENSTACK_KEYSTONE_DEFAULT_ROLE = “user”</p>
-<p>Optionally, configure the time zone:<br>TIME_ZONE = “TIME_ZONE”</p>
-<p>Replace TIME_ZONE with an appropriate time zone identifier. For more information, see the list of time zones.</p>
 <p>配置SELinux 运行 web server 连接 OpenStack services:<br><figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">setsebool -P httpd_can_network_connect <span class="function_start"><span class="keyword">on</span></span></span><br></pre></td></tr></table></figure></p>
 <p>Due to a packaging bug, the dashboard CSS fails to load properly. Run the following command to resolve this issue:<br><figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">chown -R apache:apache <span class="regexp">/usr/</span>share<span class="regexp">/openstack-dashboard/</span><span class="keyword">static</span></span><br></pre></td></tr></table></figure></p>
 <p>启动 web server and session storage service and configure them to start when the system boots:</p>
 <figure class="highlight css"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line"><span class="tag">systemctl</span> <span class="tag">enable</span> <span class="tag">httpd</span><span class="class">.service</span> <span class="tag">memcached</span><span class="class">.service</span></span><br><span class="line"><span class="tag">systemctl</span> <span class="tag">restart</span> <span class="tag">httpd</span><span class="class">.service</span> <span class="tag">memcached</span><span class="class">.service</span></span><br></pre></td></tr></table></figure>
-<p>CentOS 7 采用了 firewalld 防火墙，如要查询是否开启80端口则：<br><figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#controller horizon</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=80/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --<span class="built_ins">add</span>-port=80/tcp</span><br><span class="line"><span class="comment">#controller nova</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=9696/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --permanent --<span class="built_ins">add</span>-port=9696/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=35357/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --permanent --<span class="built_ins">add</span>-port=35357/tcp</span><br><span class="line"><span class="comment">#controller glance</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=9292/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --permanent --<span class="built_ins">add</span>-port=9292/tcp</span><br><span class="line"><span class="comment">#controller vnc</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=6080/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --permanent --<span class="built_ins">add</span>-port=6080/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=5900/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --permanent --<span class="built_ins">add</span>-port=5900/tcp</span><br><span class="line"><span class="comment"># computer vnc</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=5900/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --permanent --<span class="built_ins">add</span>-port=5900/tcp</span><br><span class="line"><span class="comment">#neutron</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=5672/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --permanent --<span class="built_ins">add</span>-port=5672/tcp</span><br></pre></td></tr></table></figure></p>
+<p>CentOS 7 采用了 firewalld 防火墙，如要查询是否开启80端口则：<br><figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#controller horizon</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=80/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --permanent --<span class="built_ins">add</span>-port=80/tcp</span><br><span class="line"><span class="comment">#controller nova</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=9696/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --permanent --<span class="built_ins">add</span>-port=9696/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=35357/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --permanent --<span class="built_ins">add</span>-port=35357/tcp</span><br><span class="line"><span class="comment">#controller glance</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=9292/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --permanent --<span class="built_ins">add</span>-port=9292/tcp</span><br><span class="line"><span class="comment">#controller vnc</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=6080/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --permanent --<span class="built_ins">add</span>-port=6080/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=5900/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --permanent --<span class="built_ins">add</span>-port=5900/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --reload</span><br><span class="line"><span class="comment"># computer vnc</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=5900/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --permanent --<span class="built_ins">add</span>-port=5900/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --reload</span><br><span class="line"><span class="comment">#network neutron</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --query-port=5672/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --permanent --<span class="built_ins">add</span>-port=5672/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --reload</span><br></pre></td></tr></table></figure></p>
 </span>
       
     </div>
@@ -296,7 +295,7 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/11/01/sys-linux-firewall-cmd/" rel="prev">Linux-firewall-cmd</a>
+              <a href="/2015/10/30/openstack-block-service/" rel="prev">openstack之kilo安装 dashboard服务</a>
             
           </div>
 
@@ -368,7 +367,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">35</span>
+              <span class="site-state-item-count">36</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -382,7 +381,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-count">32</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

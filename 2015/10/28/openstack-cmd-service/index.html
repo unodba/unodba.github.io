@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="neutron,openstack," />
+  <meta name="keywords" content="kilo,openstack," />
 
 
 
@@ -39,22 +39,16 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="这周在折腾openstack，下面是过程小记。
-
-参考：Chapter 6. Add a networking component">
+<meta name="description" content="这周在折腾openstack，下面是过程小记。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="openstack之kilo安装 常用命令">
 <meta property="og:url" content="http://yoursite.com/2015/10/28/openstack-cmd-service/index.html">
 <meta property="og:site_name" content="信息系统应用技术实验室">
-<meta property="og:description" content="这周在折腾openstack，下面是过程小记。
-
-参考：Chapter 6. Add a networking component">
-<meta property="og:updated_time" content="2015-11-02T01:08:09.842Z">
+<meta property="og:description" content="这周在折腾openstack，下面是过程小记。">
+<meta property="og:updated_time" content="2015-11-05T02:53:06.166Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="openstack之kilo安装 常用命令">
-<meta name="twitter:description" content="这周在折腾openstack，下面是过程小记。
-
-参考：Chapter 6. Add a networking component">
+<meta name="twitter:description" content="这周在折腾openstack，下面是过程小记。">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -251,9 +245,6 @@
 
       
         <span itemprop="articleBody"><p>这周在折腾openstack，下面是过程小记。</p>
-<blockquote>
-<p>参考：<a href="http://docs.openstack.org/kilo/install-guide/install/yum/content/ch_networking.html" target="_blank" rel="external">Chapter 6. Add a networking component</a></p>
-</blockquote>
 <a id="more"></a>
 <h1 id="配置_stack_用户">配置 stack 用户</h1><p>创建 stack 用户+</p>
 <p>sudo groupadd stack<br>sudo useradd -g stack -s /bin/bash -d /opt/stack -m stack<br>添加 stack 用户权限。<br>sudo echo “stack ALL=(ALL) NOPASSWD: ALL” &gt;&gt; /etc/sudoers<br>切换到 stack 用户<br>sudo su - stack</p>
@@ -274,7 +265,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/neutron/" rel="tag">#neutron</a>
+            <a href="/tags/kilo/" rel="tag">#kilo</a>
           
             <a href="/tags/openstack/" rel="tag">#openstack</a>
           
@@ -357,7 +348,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">35</span>
+              <span class="site-state-item-count">36</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -371,7 +362,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-count">32</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

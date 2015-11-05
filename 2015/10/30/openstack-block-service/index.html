@@ -1,0 +1,785 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="大自然的搬运工" />
+
+
+
+  <meta name="keywords" content="cinder,openstack," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="这周在折腾openstack，下面是过程小记。
+
+参考：Chapter 8. Add the Block Storage service
+
+dashboard 安装在控制节点。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="openstack之kilo安装 dashboard服务">
+<meta property="og:url" content="http://yoursite.com/2015/10/30/openstack-block-service/index.html">
+<meta property="og:site_name" content="信息系统应用技术实验室">
+<meta property="og:description" content="这周在折腾openstack，下面是过程小记。
+
+参考：Chapter 8. Add the Block Storage service
+
+dashboard 安装在控制节点。">
+<meta property="og:updated_time" content="2015-11-05T03:41:16.139Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="openstack之kilo安装 dashboard服务">
+<meta name="twitter:description" content="这周在折腾openstack，下面是过程小记。
+
+参考：Chapter 8. Add the Block Storage service
+
+dashboard 安装在控制节点。">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> openstack之kilo安装 dashboard服务 | 信息系统应用技术实验室 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">信息系统应用技术实验室</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu menu-left">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-next-categories"></i> <br />
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <form class="site-search-form">
+    <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+  </form>
+
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'CzK1KgsZV7UDQV2N5maz','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              openstack之kilo安装 dashboard服务
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-10-30T00:00:00+08:00" content="2015-10-30">
+            2015-10-30
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分类于
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/openstack/" itemprop="url" rel="index">
+                  <span itemprop="name">openstack</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/10/30/openstack-block-service/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/30/openstack-block-service/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>这周在折腾openstack，下面是过程小记。</p>
+<blockquote>
+<p>参考：<a href="http://docs.openstack.org/kilo/install-guide/install/yum/content/ch_cinder.html" target="_blank" rel="external">Chapter 8. Add the Block Storage service</a></p>
+</blockquote>
+<p>dashboard 安装在控制节点。</p>
+<a id="more"></a>
+<h1 id="Install_and_configure_controller_node">Install and configure controller node</h1><p>This section describes how to install and configure the Block Storage service, code-named cinder, on the controller node. This service requires at least one additional storage node that provides volumes to instances.</p>
+<ul>
+<li>To configure prerequisites</li>
+</ul>
+<p>Before you install and configure the Block Storage service, you must create a database, service credentials, and API endpoint.</p>
+<p>To create the database, complete these steps:</p>
+<p>Use the database access client to connect to the database server as the root user:<br><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">mysql -u root -p</span><br><span class="line"></span><br><span class="line"><span class="operator"><span class="keyword">CREATE</span> <span class="keyword">DATABASE</span> cinder;</span></span><br><span class="line"></span><br><span class="line"><span class="operator"><span class="keyword">GRANT</span> ALL <span class="keyword">PRIVILEGES</span> <span class="keyword">ON</span> cinder.* <span class="keyword">TO</span> <span class="string">'cinder'</span>@<span class="string">'localhost'</span> \</span><br><span class="line">  <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'CINDER_DBPASS'</span>;</span></span><br><span class="line"><span class="operator"><span class="keyword">GRANT</span> ALL <span class="keyword">PRIVILEGES</span> <span class="keyword">ON</span> cinder.* <span class="keyword">TO</span> <span class="string">'cinder'</span>@<span class="string">'%'</span> \</span><br><span class="line">  <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'CINDER_DBPASS'</span>;</span></span><br><span class="line"><span class="operator"><span class="keyword">Replace</span> CINDER_DBPASS <span class="keyword">with</span> a suitable <span class="keyword">password</span>.</span><br><span class="line"></span><br><span class="line"><span class="keyword">exit</span></span></span><br></pre></td></tr></table></figure></p>
+<p>Source the admin credentials to gain access to admin-only CLI commands:</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line"><span class="keyword">source</span> admin-openrc.<span class="keyword">sh</span></span><br></pre></td></tr></table></figure>
+<p>To create the service credentials, complete these steps:</p>
+<p>Create a cinder user:</p>
+<figure class="highlight livecodeserver"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">openstack user <span class="built_in">create</span> <span class="comment">--password-prompt cinder</span></span><br></pre></td></tr></table></figure>
+<p>Add the admin role to the cinder user:</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">openstack role <span class="built_ins">add</span> --project service --<span class="built_ins">user</span> cinder admin</span><br></pre></td></tr></table></figure>
+<p>Create the cinder service entities:</p>
+<figure class="highlight livecodeserver"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">openstack service <span class="built_in">create</span> <span class="comment">--name cinder \</span></span><br><span class="line">  <span class="comment">--description "OpenStack Block Storage" volume</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight livecodeserver"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">openstack service <span class="built_in">create</span> <span class="comment">--name cinderv2 \</span></span><br><span class="line">  <span class="comment">--description "OpenStack Block Storage" volumev2</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>[Note]    Note<br>The Block Storage service requires both the volume and volumev2 services. However, both services use the same API endpoint that references the Block Storage version 2 API.</p>
+</blockquote>
+<p>Create the Block Storage service API endpoints:</p>
+<figure class="highlight haml"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">openstack endpoint create \</span><br><span class="line">  -<span class="ruby">-publicurl <span class="symbol">http:</span>/<span class="regexp">/controller:8776/v</span>2/%\(tenant_id\)s \</span><br><span class="line"></span>  -<span class="ruby">-internalurl <span class="symbol">http:</span>/<span class="regexp">/controller:8776/v</span>2/%\(tenant_id\)s \</span><br><span class="line"></span>  -<span class="ruby">-adminurl <span class="symbol">http:</span>/<span class="regexp">/controller:8776/v</span>2/%\(tenant_id\)s \</span><br><span class="line"></span>  -<span class="ruby">-region <span class="constant">RegionOne</span> \</span><br><span class="line"></span>  volume</span><br></pre></td></tr></table></figure>
+<figure class="highlight haml"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">openstack endpoint create \</span><br><span class="line">  -<span class="ruby">-publicurl <span class="symbol">http:</span>/<span class="regexp">/controller:8776/v</span>2/%\(tenant_id\)s \</span><br><span class="line"></span>  -<span class="ruby">-internalurl <span class="symbol">http:</span>/<span class="regexp">/controller:8776/v</span>2/%\(tenant_id\)s \</span><br><span class="line"></span>  -<span class="ruby">-adminurl <span class="symbol">http:</span>/<span class="regexp">/controller:8776/v</span>2/%\(tenant_id\)s \</span><br><span class="line"></span>  -<span class="ruby">-region <span class="constant">RegionOne</span> \</span><br><span class="line"></span>  volumev2</span><br></pre></td></tr></table></figure>
+<ul>
+<li>To install and configure Block Storage controller components</li>
+</ul>
+<p>Install the packages:</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">yum <span class="keyword">install</span> openstack-cinder python-cinderclient python-oslo-db</span><br></pre></td></tr></table></figure>
+<p>Copy the /usr/share/cinder/cinder-dist.conf file to /etc/cinder/cinder.conf.</p>
+<figure class="highlight stata"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">cp /usr/share/cinder/cinder-dist.<span class="keyword">conf</span> /etc/cinder/cinder.<span class="keyword">conf</span></span><br><span class="line">chown -R cinder:cinder /etc/cinder/cinder.<span class="keyword">conf</span></span><br></pre></td></tr></table></figure>
+<p>Edit the /etc/cinder/cinder.conf file and complete the following actions:</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="title">[database]</span></span><br><span class="line"><span class="setting">connection = <span class="value">mysql://cinder:CINDER_DBPASS@controller/cinder</span></span></span><br><span class="line"><span class="title">[DEFAULT]</span></span><br><span class="line"><span class="setting">rpc_backend = <span class="value">rabbit</span></span></span><br><span class="line"><span class="title">[oslo_messaging_rabbit]</span></span><br><span class="line"><span class="setting">rabbit_host = <span class="value">controller</span></span></span><br><span class="line"><span class="setting">rabbit_userid = <span class="value">openstack</span></span></span><br><span class="line"><span class="setting">rabbit_password = <span class="value">RABBIT_PASS</span></span></span><br><span class="line"><span class="title">[DEFAULT]</span></span><br><span class="line"><span class="setting">auth_strategy = <span class="value">keystone</span></span></span><br><span class="line"><span class="title">[keystone_authtoken]</span></span><br><span class="line"><span class="setting">auth_uri = <span class="value">http://controller:<span class="number">5000</span></span></span></span><br><span class="line"><span class="setting">auth_url = <span class="value">http://controller:<span class="number">35357</span></span></span></span><br><span class="line"><span class="setting">auth_plugin = <span class="value">password</span></span></span><br><span class="line"><span class="setting">project_domain_id = <span class="value">default</span></span></span><br><span class="line"><span class="setting">user_domain_id = <span class="value">default</span></span></span><br><span class="line"><span class="setting">project_name = <span class="value">service</span></span></span><br><span class="line"><span class="setting">username = <span class="value">cinder</span></span></span><br><span class="line"><span class="setting">password = <span class="value">cinder</span></span></span><br><span class="line"><span class="title">[DEFAULT]</span></span><br><span class="line"><span class="setting">my_ip = <span class="value"><span class="number">10.0</span>.<span class="number">0.11</span></span></span></span><br><span class="line"><span class="title">[oslo_concurrency]</span></span><br><span class="line"><span class="setting">lock_path = <span class="value">/var/lock/cinder</span></span></span><br><span class="line"><span class="title">[DEFAULT]</span></span><br><span class="line"><span class="setting">verbose = <span class="value"><span class="keyword">True</span></span></span></span><br></pre></td></tr></table></figure>
+<p>Populate the Block Storage database:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">su <span class="operator">-s</span> /bin/sh -c <span class="string">"cinder-manage db sync"</span> cinder</span><br></pre></td></tr></table></figure>
+<ul>
+<li>To finalize installation</li>
+</ul>
+<p>Start the Block Storage services and configure them to start when the system boots:</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line"><span class="tag">systemctl</span> <span class="tag">enable</span> <span class="tag">openstack-cinder-api</span><span class="class">.service</span> <span class="tag">openstack-cinder-scheduler</span><span class="class">.service</span></span><br><span class="line"><span class="tag">systemctl</span> <span class="tag">start</span> <span class="tag">openstack-cinder-api</span><span class="class">.service</span> <span class="tag">openstack-cinder-scheduler</span><span class="class">.service</span></span><br></pre></td></tr></table></figure>
+<p>Install and configure a storage node</p>
+<p>This section describes how to install and configure storage nodes for the Block Storage service. For simplicity, this configuration references one storage node with an empty local block storage device /dev/sdb that contains a suitable partition table with one partition /dev/sdb1 occupying the entire device. The service provisions logical volumes on this device using the LVM driver and provides them to instances via iSCSI transport. You can follow these instructions with minor modifications to horizontally scale your environment with additional storage nodes.</p>
+<p>To configure prerequisites</p>
+<p>You must configure the storage node before you install and configure the volume service on it. Similar to the controller node, the storage node contains one network interface on the management network. The storage node also needs an empty block storage device of suitable size for your environment. For more information, see Chapter 2, Basic environment.</p>
+<p>Configure the management interface:</p>
+<p>IP address: 10.0.0.41</p>
+<p>Network mask: 255.255.255.0 (or /24)</p>
+<p>Default gateway: 10.0.0.1</p>
+<p>Set the hostname of the node to block1.</p>
+<p>Copy the contents of the /etc/hosts file from the controller node to the storage node and add the following to it:</p>
+<p>Select Text<br>1<br>2</p>
+<h1 id="block1">block1</h1><p>10.0.0.41       block1<br>Also add this content to the /etc/hosts file on all other nodes in your environment.</p>
+<p>Install and configure NTP using the instructions in the section called “Other nodes”.</p>
+<p>If you intend to use non-raw image types such as QCOW2 and VMDK, install the QEMU support package:</p>
+<h1 id="yum_install_qemu">yum install qemu</h1><p>Install the LVM packages:</p>
+<h1 id="yum_install_lvm2">yum install lvm2</h1><p>[Note]    Note<br>Some distributions include LVM by default.</p>
+<p>Start the LVM metadata service and configure it to start when the system boots:</p>
+<h1 id="systemctl_enable_lvm2-lvmetad-service">systemctl enable lvm2-lvmetad.service</h1><h1 id="systemctl_start_lvm2-lvmetad-service">systemctl start lvm2-lvmetad.service</h1><p>Create the LVM physical volume /dev/sdb1:</p>
+<h1 id="pvcreate_/dev/sdb1">pvcreate /dev/sdb1</h1><p>  Physical volume “/dev/sdb1” successfully created<br>[Note]    Note<br>If your system uses a different device name, adjust these steps accordingly.</p>
+<p>Create the LVM volume group cinder-volumes:</p>
+<h1 id="vgcreate_cinder-volumes_/dev/sdb1">vgcreate cinder-volumes /dev/sdb1</h1><p>  Volume group “cinder-volumes” successfully created<br>The Block Storage service creates logical volumes in this volume group.</p>
+<p>Only instances can access Block Storage volumes. However, the underlying operating system manages the devices associated with the volumes. By default, the LVM volume scanning tool scans the /dev directory for block storage devices that contain volumes. If projects use LVM on their volumes, the scanning tool detects these volumes and attempts to cache them which can cause a variety of problems with both the underlying operating system and project volumes. You must reconfigure LVM to scan only the devices that contain the cinder-volume volume group. Edit the /etc/lvm/lvm.conf file and complete the following actions:</p>
+<p>In the devices section, add a filter that accepts the /dev/sdb device and rejects all other devices:</p>
+<p>Select Text<br>1<br>2<br>3<br>devices {<br>…<br>filter = [ “a/sdb/“, “r/.<em>/“]<br>Each item in the filter array begins with a for accept or r for reject and includes a regular expression for the device name. The array must end with r/.</em>/ to reject any remaining devices. You can use the vgs -vvvv command to test filters.</p>
+<p>[Warning]    Warning<br>If your storage nodes use LVM on the operating system disk, you must also add the associated device to the filter. For example, if the /dev/sda device contains the operating system:</p>
+<p>Select Text<br>1<br>filter = [ “a/sda/“, “a/sdb/“, “r/.*/“]<br>Similarly, if your compute nodes use LVM on the operating system disk, you must also modify the filter in the /etc/lvm/lvm.conf file on those nodes to include only the operating system disk. For example, if the /dev/sda device contains the operating system:</p>
+<p>Select Text<br>1<br>filter = [ “a/sda/“, “r/.*/“]</p>
+<p>Install and configure Block Storage volume components</p>
+<p>Install the packages:</p>
+<h1 id="yum_install_openstack-cinder_targetcli_python-oslo-db_python-oslo-log_MySQL-python">yum install openstack-cinder targetcli python-oslo-db python-oslo-log MySQL-python</h1><p>Edit the /etc/cinder/cinder.conf file and complete the following actions:</p>
+<p>In the [database] section, configure database access:</p>
+<p>Select Text<br>1<br>2<br>3<br>[database]<br>…<br>connection = mysql://cinder:CINDER_DBPASS@controller/cinder<br>Replace CINDER_DBPASS with the password you chose for the Block Storage database.</p>
+<p>In the [DEFAULT] and [oslo_messaging_rabbit] sections, configure RabbitMQ message queue access:</p>
+<p>Select Text<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>[DEFAULT]<br>…<br>rpc_backend = rabbit</p>
+<p>[oslo_messaging_rabbit]<br>…<br>rabbit_host = controller<br>rabbit_userid = openstack<br>rabbit_password = RABBIT_PASS<br>Replace RABBIT_PASS with the password you chose for the openstack account in RabbitMQ.</p>
+<p>In the [DEFAULT] and [keystone_authtoken] sections, configure Identity service access:</p>
+<p>Select Text<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>[DEFAULT]<br>…<br>auth_strategy = keystone</p>
+<p>[keystone_authtoken]<br>…<br>auth_uri = <a href="http://controller:5000" target="_blank" rel="external">http://controller:5000</a><br>auth_url = <a href="http://controller:35357" target="_blank" rel="external">http://controller:35357</a><br>auth_plugin = password<br>project_domain_id = default<br>user_domain_id = default<br>project_name = service<br>username = cinder<br>password = CINDER_PASS<br>Replace CINDER_PASS with the password you chose for the cinder user in the Identity service.</p>
+<p>[Note]    Note<br>Comment out or remove any other options in the [keystone_authtoken] section.</p>
+<p>In the [DEFAULT] section, configure the my_ip option:</p>
+<p>Select Text<br>1<br>2<br>3<br>[DEFAULT]<br>…<br>my_ip = MANAGEMENT_INTERFACE_IP_ADDRESS<br>Replace MANAGEMENT_INTERFACE_IP_ADDRESS with the IP address of the management network interface on your storage node, typically 10.0.0.41 for the first node in the example architecture.</p>
+<p>In the [lvm] section, configure the LVM back end with the LVM driver, cinder-volumes volume group, iSCSI protocol, and appropriate iSCSI service:</p>
+<p>Select Text<br>1<br>2<br>3<br>4<br>5<br>6<br>[lvm]<br>…<br>volume_driver = cinder.volume.drivers.lvm.LVMVolumeDriver<br>volume_group = cinder-volumes<br>iscsi_protocol = iscsi<br>iscsi_helper = lioadm<br>In the [DEFAULT] section, enable the LVM back end:</p>
+<p>Select Text<br>1<br>2<br>3<br>[DEFAULT]<br>…<br>enabled_backends = lvm<br>[Note]    Note<br>Back-end names are arbitrary. As an example, this guide uses the name of the driver as the name of the back end.</p>
+<p>In the [DEFAULT] section, configure the location of the Image service:</p>
+<p>Select Text<br>1<br>2<br>3<br>[DEFAULT]<br>…<br>glance_host = controller<br>In the [oslo_concurrency] section, configure the lock path:</p>
+<p>Select Text<br>1<br>2<br>3<br>[oslo_concurrency]<br>…<br>lock_path = /var/lock/cinder<br>(Optional) To assist with troubleshooting, enable verbose logging in the [DEFAULT] section:</p>
+<p>Select Text<br>1<br>2<br>3<br>[DEFAULT]<br>…<br>verbose = True</p>
+<p>To finalize installation</p>
+<p>Start the Block Storage volume service including its dependencies and configure them to start when the system boots:</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"># <span class="tag">systemctl</span> <span class="tag">enable</span> <span class="tag">openstack-cinder-volume</span><span class="class">.service</span> <span class="tag">target</span><span class="class">.service</span></span><br><span class="line"># <span class="tag">systemctl</span> <span class="tag">start</span> <span class="tag">openstack-cinder-volume</span><span class="class">.service</span> <span class="tag">target</span><span class="class">.service</span></span><br></pre></td></tr></table></figure>
+<h1 id="Verify_operation">Verify operation</h1><p>This section describes how to verify operation of the Block Storage service by creating a volume.</p>
+<p>For more information about how to manage volumes, see the OpenStack User Guide.</p>
+<p>[Note]    Note<br>Perform these commands on the controller node.</p>
+<p>In each client environment script, configure the Block Storage client to use API version 2.0:</p>
+<p>$ echo “export OS_VOLUME_API_VERSION=2” | tee -a admin-openrc.sh demo-openrc.sh<br>Source the admin credentials to gain access to admin-only CLI commands:</p>
+<p>$ source admin-openrc.sh<br>List service components to verify successful launch of each process:</p>
+<p>$ cinder service-list<br>+——————+————+——+———+——-+—————————-+—————–+<br>|      Binary      |    Host    | Zone |  Status | State |         Updated_at         | Disabled Reason |<br>+——————+————+——+———+——-+—————————-+—————–+<br>| cinder-scheduler | controller | nova | enabled |   up  | 2014-10-18T01:30:54.000000 |       None      |<br>| cinder-volume    | block1@lvm | nova | enabled |   up  | 2014-10-18T01:30:57.000000 |       None      |<br>+——————+————+——+———+——-+—————————-+—————–+<br>Source the demo credentials to perform the following steps as a non-administrative project:</p>
+<p>$ source demo-openrc.sh<br>Create a 1 GB volume:</p>
+<p>$ cinder create –name demo-volume1 1<br>+—————————————+————————————–+<br>|                Property               |                Value                 |<br>+—————————————+————————————–+<br>|              attachments              |                  []                  |<br>|           availability_zone           |                 nova                 |<br>|                bootable               |                false                 |<br>|          consistencygroup_id          |                 None                 |<br>|               created_at              |      2015-04-21T23:46:08.000000      |<br>|              description              |                 None                 |<br>|               encrypted               |                False                 |<br>|                   id                  | 6c7a3d28-e1ef-42a0-b1f7-8d6ce9218412 |<br>|                metadata               |                  {}                  |<br>|              multiattach              |                False                 |<br>|                  name                 |             demo-volume1             |<br>|      os-vol-tenant-attr:tenant_id     |   ab8ea576c0574b6092bb99150449b2d3   |<br>|   os-volume-replication:driver_data   |                 None                 |<br>| os-volume-replication:extended_status |                 None                 |<br>|           replication_status          |               disabled               |<br>|                  size                 |                  1                   |<br>|              snapshot_id              |                 None                 |<br>|              source_volid             |                 None                 |<br>|                 status                |               creating               |<br>|                user_id                |   3a81e6c8103b46709ef8d141308d4c72   |<br>|              volume_type              |                 None                 |<br>+—————————————+————————————–+<br>Verify creation and availability of the volume:</p>
+<p>$ cinder list<br>+————————————–+———–+————–+——+————-+———-+————-+<br>|                  ID                  |   Status  |     Name     | Size | Volume Type | Bootable | Attached to |<br>+————————————–+———–+————–+——+————-+———-+————-+<br>| 6c7a3d28-e1ef-42a0-b1f7-8d6ce9218412 | available | demo-volume1 |  1   |     None    |  false   |             |<br>+————————————–+———–+————–+——+————-+———-+————-+<br>If the status does not indicate available, check the logs in the /var/log/cinder directory on the controller and volume nodes for more information.</p>
+<p>[Note]    Note<br>The launch an instance chapter includes instructions for attaching this volume to an instance.</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/cinder/" rel="tag">#cinder</a>
+          
+            <a href="/tags/openstack/" rel="tag">#openstack</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/11/02/openstack-FAQ/" rel="prev">openstack之kilo安装 FAQ</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/10/29/openstack-dashboad-service/" rel="next">openstack之kilo安装 dashboard服务</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2015/10/30/openstack-block-service/"
+                   data-title="openstack之kilo安装 dashboard服务" data-url="http://yoursite.com/2015/10/30/openstack-block-service/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="https://avatars2.githubusercontent.com/u/7880839?v=3&s=460" alt="unodba" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">unodba</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">大自然的搬运工</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">36</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">8</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">32</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/unodba" target="_blank">github</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/unodba" target="_blank">twitter</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Install_and_configure_controller_node"><span class="nav-number">1.</span> <span class="nav-text">Install and configure controller node</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#block1"><span class="nav-number">2.</span> <span class="nav-text">block1</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#yum_install_qemu"><span class="nav-number">3.</span> <span class="nav-text">yum install qemu</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#yum_install_lvm2"><span class="nav-number">4.</span> <span class="nav-text">yum install lvm2</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#systemctl_enable_lvm2-lvmetad-service"><span class="nav-number">5.</span> <span class="nav-text">systemctl enable lvm2-lvmetad.service</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#systemctl_start_lvm2-lvmetad-service"><span class="nav-number">6.</span> <span class="nav-text">systemctl start lvm2-lvmetad.service</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pvcreate_/dev/sdb1"><span class="nav-number">7.</span> <span class="nav-text">pvcreate /dev/sdb1</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#vgcreate_cinder-volumes_/dev/sdb1"><span class="nav-number">8.</span> <span class="nav-text">vgcreate cinder-volumes /dev/sdb1</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#yum_install_openstack-cinder_targetcli_python-oslo-db_python-oslo-log_MySQL-python"><span class="nav-number">9.</span> <span class="nav-text">yum install openstack-cinder targetcli python-oslo-db python-oslo-log MySQL-python</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Verify_operation"><span class="nav-number">10.</span> <span class="nav-text">Verify operation</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2015</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">unodba</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhugaoxiao"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
