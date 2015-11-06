@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="kilo,openstack," />
+  <meta name="keywords" content="firewall,lb,openstack,vpn," />
 
 
 
@@ -41,13 +41,13 @@
 
 <meta name="description" content="这周在折腾openstack，下面是过程小记。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="openstack之kilo安装 常用命令">
-<meta property="og:url" content="http://yoursite.com/2015/10/28/openstack-cmd-service/index.html">
+<meta property="og:title" content="openstack之kilo安装 添加负载均衡、防火墙和VPN">
+<meta property="og:url" content="http://yoursite.com/2015/11/06/openstack-add-lb-vpn/index.html">
 <meta property="og:site_name" content="信息系统应用技术实验室">
 <meta property="og:description" content="这周在折腾openstack，下面是过程小记。">
-<meta property="og:updated_time" content="2015-11-05T02:53:06.166Z">
+<meta property="og:updated_time" content="2015-11-06T08:59:15.073Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="openstack之kilo安装 常用命令">
+<meta name="twitter:title" content="openstack之kilo安装 添加负载均衡、防火墙和VPN">
 <meta name="twitter:description" content="这周在折腾openstack，下面是过程小记。">
 
 
@@ -58,7 +58,7 @@
   };
 </script>
 
-  <title> openstack之kilo安装 常用命令 | 信息系统应用技术实验室 </title>
+  <title> openstack之kilo安装 添加负载均衡、防火墙和VPN | 信息系统应用技术实验室 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -194,7 +194,7 @@
           
           
             
-              openstack之kilo安装 常用命令
+              openstack之kilo安装 添加负载均衡、防火墙和VPN
             
           
         </h1>
@@ -203,8 +203,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-10-28T00:00:00+08:00" content="2015-10-28">
-            2015-10-28
+          <time itemprop="dateCreated" datetime="2015-11-06T00:00:00+08:00" content="2015-11-06">
+            2015-11-06
           </time>
         </span>
 
@@ -229,8 +229,8 @@
           
             <span class="post-comments-count">
               &nbsp; | &nbsp;
-              <a href="/2015/10/28/openstack-cmd-service/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/28/openstack-cmd-service/" itemprop="commentsCount"></span>
+              <a href="/2015/11/06/openstack-add-lb-vpn/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/06/openstack-add-lb-vpn/" itemprop="commentsCount"></span>
               </a>
             </span>
           
@@ -246,17 +246,23 @@
       
         <span itemprop="articleBody"><p>这周在折腾openstack，下面是过程小记。</p>
 <a id="more"></a>
-<h1 id="配置_stack_用户">配置 stack 用户</h1><p>创建 stack 用户+</p>
-<p>sudo groupadd stack<br>sudo useradd -g stack -s /bin/bash -d /opt/stack -m stack<br>添加 stack 用户权限。<br>sudo echo “stack ALL=(ALL) NOPASSWD: ALL” &gt;&gt; /etc/sudoers<br>切换到 stack 用户<br>sudo su - stack</p>
-<p>Source the admin credentials to gain access to admin-only CLI commands:<br><figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line"><span class="keyword">source</span> admin-openrc.<span class="keyword">sh</span></span><br></pre></td></tr></table></figure></p>
-<h1 id="openstack">openstack</h1><figure class="highlight vala"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor"># openstack-status</span></span><br></pre></td></tr></table></figure>
-<h1 id="nova">nova</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">nova-manage service <span class="built_in">list</span></span><br><span class="line">$ nova image-<span class="built_in">list</span></span><br><span class="line">$ nova flavor-<span class="built_in">list</span></span><br><span class="line">$ nova boot --image <span class="number">949</span>c80c8-b4ac-<span class="number">4315</span>-<span class="number">844e-69</span>f9bef39ed1 --flavor <span class="number">2</span> my_instance</span><br><span class="line">$ nova <span class="built_in">list</span></span><br><span class="line">$ nova show <span class="number">66129319</span>-<span class="number">1f</span>1d-<span class="number">420</span>d-a226-bf9fc5ea0138</span><br><span class="line">nova service-<span class="built_in">list</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">keystone endpoint-<span class="type">list</span></span><br><span class="line">keystone user-<span class="type">list</span></span><br><span class="line">keystone user-<span class="keyword">get</span>  <span class="number">7</span>a98251d2efd4385bb06128d5f98086d</span><br><span class="line">keystone user-password-update \</span><br><span class="line"><span class="comment">--pass new_passwd \</span></span><br><span class="line">user_id</span><br></pre></td></tr></table></figure>
-<p>cinder service-list</p>
-<h1 id="neutron">neutron</h1><figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">neutron subnet-<span class="type">list</span></span><br><span class="line">neutron port-<span class="type">list</span></span><br><span class="line">neutron agent-<span class="type">list</span></span><br><span class="line">neutron router-<span class="type">list</span></span><br></pre></td></tr></table></figure>
-<p>rabbitmqctl status</p>
-<p> heat</p>
-<p><a href="https://wiki.centos.org/Cloud" target="_blank" rel="external">https://wiki.centos.org/Cloud</a></p>
+<p>按照官网给的三节点安装kilo文档在CentOS7上安装配置完neutron之horizon之后，默认是没有防火墙，vpn,负载均衡面板的。</p>
+<p>要想启用防火墙，vpn，负载均衡模块需要安装相关包并重新配置neutron。</p>
+<p>网络节点：<br><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">yum <span class="keyword">install</span> -y openstack-neutron-fwaas openstack-neutron-lbaas haproxy openstack-neutron-vpnaas</span><br></pre></td></tr></table></figure></p>
+<p>在网络节点配置/etc/neutron/neutron.conf文件：</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">echo "[DEFAULT]</span><br><span class="line"><span class="constant">service_plugins</span> = router,firewall,lbaas,vpnaas</span><br><span class="line">[service_providers]</span><br><span class="line"><span class="constant">service_provider</span>=LOADBALANCER:Haproxy:neutron.services.loadbalancer.drivers.haproxy.plugin_driver.HaproxyOnHostPluginDriver:default</span><br><span class="line"><span class="constant">service_provider</span>=VPN:openswan:neutron.services.vpn.service_drivers.ipsec.IPsecVPNDriver:default</span><br><span class="line"><span class="constant">service_provider</span>=FIREWALL:Iptables:neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver:default"&gt;&gt;/etc/neutron/neutron.conf</span><br></pre></td></tr></table></figure>
+<p>在网络节点配置/etc/neutron/lbaas_agent.ini 文件：</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">vi /etc/neutron/lbaas_agent.ini</span><br><span class="line">[DEFAULT]</span><br><span class="line"><span class="constant">debug</span> = True #打开调试</span><br><span class="line"><span class="constant">interface_driver</span> = neutron.agent.linux.interface.OVSInterfaceDriver</span><br><span class="line"><span class="constant">device_driver</span> = neutron.services.loadbalancer.drivers.haproxy.namespace_driver.HaproxyNSDriver</span><br><span class="line">[haproxy]</span><br><span class="line"><span class="constant">user_group</span> = haproxy</span><br></pre></td></tr></table></figure>
+<p>在网络节点配置/etc/neutron/fwaas_driver.ini</p>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">echo <span class="string">"[fwaas]</span><br><span class="line">driver =neutron.services.firewall.drivers.linux.iptables_fwaas.IptablesFwaasDriver</span><br><span class="line">enabled = True"</span><span class="prompt">&gt;&gt;</span>/etc/neutron/fwaas_driver.ini</span><br></pre></td></tr></table></figure>
+<p>启动服务<br><figure class="highlight css"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line"><span class="tag">systemctl</span> <span class="tag">status</span> <span class="tag">neutron-lbaas-agent</span><span class="class">.service</span> <span class="tag">neutron-fwaas</span><span class="class">.service</span> <span class="tag">neutron-vpnaas</span><span class="class">.service</span></span><br></pre></td></tr></table></figure></p>
+<p>控制节点：</p>
+<figure class="highlight 1c"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">echo <span class="string">"[DEFAULT]</span></span><br><span class="line">service_plugins = router,firewall,lbaas,vpnaas</span><br></pre></td></tr></table></figure>
+<p>配置/usr/share/openstack-dashboard/openstack_dashboard/local/local_settings.py</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">""</span></span><br><span class="line">OPENSTACK_NEUTRON_NETWORK = &#123;</span><br><span class="line">    <span class="string">'enable_lb'</span>: <span class="keyword">True</span>,</span><br><span class="line">    <span class="string">'enable_firewall'</span>: <span class="keyword">True</span>,</span><br><span class="line">    <span class="string">'enable_vpn'</span>: <span class="keyword">True</span>,</span><br></pre></td></tr></table></figure>
+<p>重启 httpd 和 neutron server</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line"><span class="tag">systemctl</span> <span class="tag">restart</span> <span class="tag">httpd</span><span class="class">.service</span> <span class="tag">memcached</span><span class="class">.service</span> <span class="tag">neutron-server</span><span class="class">.service</span></span><br></pre></td></tr></table></figure>
+<p>登录dashboard即可看到</p>
 </span>
       
     </div>
@@ -265,9 +271,13 @@
       
         <div class="post-tags">
           
-            <a href="/tags/kilo/" rel="tag">#kilo</a>
+            <a href="/tags/firewall/" rel="tag">#firewall</a>
+          
+            <a href="/tags/lb/" rel="tag">#lb</a>
           
             <a href="/tags/openstack/" rel="tag">#openstack</a>
+          
+            <a href="/tags/vpn/" rel="tag">#vpn</a>
           
         </div>
       
@@ -276,13 +286,13 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/10/29/openstack-dashboad-service/" rel="prev">openstack之kilo安装 dashboard服务</a>
+              <a href="/2015/11/06/openstack-log/" rel="prev">openstack之kilo安装 日志</a>
             
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/10/28/openstack-network-service/" rel="next">openstack之kilo安装 网络服务</a>
+              <a href="/2015/11/05/openstack-port/" rel="next">openstack之kilo安装 常用端口</a>
             
           </div>
         </div>
@@ -307,8 +317,8 @@
         
           <div class="comments" id="comments">
             
-              <div class="ds-thread" data-thread-key="2015/10/28/openstack-cmd-service/"
-                   data-title="openstack之kilo安装 常用命令" data-url="http://yoursite.com/2015/10/28/openstack-cmd-service/">
+              <div class="ds-thread" data-thread-key="2015/11/06/openstack-add-lb-vpn/"
+                   data-title="openstack之kilo安装 添加负载均衡、防火墙和VPN" data-url="http://yoursite.com/2015/11/06/openstack-add-lb-vpn/">
               </div>
             
           </div>
@@ -348,7 +358,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">36</span>
+              <span class="site-state-item-count">42</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -362,7 +372,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">32</span>
+              <span class="site-state-item-count">38</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
@@ -400,7 +410,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#配置_stack_用户"><span class="nav-number">1.</span> <span class="nav-text">配置 stack 用户</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#openstack"><span class="nav-number">2.</span> <span class="nav-text">openstack</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#nova"><span class="nav-number">3.</span> <span class="nav-text">nova</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#neutron"><span class="nav-number">4.</span> <span class="nav-text">neutron</span></a></li></ol></div>
+              <p class="post-toc-empty">此文章未包含目录</p>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
