@@ -39,28 +39,28 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="这周在折腾openstack，下面是过程小记。
+<meta name="description" content="OpenStack块存储服务(cinder)为虚拟机添加持久的存储，块存储提供一个基础设施为了管理卷，以及和OpenStack计算服务交互，为实例提供卷。此服务也会激活管理卷的快照和卷类型的功能。
+块存储服务通常包含下列组件：
 
-参考：Chapter 8. Add the Block Storage service
-
-dashboard 安装在控制节点。">
+cinder-api接收API请求，然后将之路由到cinder-volume这里执行。
+cinder-volume直接和块存储的服务交互，以及诸如 cinder-sche">
 <meta property="og:type" content="article">
-<meta property="og:title" content="openstack之kilo安装 Block Storage服务">
+<meta property="og:title" content="openstack之kilo安装 块设备存储服务">
 <meta property="og:url" content="http://yoursite.com/2015/10/30/openstack-block-service/index.html">
 <meta property="og:site_name" content="信息系统应用技术实验室">
-<meta property="og:description" content="这周在折腾openstack，下面是过程小记。
+<meta property="og:description" content="OpenStack块存储服务(cinder)为虚拟机添加持久的存储，块存储提供一个基础设施为了管理卷，以及和OpenStack计算服务交互，为实例提供卷。此服务也会激活管理卷的快照和卷类型的功能。
+块存储服务通常包含下列组件：
 
-参考：Chapter 8. Add the Block Storage service
-
-dashboard 安装在控制节点。">
-<meta property="og:updated_time" content="2015-11-05T12:23:19.783Z">
+cinder-api接收API请求，然后将之路由到cinder-volume这里执行。
+cinder-volume直接和块存储的服务交互，以及诸如 cinder-sche">
+<meta property="og:updated_time" content="2015-11-08T14:42:47.788Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="openstack之kilo安装 Block Storage服务">
-<meta name="twitter:description" content="这周在折腾openstack，下面是过程小记。
+<meta name="twitter:title" content="openstack之kilo安装 块设备存储服务">
+<meta name="twitter:description" content="OpenStack块存储服务(cinder)为虚拟机添加持久的存储，块存储提供一个基础设施为了管理卷，以及和OpenStack计算服务交互，为实例提供卷。此服务也会激活管理卷的快照和卷类型的功能。
+块存储服务通常包含下列组件：
 
-参考：Chapter 8. Add the Block Storage service
-
-dashboard 安装在控制节点。">
+cinder-api接收API请求，然后将之路由到cinder-volume这里执行。
+cinder-volume直接和块存储的服务交互，以及诸如 cinder-sche">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -70,7 +70,7 @@ dashboard 安装在控制节点。">
   };
 </script>
 
-  <title> openstack之kilo安装 Block Storage服务 | 信息系统应用技术实验室 </title>
+  <title> openstack之kilo安装 块设备存储服务 | 信息系统应用技术实验室 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -206,7 +206,7 @@ dashboard 安装在控制节点。">
           
           
             
-              openstack之kilo安装 Block Storage服务
+              openstack之kilo安装 块设备存储服务
             
           
         </h1>
@@ -256,113 +256,92 @@ dashboard 安装在控制节点。">
       
 
       
-        <span itemprop="articleBody"><p>这周在折腾openstack，下面是过程小记。</p>
+        <span itemprop="articleBody"><p>OpenStack块存储服务(cinder)为虚拟机添加持久的存储，块存储提供一个基础设施为了管理卷，以及和OpenStack计算服务交互，为实例提供卷。此服务也会激活管理卷的快照和卷<br>类型的功能。</p>
+<p>块存储服务通常包含下列组件：</p>
+<ul>
+<li>cinder-api<br>接收API请求，然后将之路由到cinder-volume这里执行。</li>
+<li>cinder-volume<br>直接和块存储的服务交互，以及诸如 cinder-scheduler这样的流程交互，它和这些流程交互是通过消息队列。cinder-volume<br>服务响应那些发送到块存储服务的读写请求以维护状态，它可以可多个存储供应商通过driver架构作交互。</li>
+<li>cinder-scheduler守护进程<br>选择最佳的存储节点来创建卷，和它类似的组件是novascheduler。</li>
+<li>消息队列<br>在块存储的进程之间路由信息。</li>
+</ul>
 <blockquote>
 <p>参考：<a href="http://docs.openstack.org/kilo/install-guide/install/yum/content/ch_cinder.html" target="_blank" rel="external">Chapter 8. Add the Block Storage service</a></p>
 </blockquote>
-<p>dashboard 安装在控制节点。</p>
 <a id="more"></a>
-<h1 id="Install_and_configure_controller_node">Install and configure controller node</h1><p>This section describes how to install and configure the Block Storage service, code-named cinder, on the controller node. This service requires at least one additional storage node that provides volumes to instances.</p>
-<ul>
-<li>To configure prerequisites</li>
-</ul>
-<p>Before you install and configure the Block Storage service, you must create a database, service credentials, and API endpoint.</p>
-<p>To create the database, complete these steps:</p>
-<p>Use the database access client to connect to the database server as the root user:<br><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">mysql -u root -p</span><br><span class="line"></span><br><span class="line"><span class="operator"><span class="keyword">CREATE</span> <span class="keyword">DATABASE</span> cinder;</span></span><br><span class="line"></span><br><span class="line"><span class="operator"><span class="keyword">GRANT</span> ALL <span class="keyword">PRIVILEGES</span> <span class="keyword">ON</span> cinder.* <span class="keyword">TO</span> <span class="string">'cinder'</span>@<span class="string">'localhost'</span> \</span><br><span class="line">  <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'CINDER_DBPASS'</span>;</span></span><br><span class="line"><span class="operator"><span class="keyword">GRANT</span> ALL <span class="keyword">PRIVILEGES</span> <span class="keyword">ON</span> cinder.* <span class="keyword">TO</span> <span class="string">'cinder'</span>@<span class="string">'%'</span> \</span><br><span class="line">  <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'CINDER_DBPASS'</span>;</span></span><br><span class="line"><span class="operator"><span class="keyword">Replace</span> CINDER_DBPASS <span class="keyword">with</span> a suitable <span class="keyword">password</span>.</span><br><span class="line"></span><br><span class="line"><span class="keyword">exit</span></span></span><br></pre></td></tr></table></figure></p>
-<p>Source the admin credentials to gain access to admin-only CLI commands:</p>
+<h1 id="Install_and_configure_controller_node">Install and configure controller node</h1><p>创建cinder数据库:<br><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">mysql -u root -p</span><br><span class="line"></span><br><span class="line"><span class="operator"><span class="keyword">CREATE</span> <span class="keyword">DATABASE</span> cinder;</span></span><br><span class="line"></span><br><span class="line"><span class="operator"><span class="keyword">GRANT</span> ALL <span class="keyword">PRIVILEGES</span> <span class="keyword">ON</span> cinder.* <span class="keyword">TO</span> <span class="string">'cinder'</span>@<span class="string">'localhost'</span> \</span><br><span class="line">  <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'CINDER_DBPASS'</span>;</span></span><br><span class="line"><span class="operator"><span class="keyword">GRANT</span> ALL <span class="keyword">PRIVILEGES</span> <span class="keyword">ON</span> cinder.* <span class="keyword">TO</span> <span class="string">'cinder'</span>@<span class="string">'%'</span> \</span><br><span class="line">  <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'CINDER_DBPASS'</span>;</span></span><br><span class="line"></span><br><span class="line">exit</span><br></pre></td></tr></table></figure></p>
+<p>导入 admin身份凭证以执行管理员用户专有的命令:</p>
 <figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line"><span class="keyword">source</span> admin-openrc.<span class="keyword">sh</span></span><br></pre></td></tr></table></figure>
-<p>To create the service credentials, complete these steps:</p>
-<p>Create a cinder user:</p>
-<figure class="highlight livecodeserver"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">openstack user <span class="built_in">create</span> <span class="comment">--password-prompt cinder</span></span><br></pre></td></tr></table></figure>
-<p>Add the admin role to the cinder user:</p>
+<p>创建 cinder user:</p>
+<figure class="highlight livecodeserver"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">openstack user <span class="built_in">create</span> cinder <span class="comment">--password cinder</span></span><br></pre></td></tr></table></figure>
+<p>添加 admin role to the cinder user:</p>
 <figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">openstack role <span class="built_ins">add</span> --project service --<span class="built_ins">user</span> cinder admin</span><br></pre></td></tr></table></figure>
-<p>Create the cinder service entities:</p>
+<p>创建 cinder service entities:</p>
 <figure class="highlight livecodeserver"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">openstack service <span class="built_in">create</span> <span class="comment">--name cinder \</span></span><br><span class="line">  <span class="comment">--description "OpenStack Block Storage" volume</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight livecodeserver"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">openstack service <span class="built_in">create</span> <span class="comment">--name cinderv2 \</span></span><br><span class="line">  <span class="comment">--description "OpenStack Block Storage" volumev2</span></span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>[Note]    Note<br>The Block Storage service requires both the volume and volumev2 services. However, both services use the same API endpoint that references the Block Storage version 2 API.</p>
+<p>Note<br>The Block Storage service requires both the volume and volumev2 services. However, both services use the same API endpoint that references the Block Storage version 2 API.</p>
 </blockquote>
-<p>Create the Block Storage service API endpoints:</p>
+<p>创建 Block Storage service API endpoints:</p>
 <figure class="highlight haml"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">openstack endpoint create \</span><br><span class="line">  -<span class="ruby">-publicurl <span class="symbol">http:</span>/<span class="regexp">/controller:8776/v</span>2/%\(tenant_id\)s \</span><br><span class="line"></span>  -<span class="ruby">-internalurl <span class="symbol">http:</span>/<span class="regexp">/controller:8776/v</span>2/%\(tenant_id\)s \</span><br><span class="line"></span>  -<span class="ruby">-adminurl <span class="symbol">http:</span>/<span class="regexp">/controller:8776/v</span>2/%\(tenant_id\)s \</span><br><span class="line"></span>  -<span class="ruby">-region <span class="constant">RegionOne</span> \</span><br><span class="line"></span>  volume</span><br></pre></td></tr></table></figure>
 <figure class="highlight haml"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">openstack endpoint create \</span><br><span class="line">  -<span class="ruby">-publicurl <span class="symbol">http:</span>/<span class="regexp">/controller:8776/v</span>2/%\(tenant_id\)s \</span><br><span class="line"></span>  -<span class="ruby">-internalurl <span class="symbol">http:</span>/<span class="regexp">/controller:8776/v</span>2/%\(tenant_id\)s \</span><br><span class="line"></span>  -<span class="ruby">-adminurl <span class="symbol">http:</span>/<span class="regexp">/controller:8776/v</span>2/%\(tenant_id\)s \</span><br><span class="line"></span>  -<span class="ruby">-region <span class="constant">RegionOne</span> \</span><br><span class="line"></span>  volumev2</span><br></pre></td></tr></table></figure>
-<ul>
-<li>To install and configure Block Storage controller components</li>
-</ul>
-<p>Install the packages:</p>
-<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">yum <span class="keyword">install</span> openstack-cinder python-cinderclient python-oslo-db</span><br></pre></td></tr></table></figure>
-<p>Copy the /usr/share/cinder/cinder-dist.conf file to /etc/cinder/cinder.conf.</p>
+<p>安装软件包:</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">yum <span class="keyword">install</span> -y openstack-cinder python-cinderclient python-oslo-db</span><br></pre></td></tr></table></figure>
+<p>复制 /usr/share/cinder/cinder-dist.conf 文件到 /etc/cinder/cinder.conf.</p>
 <figure class="highlight stata"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">cp /usr/share/cinder/cinder-dist.<span class="keyword">conf</span> /etc/cinder/cinder.<span class="keyword">conf</span></span><br><span class="line">chown -R cinder:cinder /etc/cinder/cinder.<span class="keyword">conf</span></span><br></pre></td></tr></table></figure>
-<p>Edit the /etc/cinder/cinder.conf file and complete the following actions:</p>
-<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="title">[database]</span></span><br><span class="line"><span class="setting">connection = <span class="value">mysql://cinder:CINDER_DBPASS@controller/cinder</span></span></span><br><span class="line"><span class="title">[DEFAULT]</span></span><br><span class="line"><span class="setting">rpc_backend = <span class="value">rabbit</span></span></span><br><span class="line"><span class="title">[oslo_messaging_rabbit]</span></span><br><span class="line"><span class="setting">rabbit_host = <span class="value">controller</span></span></span><br><span class="line"><span class="setting">rabbit_userid = <span class="value">openstack</span></span></span><br><span class="line"><span class="setting">rabbit_password = <span class="value">RABBIT_PASS</span></span></span><br><span class="line"><span class="title">[DEFAULT]</span></span><br><span class="line"><span class="setting">auth_strategy = <span class="value">keystone</span></span></span><br><span class="line"><span class="title">[keystone_authtoken]</span></span><br><span class="line"><span class="setting">auth_uri = <span class="value">http://controller:<span class="number">5000</span></span></span></span><br><span class="line"><span class="setting">auth_url = <span class="value">http://controller:<span class="number">35357</span></span></span></span><br><span class="line"><span class="setting">auth_plugin = <span class="value">password</span></span></span><br><span class="line"><span class="setting">project_domain_id = <span class="value">default</span></span></span><br><span class="line"><span class="setting">user_domain_id = <span class="value">default</span></span></span><br><span class="line"><span class="setting">project_name = <span class="value">service</span></span></span><br><span class="line"><span class="setting">username = <span class="value">cinder</span></span></span><br><span class="line"><span class="setting">password = <span class="value">cinder</span></span></span><br><span class="line"><span class="title">[DEFAULT]</span></span><br><span class="line"><span class="setting">my_ip = <span class="value"><span class="number">10.0</span>.<span class="number">0.11</span></span></span></span><br><span class="line"><span class="title">[oslo_concurrency]</span></span><br><span class="line"><span class="setting">lock_path = <span class="value">/var/lock/cinder</span></span></span><br><span class="line"><span class="title">[DEFAULT]</span></span><br><span class="line"><span class="setting">verbose = <span class="value"><span class="keyword">True</span></span></span></span><br></pre></td></tr></table></figure>
-<p>Populate the Block Storage database:</p>
+<p>编辑 /etc/cinder/cinder.conf 文件:</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">cp /etc/cinder/cinder.conf /etc/cinder/cinder.confbak</span><br><span class="line"><span class="comment">#</span></span><br><span class="line">echo "[database]</span><br><span class="line"><span class="constant">connection</span> = mysql://cinder:CINDER_DBPASS@controller/cinder</span><br><span class="line">[DEFAULT]</span><br><span class="line"><span class="constant">auth_strategy</span> = keystone</span><br><span class="line"><span class="constant">my_ip</span> = 192.168.200.220</span><br><span class="line"><span class="constant">verbose</span> = True</span><br><span class="line"><span class="constant">rpc_backend</span> = rabbit</span><br><span class="line"><span class="constant">log_dir</span> = /var/log/cinder</span><br><span class="line">[oslo_messaging_rabbit]</span><br><span class="line"><span class="constant">rabbit_host</span> = controller</span><br><span class="line"><span class="constant">rabbit_userid</span> = openstack</span><br><span class="line"><span class="constant">rabbit_password</span> = RABBIT_PASS</span><br><span class="line">[keystone_authtoken]</span><br><span class="line"><span class="constant">auth_uri</span> = http://controller:5000</span><br><span class="line"><span class="constant">auth_url</span> = http://controller:35357</span><br><span class="line"><span class="constant">auth_plugin</span> = password</span><br><span class="line"><span class="constant">project_domain_id</span> = default</span><br><span class="line"><span class="constant">user_domain_id</span> = default</span><br><span class="line"><span class="constant">project_name</span> = service</span><br><span class="line"><span class="constant">username</span> = cinder</span><br><span class="line"><span class="constant">password</span> = cinder</span><br><span class="line">[oslo_concurrency]</span><br><span class="line"><span class="constant">lock_path</span> = /var/lock/cinder"&gt;/etc/cinder/cinder.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight crystal"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">su -s /bin/sh -c <span class="string">"cinder-manage db sync"</span> cinder</span><br><span class="line">/usr/<span class="class"><span class="keyword">lib</span>/<span class="title">python2</span>.7/<span class="title">site</span>-<span class="title">packages</span>/<span class="title">cinder</span>/<span class="title">openstack</span>/<span class="title">common</span>/<span class="title">service</span>.<span class="title">py</span>:38: <span class="title">DeprecationWarning</span>: <span class="title">The</span> <span class="title">oslo</span> <span class="title">namespace</span> <span class="title">package</span> <span class="title">is</span> <span class="title">deprecated</span>. <span class="title">Please</span> <span class="title">use</span> <span class="title">oslo_config</span> <span class="title">instead</span>.</span></span><br><span class="line">  from oslo.config import cfg</span><br><span class="line"><span class="constant">No</span> handlers could be found <span class="keyword">for</span> logger <span class="string">"oslo_config.cfg"</span></span><br></pre></td></tr></table></figure>
+<p>原因：<br>日志文件的配置项错误</p>
+<p>解决办法：<br>[DEFAULT]<br>log_dir = /var/log/cinder</p>
+<p>sed -i “s/(log)(dir)/\1_\2/g” /etc/nova/nova.conf</p>
+<p>初始化 Block Storage database:</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">su <span class="operator">-s</span> /bin/sh -c <span class="string">"cinder-manage db sync"</span> cinder</span><br></pre></td></tr></table></figure>
-<ul>
-<li>To finalize installation</li>
-</ul>
-<p>Start the Block Storage services and configure them to start when the system boots:</p>
+<p>启动块设备存储服务，并将其配置为开机自启:</p>
 <figure class="highlight css"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line"><span class="tag">systemctl</span> <span class="tag">enable</span> <span class="tag">openstack-cinder-api</span><span class="class">.service</span> <span class="tag">openstack-cinder-scheduler</span><span class="class">.service</span></span><br><span class="line"><span class="tag">systemctl</span> <span class="tag">start</span> <span class="tag">openstack-cinder-api</span><span class="class">.service</span> <span class="tag">openstack-cinder-scheduler</span><span class="class">.service</span></span><br></pre></td></tr></table></figure>
-<p>Install and configure a storage node</p>
-<p>This section describes how to install and configure storage nodes for the Block Storage service. For simplicity, this configuration references one storage node with an empty local block storage device /dev/sdb that contains a suitable partition table with one partition /dev/sdb1 occupying the entire device. The service provisions logical volumes on this device using the LVM driver and provides them to instances via iSCSI transport. You can follow these instructions with minor modifications to horizontally scale your environment with additional storage nodes.</p>
-<p>To configure prerequisites</p>
-<p>You must configure the storage node before you install and configure the volume service on it. Similar to the controller node, the storage node contains one network interface on the management network. The storage node also needs an empty block storage device of suitable size for your environment. For more information, see Chapter 2, Basic environment.</p>
+<h1 id="Install_and_configure_a_storage_node">Install and configure a storage node</h1><p>这个部分将描述如何安装和配置存储节点，以使用块设备存储服务。简单来说，这个配置将一个存储节点关联到一个空的本地块存储设备 /dev/sdb上，这个设备包含了一个合适的分区表，其中一个分区 /dev/sdb1占用了整个设备。该服务使用 LVM在这个设备上提供了逻辑卷，并通过 iSCSI传输将这些逻辑卷提供给实例使用。您可以根据这些小修改的指导，通过额外的存储节点来增加您环境的规模。</p>
+<p>在您安装和配置卷服务之前，您必须先配置存储节点。类似于控制节点，存储节点包含一个管理网络接口上的网络。存储节点也需要一个适合您环境大小的空的块存储设备。</p>
 <p>Configure the management interface:</p>
-<p>IP address: 10.0.0.41</p>
-<p>Network mask: 255.255.255.0 (or /24)</p>
-<p>Default gateway: 10.0.0.1</p>
-<p>Set the hostname of the node to block1.</p>
-<p>Copy the contents of the /etc/hosts file from the controller node to the storage node and add the following to it:</p>
-<p>Select Text<br>1<br>2</p>
-<h1 id="block1">block1</h1><p>10.0.0.41       block1<br>Also add this content to the /etc/hosts file on all other nodes in your environment.</p>
-<p>Install and configure NTP using the instructions in the section called “Other nodes”.</p>
+<p>IP address: 10.0.0.41<br>Network mask: 255.255.255.0 (or /24)<br>Default gateway: 10.0.0.1<br>Set the hostname of the node to block1.</p>
+<p>在所有节点修改hosts文件:</p>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">echo <span class="string">"#block1</span><br><span class="line">10.0.0.41      block1"</span><span class="prompt">&gt;&gt; </span>/etc/hosts</span><br></pre></td></tr></table></figure>
 <p>If you intend to use non-raw image types such as QCOW2 and VMDK, install the QEMU support package:</p>
-<h1 id="yum_install_qemu">yum install qemu</h1><p>Install the LVM packages:</p>
-<h1 id="yum_install_lvm2">yum install lvm2</h1><p>[Note]    Note<br>Some distributions include LVM by default.</p>
-<p>Start the LVM metadata service and configure it to start when the system boots:</p>
-<h1 id="systemctl_enable_lvm2-lvmetad-service">systemctl enable lvm2-lvmetad.service</h1><h1 id="systemctl_start_lvm2-lvmetad-service">systemctl start lvm2-lvmetad.service</h1><p>Create the LVM physical volume /dev/sdb1:</p>
-<h1 id="pvcreate_/dev/sdb1">pvcreate /dev/sdb1</h1><p>  Physical volume “/dev/sdb1” successfully created<br>[Note]    Note<br>If your system uses a different device name, adjust these steps accordingly.</p>
-<p>Create the LVM volume group cinder-volumes:</p>
-<h1 id="vgcreate_cinder-volumes_/dev/sdb1">vgcreate cinder-volumes /dev/sdb1</h1><p>  Volume group “cinder-volumes” successfully created<br>The Block Storage service creates logical volumes in this volume group.</p>
-<p>Only instances can access Block Storage volumes. However, the underlying operating system manages the devices associated with the volumes. By default, the LVM volume scanning tool scans the /dev directory for block storage devices that contain volumes. If projects use LVM on their volumes, the scanning tool detects these volumes and attempts to cache them which can cause a variety of problems with both the underlying operating system and project volumes. You must reconfigure LVM to scan only the devices that contain the cinder-volume volume group. Edit the /etc/lvm/lvm.conf file and complete the following actions:</p>
-<p>In the devices section, add a filter that accepts the /dev/sdb device and rejects all other devices:</p>
-<p>Select Text<br>1<br>2<br>3<br>devices {<br>…<br>filter = [ “a/sdb/“, “r/.<em>/“]<br>Each item in the filter array begins with a for accept or r for reject and includes a regular expression for the device name. The array must end with r/.</em>/ to reject any remaining devices. You can use the vgs -vvvv command to test filters.</p>
-<p>[Warning]    Warning<br>If your storage nodes use LVM on the operating system disk, you must also add the associated device to the filter. For example, if the /dev/sda device contains the operating system:</p>
-<p>Select Text<br>1<br>filter = [ “a/sda/“, “a/sdb/“, “r/.*/“]<br>Similarly, if your compute nodes use LVM on the operating system disk, you must also modify the filter in the /etc/lvm/lvm.conf file on those nodes to include only the operating system disk. For example, if the /dev/sda device contains the operating system:</p>
-<p>Select Text<br>1<br>filter = [ “a/sda/“, “r/.*/“]</p>
-<p>Install and configure Block Storage volume components</p>
-<p>Install the packages:</p>
-<h1 id="yum_install_openstack-cinder_targetcli_python-oslo-db_python-oslo-log_MySQL-python">yum install openstack-cinder targetcli python-oslo-db python-oslo-log MySQL-python</h1><p>Edit the /etc/cinder/cinder.conf file and complete the following actions:</p>
-<p>In the [database] section, configure database access:</p>
-<p>Select Text<br>1<br>2<br>3<br>[database]<br>…<br>connection = mysql://cinder:CINDER_DBPASS@controller/cinder<br>Replace CINDER_DBPASS with the password you chose for the Block Storage database.</p>
-<p>In the [DEFAULT] and [oslo_messaging_rabbit] sections, configure RabbitMQ message queue access:</p>
-<p>Select Text<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>[DEFAULT]<br>…<br>rpc_backend = rabbit</p>
-<p>[oslo_messaging_rabbit]<br>…<br>rabbit_host = controller<br>rabbit_userid = openstack<br>rabbit_password = RABBIT_PASS<br>Replace RABBIT_PASS with the password you chose for the openstack account in RabbitMQ.</p>
-<p>In the [DEFAULT] and [keystone_authtoken] sections, configure Identity service access:</p>
-<p>Select Text<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>[DEFAULT]<br>…<br>auth_strategy = keystone</p>
-<p>[keystone_authtoken]<br>…<br>auth_uri = <a href="http://controller:5000" target="_blank" rel="external">http://controller:5000</a><br>auth_url = <a href="http://controller:35357" target="_blank" rel="external">http://controller:35357</a><br>auth_plugin = password<br>project_domain_id = default<br>user_domain_id = default<br>project_name = service<br>username = cinder<br>password = CINDER_PASS<br>Replace CINDER_PASS with the password you chose for the cinder user in the Identity service.</p>
-<p>[Note]    Note<br>Comment out or remove any other options in the [keystone_authtoken] section.</p>
-<p>In the [DEFAULT] section, configure the my_ip option:</p>
-<p>Select Text<br>1<br>2<br>3<br>[DEFAULT]<br>…<br>my_ip = MANAGEMENT_INTERFACE_IP_ADDRESS<br>Replace MANAGEMENT_INTERFACE_IP_ADDRESS with the IP address of the management network interface on your storage node, typically 10.0.0.41 for the first node in the example architecture.</p>
-<p>In the [lvm] section, configure the LVM back end with the LVM driver, cinder-volumes volume group, iSCSI protocol, and appropriate iSCSI service:</p>
-<p>Select Text<br>1<br>2<br>3<br>4<br>5<br>6<br>[lvm]<br>…<br>volume_driver = cinder.volume.drivers.lvm.LVMVolumeDriver<br>volume_group = cinder-volumes<br>iscsi_protocol = iscsi<br>iscsi_helper = lioadm<br>In the [DEFAULT] section, enable the LVM back end:</p>
-<p>Select Text<br>1<br>2<br>3<br>[DEFAULT]<br>…<br>enabled_backends = lvm<br>[Note]    Note<br>Back-end names are arbitrary. As an example, this guide uses the name of the driver as the name of the back end.</p>
-<p>In the [DEFAULT] section, configure the location of the Image service:</p>
-<p>Select Text<br>1<br>2<br>3<br>[DEFAULT]<br>…<br>glance_host = controller<br>In the [oslo_concurrency] section, configure the lock path:</p>
-<p>Select Text<br>1<br>2<br>3<br>[oslo_concurrency]<br>…<br>lock_path = /var/lock/cinder<br>(Optional) To assist with troubleshooting, enable verbose logging in the [DEFAULT] section:</p>
-<p>Select Text<br>1<br>2<br>3<br>[DEFAULT]<br>…<br>verbose = True</p>
-<p>To finalize installation</p>
-<p>Start the Block Storage volume service including its dependencies and configure them to start when the system boots:</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"># <span class="tag">systemctl</span> <span class="tag">enable</span> <span class="tag">openstack-cinder-volume</span><span class="class">.service</span> <span class="tag">target</span><span class="class">.service</span></span><br><span class="line"># <span class="tag">systemctl</span> <span class="tag">start</span> <span class="tag">openstack-cinder-volume</span><span class="class">.service</span> <span class="tag">target</span><span class="class">.service</span></span><br></pre></td></tr></table></figure>
-<h1 id="Verify_operation">Verify operation</h1><p>This section describes how to verify operation of the Block Storage service by creating a volume.</p>
-<p>For more information about how to manage volumes, see the OpenStack User Guide.</p>
-<p>[Note]    Note<br>Perform these commands on the controller node.</p>
-<p>In each client environment script, configure the Block Storage client to use API version 2.0:</p>
-<p>$ echo “export OS_VOLUME_API_VERSION=2” | tee -a admin-openrc.sh demo-openrc.sh<br>Source the admin credentials to gain access to admin-only CLI commands:</p>
-<p>$ source admin-openrc.sh<br>List service components to verify successful launch of each process:</p>
-<p>$ cinder service-list<br>+——————+————+——+———+——-+—————————-+—————–+<br>|      Binary      |    Host    | Zone |  Status | State |         Updated_at         | Disabled Reason |<br>+——————+————+——+———+——-+—————————-+—————–+<br>| cinder-scheduler | controller | nova | enabled |   up  | 2014-10-18T01:30:54.000000 |       None      |<br>| cinder-volume    | block1@lvm | nova | enabled |   up  | 2014-10-18T01:30:57.000000 |       None      |<br>+——————+————+——+———+——-+—————————-+—————–+<br>Source the demo credentials to perform the following steps as a non-administrative project:</p>
-<p>$ source demo-openrc.sh<br>Create a 1 GB volume:</p>
-<p>$ cinder create –name demo-volume1 1<br>+—————————————+————————————–+<br>|                Property               |                Value                 |<br>+—————————————+————————————–+<br>|              attachments              |                  []                  |<br>|           availability_zone           |                 nova                 |<br>|                bootable               |                false                 |<br>|          consistencygroup_id          |                 None                 |<br>|               created_at              |      2015-04-21T23:46:08.000000      |<br>|              description              |                 None                 |<br>|               encrypted               |                False                 |<br>|                   id                  | 6c7a3d28-e1ef-42a0-b1f7-8d6ce9218412 |<br>|                metadata               |                  {}                  |<br>|              multiattach              |                False                 |<br>|                  name                 |             demo-volume1             |<br>|      os-vol-tenant-attr:tenant_id     |   ab8ea576c0574b6092bb99150449b2d3   |<br>|   os-volume-replication:driver_data   |                 None                 |<br>| os-volume-replication:extended_status |                 None                 |<br>|           replication_status          |               disabled               |<br>|                  size                 |                  1                   |<br>|              snapshot_id              |                 None                 |<br>|              source_volid             |                 None                 |<br>|                 status                |               creating               |<br>|                user_id                |   3a81e6c8103b46709ef8d141308d4c72   |<br>|              volume_type              |                 None                 |<br>+—————————————+————————————–+<br>Verify creation and availability of the volume:</p>
-<p>$ cinder list<br>+————————————–+———–+————–+——+————-+———-+————-+<br>|                  ID                  |   Status  |     Name     | Size | Volume Type | Bootable | Attached to |<br>+————————————–+———–+————–+——+————-+———-+————-+<br>| 6c7a3d28-e1ef-42a0-b1f7-8d6ce9218412 | available | demo-volume1 |  1   |     None    |  false   |             |<br>+————————————–+———–+————–+——+————-+———-+————-+<br>If the status does not indicate available, check the logs in the /var/log/cinder directory on the controller and volume nodes for more information.</p>
-<p>[Note]    Note<br>The launch an instance chapter includes instructions for attaching this volume to an instance.</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">yum <span class="keyword">install</span> -y qemu</span><br></pre></td></tr></table></figure>
+<p>安装 LVM packages:</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">yum <span class="keyword">install</span> -y lvm2</span><br></pre></td></tr></table></figure>
+<p>启动LVM的metadata服务并且设置该服务随系统启动：:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">systemctl <span class="built_in">enable</span> lvm2-lvmetad.service</span><br><span class="line">systemctl start lvm2-lvmetad.service</span><br></pre></td></tr></table></figure>
+<p>创建LVM物理卷/dev/sdb1:</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="title">pvcreate</span> /dev/sdb1</span><br></pre></td></tr></table></figure>
+<p>创建LVM卷组cinder-volumes:</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="title">vgcreate</span> cinder-volumes /dev/sdb1</span><br></pre></td></tr></table></figure>
+<p>块存储服务会在这个卷组中创建逻辑卷。</p>
+<p>只有实例能够访问块存储卷。但是，底层的操作系统管理这些设备，关联到卷上。默认情况下，LVM 卷的扫描工具会扫描包含卷的块存储设备的 /dev目录。如果租户在卷上使用了 LVM，扫描工具会检查这些卷并尝试缓存它们，这会在底层系统和租户卷上产生各种各样的问题。您必需重新配置 LVM，仅仅扫描包含了 cinder-volume卷组的设备。</p>
+<p>修改配置文件 /etc/lvm/lvm.conf并完成以下操作：</p>
+<p>In the devices section, add a filter that accepts the /dev/sdb device and rejects all other devices:<br>在 devices部分，添加一个过滤器，接受 /dev/sdb设备，拒绝其他所有设备：</p>
+<figure class="highlight prolog"><table><tr><td class="code"><pre><span class="line"><span class="atom">devices</span> &#123;</span><br><span class="line">...</span><br><span class="line"><span class="atom">filter</span> = [ <span class="string">"a/sdb/"</span>, <span class="string">"r/.*/"</span>]</span><br></pre></td></tr></table></figure>
+<p>每个过滤器序列中的元素都以 a开头，即为 accept，或以 r开头，即为 reject，并好括一些设备名称的表示规则。您可以使用 <code>vgs -vvvv</code>命令来测试过滤器。</p>
+<blockquote>
+<p>[Warning]    Warning<br>如果您的存储节点在操作系统磁盘上使用了 LVM，您还必需添加相关的设备到过滤器中。例如，如果 /dev/sda设备包含在操作系统中：<br><figure class="highlight smalltalk"><table><tr><td class="code"><pre><span class="line">filter = [ <span class="comment">"a/sda/"</span>, <span class="comment">"a/sdb/"</span>, <span class="comment">"r/.*/"</span>]</span><br></pre></td></tr></table></figure></p>
+<p>类似地，如果您的计算节点在操作系统磁盘上使用了 LVM，您也必需修改这些节点上 /etc/lvm/lvm.conf文件中的过滤器，将操作系统磁盘包含到过滤器中。例如，如果 /dev/sda设备包含了操作系统：<br><figure class="highlight golo"><table><tr><td class="code"><pre><span class="line"><span class="keyword">filter</span> = [ <span class="string">"a/sda/"</span>, <span class="string">"r/.*/"</span>]</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>安装软件包:</p>
+<figure class="highlight mel"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line">yum install -y openstack-cinder targetcli <span class="keyword">python</span>-oslo-db <span class="keyword">python</span>-oslo-<span class="keyword">log</span> MySQL-<span class="keyword">python</span></span><br></pre></td></tr></table></figure>
+<p>编辑 /etc/cinder/cinder.conf文件:</p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">echo "[DEFAULT]</span><br><span class="line"><span class="constant">verbose</span> = True</span><br><span class="line"><span class="constant">my_ip</span> = 192.168.200.217</span><br><span class="line"><span class="constant">enabled_backends</span> = lvm</span><br><span class="line"><span class="constant">glance_host</span> = controller</span><br><span class="line"><span class="constant">rpc_backend</span> = rabbit</span><br><span class="line"><span class="constant">auth_strategy</span> = keystone</span><br><span class="line">[oslo_messaging_rabbit]</span><br><span class="line"><span class="constant">rabbit_host</span> = controller</span><br><span class="line"><span class="constant">rabbit_userid</span> = openstack</span><br><span class="line"><span class="constant">rabbit_password</span> = RABBIT_PASS</span><br><span class="line">[keystone_authtoken]</span><br><span class="line"><span class="constant">auth_uri</span> = http://controller:5000</span><br><span class="line"><span class="constant">auth_url</span> = http://controller:35357</span><br><span class="line"><span class="constant">auth_plugin</span> = password</span><br><span class="line"><span class="constant">project_domain_id</span> = default</span><br><span class="line"><span class="constant">user_domain_id</span> = default</span><br><span class="line"><span class="constant">project_name</span> = service</span><br><span class="line"><span class="constant">username</span> = cinder</span><br><span class="line"><span class="constant">password</span> = cinder</span><br><span class="line">[database]</span><br><span class="line"><span class="constant">connection</span> = mysql://cinder:CINDER_DBPASS@controller/cinder</span><br><span class="line">[lvm]</span><br><span class="line"><span class="constant">volume_driver</span> = cinder.volume.drivers.lvm.LVMVolumeDriver</span><br><span class="line"><span class="constant">volume_group</span> = cinder-volumes</span><br><span class="line"><span class="constant">iscsi_protocol</span> = iscsi</span><br><span class="line"><span class="constant">iscsi_helper</span> = lioadm</span><br><span class="line">[oslo_concurrency]</span><br><span class="line"><span class="constant">lock_path</span> = /var/lock/cinder" &gt;/etc/cinder/cinder.conf</span><br></pre></td></tr></table></figure>
+<p>启动块存储卷服务及其依赖的服务，并将其配置为随系统启动：</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line"><span class="tag">systemctl</span> <span class="tag">enable</span> <span class="tag">openstack-cinder-volume</span><span class="class">.service</span> <span class="tag">target</span><span class="class">.service</span></span><br><span class="line"><span class="tag">systemctl</span> <span class="tag">start</span> <span class="tag">openstack-cinder-volume</span><span class="class">.service</span> <span class="tag">target</span><span class="class">.service</span></span><br></pre></td></tr></table></figure>
+<h1 id="Verify_operation">Verify operation</h1><p>In each client environment script, configure the Block Storage client to use API version 2.0:</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"export OS_VOLUME_API_VERSION=2"</span> | tee -<span class="keyword">a</span> admin-openrc.<span class="keyword">sh</span> demo-openrc.<span class="keyword">sh</span></span><br></pre></td></tr></table></figure>
+<p>导入 admin身份凭证以执行管理员用户专有的命令：</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line"><span class="keyword">source</span> admin-openrc.<span class="keyword">sh</span></span><br></pre></td></tr></table></figure>
+<p>列出服务组件以验证是否每个进程都成功启动：</p>
+<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line">cinder service-<span class="type">list</span></span><br></pre></td></tr></table></figure>
+<p>Source demo租户凭证，以非管理员租户的身份来执行下列步骤：</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line"><span class="keyword">source</span> demo-openrc.<span class="keyword">sh</span></span><br></pre></td></tr></table></figure>
+<p>创建 1 GB volume:</p>
+<figure class="highlight livecodeserver"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line">cinder <span class="built_in">create</span> <span class="comment">--name demo-volume1 1</span></span><br></pre></td></tr></table></figure>
+<p>Verify creation and availability of the volume:</p>
+<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">$</span><br><span class="line">cinder <span class="type">list</span></span><br></pre></td></tr></table></figure>
 </span>
       
     </div>
@@ -414,7 +393,7 @@ dashboard 安装在控制节点。">
           <div class="comments" id="comments">
             
               <div class="ds-thread" data-thread-key="2015/10/30/openstack-block-service/"
-                   data-title="openstack之kilo安装 Block Storage服务" data-url="http://yoursite.com/2015/10/30/openstack-block-service/">
+                   data-title="openstack之kilo安装 块设备存储服务" data-url="http://yoursite.com/2015/10/30/openstack-block-service/">
               </div>
             
           </div>
@@ -506,7 +485,7 @@ dashboard 安装在控制节点。">
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Install_and_configure_controller_node"><span class="nav-number">1.</span> <span class="nav-text">Install and configure controller node</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#block1"><span class="nav-number">2.</span> <span class="nav-text">block1</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#yum_install_qemu"><span class="nav-number">3.</span> <span class="nav-text">yum install qemu</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#yum_install_lvm2"><span class="nav-number">4.</span> <span class="nav-text">yum install lvm2</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#systemctl_enable_lvm2-lvmetad-service"><span class="nav-number">5.</span> <span class="nav-text">systemctl enable lvm2-lvmetad.service</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#systemctl_start_lvm2-lvmetad-service"><span class="nav-number">6.</span> <span class="nav-text">systemctl start lvm2-lvmetad.service</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pvcreate_/dev/sdb1"><span class="nav-number">7.</span> <span class="nav-text">pvcreate /dev/sdb1</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#vgcreate_cinder-volumes_/dev/sdb1"><span class="nav-number">8.</span> <span class="nav-text">vgcreate cinder-volumes /dev/sdb1</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#yum_install_openstack-cinder_targetcli_python-oslo-db_python-oslo-log_MySQL-python"><span class="nav-number">9.</span> <span class="nav-text">yum install openstack-cinder targetcli python-oslo-db python-oslo-log MySQL-python</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Verify_operation"><span class="nav-number">10.</span> <span class="nav-text">Verify operation</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Install_and_configure_controller_node"><span class="nav-number">1.</span> <span class="nav-text">Install and configure controller node</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Install_and_configure_a_storage_node"><span class="nav-number">2.</span> <span class="nav-text">Install and configure a storage node</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Verify_operation"><span class="nav-number">3.</span> <span class="nav-text">Verify operation</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

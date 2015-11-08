@@ -39,16 +39,19 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="这周在折腾openstack，下面是过程小记。">
+<meta name="description" content="这周在折腾openstack，下面是过程小记。
+参考：http://docs.openstack.org/admin-guide-cloud/networking_introduction.html#load-balancer-as-a-service-lbaas-overview">
 <meta property="og:type" content="article">
 <meta property="og:title" content="openstack之kilo安装 添加负载均衡、防火墙和VPN">
 <meta property="og:url" content="http://yoursite.com/2015/11/06/openstack-add-lb-vpn/index.html">
 <meta property="og:site_name" content="信息系统应用技术实验室">
-<meta property="og:description" content="这周在折腾openstack，下面是过程小记。">
-<meta property="og:updated_time" content="2015-11-06T08:59:15.073Z">
+<meta property="og:description" content="这周在折腾openstack，下面是过程小记。
+参考：http://docs.openstack.org/admin-guide-cloud/networking_introduction.html#load-balancer-as-a-service-lbaas-overview">
+<meta property="og:updated_time" content="2015-11-07T01:42:26.779Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="openstack之kilo安装 添加负载均衡、防火墙和VPN">
-<meta name="twitter:description" content="这周在折腾openstack，下面是过程小记。">
+<meta name="twitter:description" content="这周在折腾openstack，下面是过程小记。
+参考：http://docs.openstack.org/admin-guide-cloud/networking_introduction.html#load-balancer-as-a-service-lbaas-overview">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -245,17 +248,18 @@
 
       
         <span itemprop="articleBody"><p>这周在折腾openstack，下面是过程小记。</p>
+<p>参考：<br><a href="http://docs.openstack.org/admin-guide-cloud/networking_introduction.html#load-balancer-as-a-service-lbaas-overview" target="_blank" rel="external">http://docs.openstack.org/admin-guide-cloud/networking_introduction.html#load-balancer-as-a-service-lbaas-overview</a></p>
 <a id="more"></a>
 <p>按照官网给的三节点安装kilo文档在CentOS7上安装配置完neutron之horizon之后，默认是没有防火墙，vpn,负载均衡面板的。</p>
 <p>要想启用防火墙，vpn，负载均衡模块需要安装相关包并重新配置neutron。</p>
-<p>网络节点：<br><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">yum <span class="keyword">install</span> -y openstack-neutron-fwaas openstack-neutron-lbaas haproxy openstack-neutron-vpnaas</span><br></pre></td></tr></table></figure></p>
+<p>网络节点：<br><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">yum <span class="keyword">install</span> -y openstack-neutron-fwaas openstack-neutron-lbaas haproxy  openstack-neutron-vpnaas openswan</span><br></pre></td></tr></table></figure></p>
 <p>在网络节点配置/etc/neutron/neutron.conf文件：</p>
-<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">echo "[DEFAULT]</span><br><span class="line"><span class="constant">service_plugins</span> = router,firewall,lbaas,vpnaas</span><br><span class="line">[service_providers]</span><br><span class="line"><span class="constant">service_provider</span>=LOADBALANCER:Haproxy:neutron.services.loadbalancer.drivers.haproxy.plugin_driver.HaproxyOnHostPluginDriver:default</span><br><span class="line"><span class="constant">service_provider</span>=VPN:openswan:neutron.services.vpn.service_drivers.ipsec.IPsecVPNDriver:default</span><br><span class="line"><span class="constant">service_provider</span>=FIREWALL:Iptables:neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver:default"&gt;&gt;/etc/neutron/neutron.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">echo "[DEFAULT]</span><br><span class="line"><span class="constant">service_plugins</span> = router,firewall,lbaas,vpnaas</span><br><span class="line">[service_providers]</span><br><span class="line"><span class="constant">service_provider</span>=LOADBALANCER:Haproxy:neutron.services.loadbalancer.drivers.haproxy.plugin_driver.HaproxyOnHostPluginDriver:default</span><br><span class="line"><span class="constant">service_provider</span>=VPN:openswan:neutron.services.vpn.service_drivers.ipsec.IPsecVPNDriver:default</span><br><span class="line"><span class="constant">service_provider</span>=FIREWALL:Iptables:neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver:default</span><br><span class="line"><span class="constant">service_plugins</span> = neutron.services.firewall.fwaas_plugin.FirewallPlugin"&gt;&gt;/etc/neutron/neutron.conf</span><br></pre></td></tr></table></figure>
 <p>在网络节点配置/etc/neutron/lbaas_agent.ini 文件：</p>
 <figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">vi /etc/neutron/lbaas_agent.ini</span><br><span class="line">[DEFAULT]</span><br><span class="line"><span class="constant">debug</span> = True #打开调试</span><br><span class="line"><span class="constant">interface_driver</span> = neutron.agent.linux.interface.OVSInterfaceDriver</span><br><span class="line"><span class="constant">device_driver</span> = neutron.services.loadbalancer.drivers.haproxy.namespace_driver.HaproxyNSDriver</span><br><span class="line">[haproxy]</span><br><span class="line"><span class="constant">user_group</span> = haproxy</span><br></pre></td></tr></table></figure>
 <p>在网络节点配置/etc/neutron/fwaas_driver.ini</p>
-<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">echo <span class="string">"[fwaas]</span><br><span class="line">driver =neutron.services.firewall.drivers.linux.iptables_fwaas.IptablesFwaasDriver</span><br><span class="line">enabled = True"</span><span class="prompt">&gt;&gt;</span>/etc/neutron/fwaas_driver.ini</span><br></pre></td></tr></table></figure>
-<p>启动服务<br><figure class="highlight css"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line"><span class="tag">systemctl</span> <span class="tag">status</span> <span class="tag">neutron-lbaas-agent</span><span class="class">.service</span> <span class="tag">neutron-fwaas</span><span class="class">.service</span> <span class="tag">neutron-vpnaas</span><span class="class">.service</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line">echo <span class="string">"[fwaas]</span><br><span class="line">driver =neutron.services.firewall.drivers.linux.iptables_fwaas.IptablesFwaasDriver</span><br><span class="line">enabled = True"</span><span class="prompt">&gt;&gt;</span>/etc/neutron/fwaas_driver.ini</span><br><span class="line"></span><br><span class="line">[fwaas]</span><br><span class="line">driver = neutron.services.firewall.drivers.linux.iptables_fwaas.<span class="constant">IptablesFwaasDriver</span></span><br><span class="line">enabled = <span class="constant">True</span></span><br><span class="line"></span><br><span class="line">[service_providers]</span><br><span class="line">service_provider=<span class="constant">LOADBALANCER</span><span class="symbol">:Haproxy</span><span class="symbol">:neutron</span>.services.loadbalancer.drivers.haproxy.plugin_driver.<span class="constant">HaproxyOnHostPluginDriver</span><span class="symbol">:default</span></span><br></pre></td></tr></table></figure>
+<p>启动服务<br><figure class="highlight css"><table><tr><td class="code"><pre><span class="line">#</span><br><span class="line"><span class="tag">systemctl</span> <span class="tag">status</span> <span class="tag">neutron-lbaas-agent</span><span class="class">.service</span> <span class="tag">neutron-fw-agent</span><span class="class">.service</span> <span class="tag">neutron-vpn-agent</span><span class="class">.service</span></span><br></pre></td></tr></table></figure></p>
 <p>控制节点：</p>
 <figure class="highlight 1c"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor">#</span></span><br><span class="line">echo <span class="string">"[DEFAULT]</span></span><br><span class="line">service_plugins = router,firewall,lbaas,vpnaas</span><br></pre></td></tr></table></figure>
 <p>配置/usr/share/openstack-dashboard/openstack_dashboard/local/local_settings.py</p>

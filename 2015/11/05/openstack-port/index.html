@@ -49,7 +49,7 @@
 <meta property="og:description" content="最近开始折腾openstack，下面是过程小记。
 
 参考：Appendix B. Firewalls and default ports">
-<meta property="og:updated_time" content="2015-11-06T07:45:19.515Z">
+<meta property="og:updated_time" content="2015-11-07T03:02:57.489Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="openstack之kilo安装 常用端口">
 <meta name="twitter:description" content="最近开始折腾openstack，下面是过程小记。
@@ -400,6 +400,7 @@
 </tbody>
 </table>
 <figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment">#控制节点</span></span><br><span class="line">firewall-<span class="built_ins">cmd</span> --permanent --<span class="built_ins">add</span>-port=80/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --permanent --<span class="built_ins">add</span>-port=8080/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --permanent --<span class="built_ins">add</span>-port=443/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --permanent --<span class="built_ins">add</span>-port=873/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --permanent --<span class="built_ins">add</span>-port=3260/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --permanent --<span class="built_ins">add</span>-port=5672/tcp</span><br><span class="line">firewall-<span class="built_ins">cmd</span> --reload</span><br></pre></td></tr></table></figure>
+<p>firewall-cmd –add-service=dhcp</p>
 <p>On some deployments, the default port used by a service may fall within the defined local port range of a host. To check a host’s local port range:</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#</span></span><br><span class="line"> sysctl <span class="operator">-a</span> | grep ip_<span class="built_in">local</span>_port_range</span><br></pre></td></tr></table></figure>
 <p>If a service’s default port falls within this range, run the following program to check if the port has already been assigned to another application:</p>
