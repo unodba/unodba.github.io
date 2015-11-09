@@ -45,7 +45,7 @@
 <meta property="og:url" content="http://yoursite.com/2015/09/03/python-pypi-mirror/index.html">
 <meta property="og:site_name" content="信息系统应用技术实验室">
 <meta property="og:description" content="团队在日常开发和生产部署中，会用到PyPi的仓库，但是由于GFW的原因，经常出现丢包、超时等情况。因此在实验室开源镜像服务器定期同步一个PyPi镜像仓库。本文不只是创建一个PyPi镜像仓库，同时也包含了CentOS、Red Hat系列下如何部署python 2.7、pip等软件版本。">
-<meta property="og:updated_time" content="2015-10-27T14:58:29.412Z">
+<meta property="og:updated_time" content="2015-11-09T15:23:20.192Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="创建PyPi镜像仓库">
 <meta name="twitter:description" content="团队在日常开发和生产部署中，会用到PyPi的仓库，但是由于GFW的原因，经常出现丢包、超时等情况。因此在实验室开源镜像服务器定期同步一个PyPi镜像仓库。本文不只是创建一个PyPi镜像仓库，同时也包含了CentOS、Red Hat系列下如何部署python 2.7、pip等软件版本。">
@@ -275,10 +275,10 @@
 <h1 id="配置WEB，即将pip做成本地web源">配置WEB，即将pip做成本地web源</h1><p>实验室原来已经配置了开源镜像服务，只要跟nginx做个链接即可。<br><figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line"># ln -s <span class="regexp">/mirror/</span>pypi<span class="regexp">/web /u</span>sr<span class="regexp">/share/</span>nginx<span class="regexp">/html/</span>pypi</span><br></pre></td></tr></table></figure></p>
 <h1 id="设置pip客户端">设置pip客户端</h1><ul>
 <li><p>方法一<br>配置全局参数</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor"># mkdir ~/.pip</span></span><br><span class="line"><span class="preprocessor"># vim ~/.pip/pip.conf</span></span><br><span class="line">---------------pip.conf---------------</span><br><span class="line">[global]</span><br><span class="line">index-url = http:<span class="comment">//192.178.102.249/pypi/simple/</span></span><br><span class="line">--trusted-host <span class="number">192.178</span><span class="number">.102</span><span class="number">.249</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="preprocessor"># mkdir ~/.pip</span></span><br><span class="line"><span class="preprocessor"># vim ~/.pip/pip.conf</span></span><br><span class="line">---------------pip.conf---------------</span><br><span class="line">[global]</span><br><span class="line">index-url = http:<span class="comment">//192.178.102.249/pypi/web/simple/</span></span><br><span class="line">--trusted-host <span class="number">192.178</span><span class="number">.102</span><span class="number">.249</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>方法二<br>指定安装源</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"># pip <span class="operator"><span class="keyword">install</span> django -<span class="keyword">i</span> <span class="keyword">http</span>://<span class="number">192.178</span><span class="number">.102</span><span class="number">.249</span>/pypi/simple/ <span class="comment">--trusted-host 192.178.102.249</span></span><br><span class="line">//pip推荐使用https，实验室没有启用，在参数后面添加<span class="comment">--trusted-host</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"># pip <span class="operator"><span class="keyword">install</span> django -<span class="keyword">i</span> <span class="keyword">http</span>://<span class="number">192.178</span><span class="number">.102</span><span class="number">.249</span>/pypi/web/simple/ <span class="comment">--trusted-host 192.178.102.249</span></span><br><span class="line">//pip推荐使用https，实验室没有启用，在参数后面添加<span class="comment">--trusted-host</span></span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <p>至此，pip本地源服务器搭建完毕。</p>
