@@ -876,11 +876,19 @@
 
       
         
-          <p>这周在折腾openstack，下面是过程小记。</p>
+          <p>OpenStack对象存储是一个多租户的对象存储系统，它支持大规模扩展，可以以低成本来管理大型的非结构化数据，通过RESTful HTTP 应用程序接口。</p>
+<p>它包含下列组件：</p>
+<ul>
+<li>Proxy servers (swift-proxy-server)<br>接收OpenStack对象存储API和纯粹的HTTP请求以上传文件，更改元数据，以及创建容器。它可服务于在web浏览器下显示文件和容器列表。为了改进性能，代理服务可以使用可选的缓存，通常部署的是memcache。</li>
+<li>Account servers (swift-account-server)<br>管理由对象存储定义的账户。</li>
+<li>Container servers (swift-container-server)<br>管理容器或文件夹的映射，对象存储内部。</li>
+<li>Object servers (swift-object-server)<br>在存储节点管理实际的对象，诸如文件。</li>
+<li>Various periodic processes<br>为了驾驭大型数据存储的任务，复制服务需要在集群内确保一致性和可用性，其他定期进程有审计，更新和reaper。</li>
+<li>WSGI middleware<br>掌控认证，使用OpenStack认证服务。</li>
+</ul>
 <blockquote>
 <p>参考：<a href="http://docs.openstack.org/kilo/install-guide/install/yum/content/ch_swift.html">Chapter 9. Add Object Storage</a></p>
 </blockquote>
-<p>dashboard 安装在控制节点。</p>
           <div class="post-more-link text-center">
             <a class="btn" href="/2015/10/31/openstack-object-service/#more" rel="contents">
               阅读全文 &raquo;
